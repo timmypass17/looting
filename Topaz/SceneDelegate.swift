@@ -11,12 +11,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        let tabBarController = UITabBarController()
+
+        let homeViewController = HomeViewController()
+        let giveawayViewController = GiveawayViewController()
+        let storesViewController = StoresViewController()
+        let wishlistViewController = WishlistViewController()
+        let settingsViewController = SettingsViewController()
+
+        homeViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+        giveawayViewController.tabBarItem = UITabBarItem(title: "Giveaway", image: UIImage(systemName: "shippingbox"), tag: 0)
+        storesViewController.tabBarItem = UITabBarItem(title: "Stores", image: UIImage(systemName: "square.grid.2x2"), tag: 0)
+        wishlistViewController.tabBarItem = UITabBarItem(title: "Wishlist", image: UIImage(systemName: "star"), tag: 0)
+        settingsViewController.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape"), tag: 0)
+        
+        tabBarController.viewControllers = [homeViewController, giveawayViewController, storesViewController, wishlistViewController, settingsViewController]
+            .map { UINavigationController(rootViewController: $0) }
+        
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

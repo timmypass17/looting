@@ -9,28 +9,68 @@
 /* Begin PBXBuildFile section */
 		320205B22C23A45800725DC5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205B12C23A45800725DC5 /* AppDelegate.swift */; };
 		320205B42C23A45800725DC5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205B32C23A45800725DC5 /* SceneDelegate.swift */; };
-		320205B62C23A45800725DC5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205B52C23A45800725DC5 /* ViewController.swift */; };
-		320205B92C23A45800725DC5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 320205B72C23A45800725DC5 /* Main.storyboard */; };
+		320205B62C23A45800725DC5 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205B52C23A45800725DC5 /* HomeViewController.swift */; };
 		320205BC2C23A45800725DC5 /* Topaz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 320205BA2C23A45800725DC5 /* Topaz.xcdatamodeld */; };
 		320205BE2C23A45A00725DC5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 320205BD2C23A45A00725DC5 /* Assets.xcassets */; };
 		320205C12C23A45A00725DC5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 320205BF2C23A45A00725DC5 /* LaunchScreen.storyboard */; };
+		320205CF2C23AC8400725DC5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205CE2C23AC8400725DC5 /* SettingsViewController.swift */; };
+		320205D12C23AC9900725DC5 /* StoresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205D02C23AC9900725DC5 /* StoresViewController.swift */; };
+		320205D32C23ACFB00725DC5 /* GiveawayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205D22C23ACFB00725DC5 /* GiveawayViewController.swift */; };
+		320205D52C23AD0A00725DC5 /* WishlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205D42C23AD0A00725DC5 /* WishlistViewController.swift */; };
+		320205E72C23BD9A00725DC5 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E62C23BD9A00725DC5 /* Store.swift */; };
+		320205E92C23BDFC00725DC5 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E82C23BDFC00725DC5 /* TestData.swift */; };
+		320205F02C23C1A500725DC5 /* TopazTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205DF2C23BCE500725DC5 /* TopazTests.swift */; };
+		320205F12C23C1F900725DC5 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E62C23BD9A00725DC5 /* Store.swift */; };
+		320205F62C23C43100725DC5 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F52C23C43100725DC5 /* APIRequest.swift */; };
+		320205F82C23C48600725DC5 /* StoresAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F72C23C48600725DC5 /* StoresAPIRequest.swift */; };
+		320205FA2C23C61500725DC5 /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F92C23C61500725DC5 /* GameService.swift */; };
+		320205FB2C23C78500725DC5 /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F92C23C61500725DC5 /* GameService.swift */; };
+		320205FC2C23C85500725DC5 /* StoresAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F72C23C48600725DC5 /* StoresAPIRequest.swift */; };
+		320205FD2C23C86400725DC5 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F52C23C43100725DC5 /* APIRequest.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		320205E12C23BCE500725DC5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 320205A62C23A45800725DC5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 320205AD2C23A45800725DC5;
+			remoteInfo = Topaz;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		320205AE2C23A45800725DC5 /* Topaz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topaz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		320205B12C23A45800725DC5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		320205B32C23A45800725DC5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		320205B52C23A45800725DC5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		320205B82C23A45800725DC5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		320205B52C23A45800725DC5 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		320205BB2C23A45800725DC5 /* Topaz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Topaz.xcdatamodel; sourceTree = "<group>"; };
 		320205BD2C23A45A00725DC5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		320205C02C23A45A00725DC5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		320205C22C23A45A00725DC5 /* Topaz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Topaz.entitlements; sourceTree = "<group>"; };
 		320205C32C23A45A00725DC5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		320205CE2C23AC8400725DC5 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		320205D02C23AC9900725DC5 /* StoresViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoresViewController.swift; sourceTree = "<group>"; };
+		320205D22C23ACFB00725DC5 /* GiveawayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiveawayViewController.swift; sourceTree = "<group>"; };
+		320205D42C23AD0A00725DC5 /* WishlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistViewController.swift; sourceTree = "<group>"; };
+		320205DD2C23BCE500725DC5 /* TopazTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopazTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		320205DF2C23BCE500725DC5 /* TopazTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopazTests.swift; sourceTree = "<group>"; };
+		320205E62C23BD9A00725DC5 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		320205E82C23BDFC00725DC5 /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
+		320205F52C23C43100725DC5 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		320205F72C23C48600725DC5 /* StoresAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoresAPIRequest.swift; sourceTree = "<group>"; };
+		320205F92C23C61500725DC5 /* GameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		320205AB2C23A45800725DC5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		320205DA2C23BCE500725DC5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -44,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				320205B02C23A45800725DC5 /* Topaz */,
+				320205DE2C23BCE500725DC5 /* TopazTests */,
 				320205AF2C23A45800725DC5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				320205AE2C23A45800725DC5 /* Topaz.app */,
+				320205DD2C23BCE500725DC5 /* TopazTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,10 +101,11 @@
 		320205B02C23A45800725DC5 /* Topaz */ = {
 			isa = PBXGroup;
 			children = (
+				320205F42C23C42700725DC5 /* Networking */,
+				320205CB2C23ABB700725DC5 /* Models */,
+				320205CA2C23ABB300725DC5 /* ViewControllers */,
 				320205B12C23A45800725DC5 /* AppDelegate.swift */,
 				320205B32C23A45800725DC5 /* SceneDelegate.swift */,
-				320205B52C23A45800725DC5 /* ViewController.swift */,
-				320205B72C23A45800725DC5 /* Main.storyboard */,
 				320205BD2C23A45A00725DC5 /* Assets.xcassets */,
 				320205BF2C23A45A00725DC5 /* LaunchScreen.storyboard */,
 				320205C22C23A45A00725DC5 /* Topaz.entitlements */,
@@ -70,6 +113,45 @@
 				320205BA2C23A45800725DC5 /* Topaz.xcdatamodeld */,
 			);
 			path = Topaz;
+			sourceTree = "<group>";
+		};
+		320205CA2C23ABB300725DC5 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				320205D22C23ACFB00725DC5 /* GiveawayViewController.swift */,
+				320205B52C23A45800725DC5 /* HomeViewController.swift */,
+				320205CE2C23AC8400725DC5 /* SettingsViewController.swift */,
+				320205D02C23AC9900725DC5 /* StoresViewController.swift */,
+				320205D42C23AD0A00725DC5 /* WishlistViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		320205CB2C23ABB700725DC5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				320205E62C23BD9A00725DC5 /* Store.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		320205DE2C23BCE500725DC5 /* TopazTests */ = {
+			isa = PBXGroup;
+			children = (
+				320205DF2C23BCE500725DC5 /* TopazTests.swift */,
+				320205E82C23BDFC00725DC5 /* TestData.swift */,
+			);
+			path = TopazTests;
+			sourceTree = "<group>";
+		};
+		320205F42C23C42700725DC5 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				320205F52C23C43100725DC5 /* APIRequest.swift */,
+				320205F72C23C48600725DC5 /* StoresAPIRequest.swift */,
+				320205F92C23C61500725DC5 /* GameService.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -92,6 +174,24 @@
 			productReference = 320205AE2C23A45800725DC5 /* Topaz.app */;
 			productType = "com.apple.product-type.application";
 		};
+		320205DC2C23BCE500725DC5 /* TopazTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 320205E32C23BCE500725DC5 /* Build configuration list for PBXNativeTarget "TopazTests" */;
+			buildPhases = (
+				320205D92C23BCE500725DC5 /* Sources */,
+				320205DA2C23BCE500725DC5 /* Frameworks */,
+				320205DB2C23BCE500725DC5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				320205E22C23BCE500725DC5 /* PBXTargetDependency */,
+			);
+			name = TopazTests;
+			productName = TopazTests;
+			productReference = 320205DD2C23BCE500725DC5 /* TopazTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -104,6 +204,10 @@
 				TargetAttributes = {
 					320205AD2C23A45800725DC5 = {
 						CreatedOnToolsVersion = 15.0.1;
+					};
+					320205DC2C23BCE500725DC5 = {
+						CreatedOnToolsVersion = 15.0.1;
+						TestTargetID = 320205AD2C23A45800725DC5;
 					};
 				};
 			};
@@ -121,6 +225,7 @@
 			projectRoot = "";
 			targets = (
 				320205AD2C23A45800725DC5 /* Topaz */,
+				320205DC2C23BCE500725DC5 /* TopazTests */,
 			);
 		};
 /* End PBXProject section */
@@ -132,7 +237,13 @@
 			files = (
 				320205C12C23A45A00725DC5 /* LaunchScreen.storyboard in Resources */,
 				320205BE2C23A45A00725DC5 /* Assets.xcassets in Resources */,
-				320205B92C23A45800725DC5 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		320205DB2C23BCE500725DC5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,23 +255,44 @@
 			buildActionMask = 2147483647;
 			files = (
 				320205BC2C23A45800725DC5 /* Topaz.xcdatamodeld in Sources */,
-				320205B62C23A45800725DC5 /* ViewController.swift in Sources */,
+				320205B62C23A45800725DC5 /* HomeViewController.swift in Sources */,
+				320205D12C23AC9900725DC5 /* StoresViewController.swift in Sources */,
+				320205FA2C23C61500725DC5 /* GameService.swift in Sources */,
+				320205E72C23BD9A00725DC5 /* Store.swift in Sources */,
+				320205D32C23ACFB00725DC5 /* GiveawayViewController.swift in Sources */,
 				320205B22C23A45800725DC5 /* AppDelegate.swift in Sources */,
+				320205D52C23AD0A00725DC5 /* WishlistViewController.swift in Sources */,
+				320205F82C23C48600725DC5 /* StoresAPIRequest.swift in Sources */,
+				320205CF2C23AC8400725DC5 /* SettingsViewController.swift in Sources */,
+				320205F62C23C43100725DC5 /* APIRequest.swift in Sources */,
 				320205B42C23A45800725DC5 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		320205D92C23BCE500725DC5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				320205FC2C23C85500725DC5 /* StoresAPIRequest.swift in Sources */,
+				320205F12C23C1F900725DC5 /* Store.swift in Sources */,
+				320205F02C23C1A500725DC5 /* TopazTests.swift in Sources */,
+				320205E92C23BDFC00725DC5 /* TestData.swift in Sources */,
+				320205FD2C23C86400725DC5 /* APIRequest.swift in Sources */,
+				320205FB2C23C78500725DC5 /* GameService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		320205B72C23A45800725DC5 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				320205B82C23A45800725DC5 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
+/* Begin PBXTargetDependency section */
+		320205E22C23BCE500725DC5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 320205AD2C23A45800725DC5 /* Topaz */;
+			targetProxy = 320205E12C23BCE500725DC5 /* PBXContainerItemProxy */;
 		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
 		320205BF2C23A45A00725DC5 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -304,7 +436,6 @@
 				INFOPLIST_FILE = Topaz/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -312,7 +443,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Topaz;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timmynguyen.Topaz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -333,7 +464,6 @@
 				INFOPLIST_FILE = Topaz/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -341,11 +471,47 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Topaz;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timmynguyen.Topaz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		320205E42C23BCE500725DC5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8KHAQ7W8KV;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timmynguyen.TopazTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Topaz.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Topaz";
+			};
+			name = Debug;
+		};
+		320205E52C23BCE500725DC5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8KHAQ7W8KV;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timmynguyen.TopazTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Topaz.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Topaz";
 			};
 			name = Release;
 		};
@@ -366,6 +532,15 @@
 			buildConfigurations = (
 				320205C72C23A45A00725DC5 /* Debug */,
 				320205C82C23A45A00725DC5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		320205E32C23BCE500725DC5 /* Build configuration list for PBXNativeTarget "TopazTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				320205E42C23BCE500725DC5 /* Debug */,
+				320205E52C23BCE500725DC5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
