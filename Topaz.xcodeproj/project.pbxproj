@@ -19,7 +19,7 @@
 		320205D52C23AD0A00725DC5 /* WishlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205D42C23AD0A00725DC5 /* WishlistViewController.swift */; };
 		320205E72C23BD9A00725DC5 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E62C23BD9A00725DC5 /* Store.swift */; };
 		320205E92C23BDFC00725DC5 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E82C23BDFC00725DC5 /* TestData.swift */; };
-		320205F02C23C1A500725DC5 /* TopazTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205DF2C23BCE500725DC5 /* TopazTests.swift */; };
+		320205F02C23C1A500725DC5 /* CheapSharkAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205DF2C23BCE500725DC5 /* CheapSharkAPITests.swift */; };
 		320205F12C23C1F900725DC5 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E62C23BD9A00725DC5 /* Store.swift */; };
 		320205F62C23C43100725DC5 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F52C23C43100725DC5 /* APIRequest.swift */; };
 		320205F82C23C48600725DC5 /* StoresAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F72C23C48600725DC5 /* StoresAPIRequest.swift */; };
@@ -27,6 +27,19 @@
 		320205FB2C23C78500725DC5 /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F92C23C61500725DC5 /* GameService.swift */; };
 		320205FC2C23C85500725DC5 /* StoresAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F72C23C48600725DC5 /* StoresAPIRequest.swift */; };
 		320205FD2C23C86400725DC5 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F52C23C43100725DC5 /* APIRequest.swift */; };
+		320205FF2C24BB1700725DC5 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205FE2C24BB1700725DC5 /* Item.swift */; };
+		320206012C24C16700725DC5 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206002C24C16700725DC5 /* Deal.swift */; };
+		320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
+		320206042C24D98400725DC5 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206002C24C16700725DC5 /* Deal.swift */; };
+		32961DFB2C24DE9E00B2BB9C /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
+		32961DFD2C24E1A000B2BB9C /* StoreDeals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961DFC2C24E1A000B2BB9C /* StoreDeals.swift */; };
+		32961E002C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961DFF2C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift */; };
+		32961E022C2637D700B2BB9C /* StoreDealsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E012C2637D700B2BB9C /* StoreDealsCollectionViewCell.swift */; };
+		32961E042C2A1BE800B2BB9C /* StoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E032C2A1BE800B2BB9C /* StoreCollectionViewCell.swift */; };
+		32961E072C2A1E5A00B2BB9C /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */; };
+		32961E092C2A1E8B00B2BB9C /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E082C2A1E8B00B2BB9C /* LineView.swift */; };
+		32961E0B2C2A2ED200B2BB9C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E0A2C2A2ED200B2BB9C /* Settings.swift */; };
+		32961E0D2C2A389D00B2BB9C /* ImageAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E0C2C2A389D00B2BB9C /* ImageAPIRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,12 +67,23 @@
 		320205D22C23ACFB00725DC5 /* GiveawayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiveawayViewController.swift; sourceTree = "<group>"; };
 		320205D42C23AD0A00725DC5 /* WishlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistViewController.swift; sourceTree = "<group>"; };
 		320205DD2C23BCE500725DC5 /* TopazTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopazTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		320205DF2C23BCE500725DC5 /* TopazTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopazTests.swift; sourceTree = "<group>"; };
+		320205DF2C23BCE500725DC5 /* CheapSharkAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheapSharkAPITests.swift; sourceTree = "<group>"; };
 		320205E62C23BD9A00725DC5 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		320205E82C23BDFC00725DC5 /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		320205F52C23C43100725DC5 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		320205F72C23C48600725DC5 /* StoresAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoresAPIRequest.swift; sourceTree = "<group>"; };
 		320205F92C23C61500725DC5 /* GameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameService.swift; sourceTree = "<group>"; };
+		320205FE2C24BB1700725DC5 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		320206002C24C16700725DC5 /* Deal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deal.swift; sourceTree = "<group>"; };
+		320206022C24CDD600725DC5 /* DealsAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsAPIRequest.swift; sourceTree = "<group>"; };
+		32961DFC2C24E1A000B2BB9C /* StoreDeals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDeals.swift; sourceTree = "<group>"; };
+		32961DFF2C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedDealCollectionViewCell.swift; sourceTree = "<group>"; };
+		32961E012C2637D700B2BB9C /* StoreDealsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDealsCollectionViewCell.swift; sourceTree = "<group>"; };
+		32961E032C2A1BE800B2BB9C /* StoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionViewCell.swift; sourceTree = "<group>"; };
+		32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
+		32961E082C2A1E8B00B2BB9C /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
+		32961E0A2C2A2ED200B2BB9C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		32961E0C2C2A389D00B2BB9C /* ImageAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +125,8 @@
 		320205B02C23A45800725DC5 /* Topaz */ = {
 			isa = PBXGroup;
 			children = (
+				32961E052C2A1E2D00B2BB9C /* SupplementaryViews */,
+				32961DFE2C2630D100B2BB9C /* Cells */,
 				320205F42C23C42700725DC5 /* Networking */,
 				320205CB2C23ABB700725DC5 /* Models */,
 				320205CA2C23ABB300725DC5 /* ViewControllers */,
@@ -111,6 +137,7 @@
 				320205C22C23A45A00725DC5 /* Topaz.entitlements */,
 				320205C32C23A45A00725DC5 /* Info.plist */,
 				320205BA2C23A45800725DC5 /* Topaz.xcdatamodeld */,
+				32961E0A2C2A2ED200B2BB9C /* Settings.swift */,
 			);
 			path = Topaz;
 			sourceTree = "<group>";
@@ -131,6 +158,9 @@
 			isa = PBXGroup;
 			children = (
 				320205E62C23BD9A00725DC5 /* Store.swift */,
+				320205FE2C24BB1700725DC5 /* Item.swift */,
+				320206002C24C16700725DC5 /* Deal.swift */,
+				32961DFC2C24E1A000B2BB9C /* StoreDeals.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -138,7 +168,7 @@
 		320205DE2C23BCE500725DC5 /* TopazTests */ = {
 			isa = PBXGroup;
 			children = (
-				320205DF2C23BCE500725DC5 /* TopazTests.swift */,
+				320205DF2C23BCE500725DC5 /* CheapSharkAPITests.swift */,
 				320205E82C23BDFC00725DC5 /* TestData.swift */,
 			);
 			path = TopazTests;
@@ -150,8 +180,29 @@
 				320205F52C23C43100725DC5 /* APIRequest.swift */,
 				320205F72C23C48600725DC5 /* StoresAPIRequest.swift */,
 				320205F92C23C61500725DC5 /* GameService.swift */,
+				320206022C24CDD600725DC5 /* DealsAPIRequest.swift */,
+				32961E0C2C2A389D00B2BB9C /* ImageAPIRequest.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		32961DFE2C2630D100B2BB9C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				32961DFF2C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift */,
+				32961E012C2637D700B2BB9C /* StoreDealsCollectionViewCell.swift */,
+				32961E032C2A1BE800B2BB9C /* StoreCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		32961E052C2A1E2D00B2BB9C /* SupplementaryViews */ = {
+			isa = PBXGroup;
+			children = (
+				32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */,
+				32961E082C2A1E8B00B2BB9C /* LineView.swift */,
+			);
+			path = SupplementaryViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,17 +306,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				320205BC2C23A45800725DC5 /* Topaz.xcdatamodeld in Sources */,
+				32961DFD2C24E1A000B2BB9C /* StoreDeals.swift in Sources */,
 				320205B62C23A45800725DC5 /* HomeViewController.swift in Sources */,
+				32961E042C2A1BE800B2BB9C /* StoreCollectionViewCell.swift in Sources */,
 				320205D12C23AC9900725DC5 /* StoresViewController.swift in Sources */,
+				32961E092C2A1E8B00B2BB9C /* LineView.swift in Sources */,
+				32961E002C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift in Sources */,
 				320205FA2C23C61500725DC5 /* GameService.swift in Sources */,
+				32961E0D2C2A389D00B2BB9C /* ImageAPIRequest.swift in Sources */,
+				32961E072C2A1E5A00B2BB9C /* SectionHeaderView.swift in Sources */,
 				320205E72C23BD9A00725DC5 /* Store.swift in Sources */,
 				320205D32C23ACFB00725DC5 /* GiveawayViewController.swift in Sources */,
+				320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */,
 				320205B22C23A45800725DC5 /* AppDelegate.swift in Sources */,
+				320205FF2C24BB1700725DC5 /* Item.swift in Sources */,
 				320205D52C23AD0A00725DC5 /* WishlistViewController.swift in Sources */,
 				320205F82C23C48600725DC5 /* StoresAPIRequest.swift in Sources */,
 				320205CF2C23AC8400725DC5 /* SettingsViewController.swift in Sources */,
 				320205F62C23C43100725DC5 /* APIRequest.swift in Sources */,
 				320205B42C23A45800725DC5 /* SceneDelegate.swift in Sources */,
+				32961E022C2637D700B2BB9C /* StoreDealsCollectionViewCell.swift in Sources */,
+				32961E0B2C2A2ED200B2BB9C /* Settings.swift in Sources */,
+				320206012C24C16700725DC5 /* Deal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,10 +337,12 @@
 			files = (
 				320205FC2C23C85500725DC5 /* StoresAPIRequest.swift in Sources */,
 				320205F12C23C1F900725DC5 /* Store.swift in Sources */,
-				320205F02C23C1A500725DC5 /* TopazTests.swift in Sources */,
+				320205F02C23C1A500725DC5 /* CheapSharkAPITests.swift in Sources */,
 				320205E92C23BDFC00725DC5 /* TestData.swift in Sources */,
+				32961DFB2C24DE9E00B2BB9C /* DealsAPIRequest.swift in Sources */,
 				320205FD2C23C86400725DC5 /* APIRequest.swift in Sources */,
 				320205FB2C23C78500725DC5 /* GameService.swift in Sources */,
+				320206042C24D98400725DC5 /* Deal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

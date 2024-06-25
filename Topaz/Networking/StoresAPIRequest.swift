@@ -10,7 +10,7 @@ import Foundation
 struct StoresAPIRequest: APIRequest {
     var urlRequest: URLRequest {
         let url = URL(string: "https://www.cheapshark.com/api/1.0/stores")!
-        var request = URLRequest(url: url)
+        let request = URLRequest(url: url)
         return request
     }
     
