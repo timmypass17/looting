@@ -17,8 +17,6 @@ class StoreCollectionViewCell: UICollectionViewCell {
         imageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
         imageView.backgroundColor = .placeholderText
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true
         return imageView
     }()
     
@@ -29,12 +27,19 @@ class StoreCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    let dealCountLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        return label
+    }()
+    
     let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 30
-        stackView.distribution = .fillProportionally
         stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -42,16 +47,16 @@ class StoreCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = .lightGray
         view.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale).isActive = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        lineView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(dealCountLabel)
         
         addSubview(stackView)
         addSubview(lineView)
@@ -71,15 +76,16 @@ class StoreCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(_ store: Store, hideBottomLine: Bool) {
-        titleLabel.text = store.name
-        Task {
-            let imageRequest = ImageAPIRequest(url: URL(string: "https://www.cheapshark.com\(store.images.icon)")!)
-            if let image = try? await sendRequest(imageRequest) {
-                imageView.image = image
-                imageView.backgroundColor = .clear
-            }
-        }
+    func update(with shop: Shop, hideBottomLine: Bool) {
+        titleLabel.text = shop.title
+        dealCountLabel.text = "\(shop.deals)"
         lineView.isHidden = hideBottomLine
+//        Task {
+//            let imageRequest = ImageAPIRequest(url: URL(string: "https://www.cheapshark.com\(store.images.icon)")!)
+//            if let image = try? await sendRequest(imageRequest) {
+//                imageView.image = image
+//                imageView.backgroundColor = .clear
+//            }
+//        }
     }
 }

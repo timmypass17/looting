@@ -31,8 +31,8 @@ class SectionHeaderView: UICollectionReusableView {
     let seeAllButton: UIButton = {
         let button = UIButton()
         button.setTitle("See All", for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        button.setTitleColor(.accent, for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         button.setContentHuggingPriority(.required, for: .horizontal)
         
         return button

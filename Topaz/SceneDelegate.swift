@@ -21,17 +21,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let homeViewController = HomeViewController()
         let giveawayViewController = GiveawayViewController()
-        let storesViewController = StoresViewController()
+//        let storesViewController = StoresViewController()
         let wishlistViewController = WishlistViewController()
         let settingsViewController = SettingsViewController()
 
         homeViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         giveawayViewController.tabBarItem = UITabBarItem(title: "Giveaway", image: UIImage(systemName: "shippingbox"), tag: 0)
-        storesViewController.tabBarItem = UITabBarItem(title: "Stores", image: UIImage(systemName: "square.grid.2x2"), tag: 0)
+//        storesViewController.tabBarItem = UITabBarItem(title: "Stores", image: UIImage(systemName: "square.grid.2x2"), tag: 0)
         wishlistViewController.tabBarItem = UITabBarItem(title: "Wishlist", image: UIImage(systemName: "star"), tag: 0)
         settingsViewController.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape"), tag: 0)
         
-        tabBarController.viewControllers = [homeViewController, giveawayViewController, storesViewController, wishlistViewController, settingsViewController]
+        tabBarController.viewControllers = [homeViewController, giveawayViewController, wishlistViewController, settingsViewController]
             .map { UINavigationController(rootViewController: $0) }
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)

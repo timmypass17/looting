@@ -21,7 +21,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     let headlineLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = UIColor.systemBlue
+        label.textColor = .accent
         label.setContentHuggingPriority(.required, for: .vertical)
         
         return label
@@ -47,7 +47,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 5.0
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -75,14 +75,16 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(with deal: Deal) {
-        headlineLabel.text = "Best Deals"
-        titleLabel.text = deal.title
-        subTitleLabel.text = deal.store?.name ?? "Store not found."
+    func update(with game: Game, dealItem: DealItem) {
+        headlineLabel.text = "Trending Games"
+        titleLabel.text = game.title
+        if let shop: Shop = Settings.shared.shops.first(where: { $0.id == dealItem.deal?.shop.id }) {
+            subTitleLabel.text = shop.title
+        }
         imageView.backgroundColor = .placeholderText
         
         Task {
-            let imageRequest = ImageAPIRequest(url: URL(string: deal.thumb)!)
+            let imageRequest = ImageAPIRequest(url: URL(string: game.assets.banner600)!)
             if let image = try? await sendRequest(imageRequest) {
                 imageView.image = image
                 imageView.backgroundColor = .clear

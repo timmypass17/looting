@@ -8,29 +8,28 @@
 import Foundation
 
 enum Item: Hashable {
-    case deal(Deal)
-//    case storeDeals(StoreDeals)
-    case store(Store)
+    case game(Game, DealItem)
+    case shop(Shop)
     
-    var deal: Deal? {
-        if case .deal(let deal) = self {
-            return deal
+    var game: Game? {
+        if case .game(let game, _) = self {
+            return game
         } else {
             return nil
         }
     }
     
-//    var storeDeals: StoreDeals? {
-//        if case .storeDeals(let storeDeals) = self {
-//            return storeDeals
-//        } else {
-//            return nil
-//        }
-//    }
+    var shop: Shop? {
+        if case .shop(let shop) = self {
+            return shop
+        } else {
+            return nil
+        }
+    }
     
-    var store: Store? {
-        if case .store(let store) = self {
-            return store
+    var dealItem: DealItem? {
+        if case .game(_, let dealItem) = self {
+            return dealItem
         } else {
             return nil
         }

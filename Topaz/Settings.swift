@@ -25,12 +25,12 @@ struct Settings {
         return try! JSONDecoder().decode(T.self, from: data)
     }
     
-    var stores: [Store] {
+    var shops: [Shop] {
         get {
-            return unarchiveJSON(key: "stores") ?? []
+            return unarchiveJSON(key: "shops") ?? []
         }
         set {
-            archiveJSON(value: newValue, key: "stores")
+            archiveJSON(value: newValue, key: "shops")
         }
     }
 }
