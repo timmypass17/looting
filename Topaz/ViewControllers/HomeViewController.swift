@@ -10,6 +10,9 @@ import UIKit
 // TODO: Add discount percent to banner (ex. -%50) with white text black bg or steam but orange
 class HomeViewController: UIViewController {
 
+    var searchController: UISearchController!
+    private var resultsViewController: ResultsViewController!
+
     enum Section: Hashable {
         case featured
         case standard(String) // "Steam", "Blizzard"...
@@ -29,15 +32,28 @@ class HomeViewController: UIViewController {
     }()
 
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
-
     var sections = [Section]()
-
     let service = IsThereAnyDealService()
+    var searchTask: Task<Void, Never>? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Stores"
         navigationController?.navigationBar.prefersLargeTitles = true
+
+        resultsViewController = ResultsViewController()
+        searchController = UISearchController(searchResultsController: resultsViewController)
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Search Games By Title"
+        searchController.showsSearchResultsController = true // Always show the search result controller even when search is empty
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+        
+        resultsViewController.loadViewIfNeeded()    // make sure viewDidLoad() is called so datasource is initalized
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), primaryAction: nil, menu: nil)
 
         setupCollectionView()
     }
@@ -70,28 +86,42 @@ class HomeViewController: UIViewController {
         Task {
             let shops: [Item] = Array(await getShops().prefix(7))
             
-            
-            let featuredDeals: [Item] = await getGames(limit: 3)
+            let featuredDeals: [Item] = await getGames()
             let steamID = 61
             let gogID = 35
             let steamDeals: [Item] = Array(await getGames(limit: 10, shops: [steamID]))
             let gogDeals: [Item] = Array(await getGames(limit: 10, shops: [gogID]))
-
             
             // Represents collectionView's contents at a moment in time
             var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
             snapshot.appendSections([.featured])
             snapshot.appendItems(featuredDeals, toSection: .featured)
 
-            snapshot.appendSections([.standard("Steam"), .standard("GOG")])
-            snapshot.appendItems(steamDeals, toSection: .standard("Steam"))
-            snapshot.appendItems(gogDeals, toSection: .standard("GOG"))
+            if steamDeals.count > 0 {
+                snapshot.appendSections([.standard("Steam")])
+                snapshot.appendItems(steamDeals, toSection: .standard("Steam"))
+            }
+            
+            if gogDeals.count > 0 {
+                snapshot.appendSections([.standard("GOG")])
+                snapshot.appendItems(gogDeals, toSection: .standard("GOG"))
+            }
             
             snapshot.appendSections([.shops])
             snapshot.appendItems(shops, toSection: .shops)
 
-            sections = snapshot.sectionIdentifiers
-            await dataSource.apply(snapshot)
+            sections = snapshot.sectionIdentifiers  // keep track of sections (e.g. [.featured, .standard(), .standard(), .shops])
+            await dataSource.apply(snapshot)        // update UI with current data
+            
+            // Init results view controller
+            resultsViewController.originalResults = featuredDeals
+            var resultSnapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
+            
+            resultSnapshot.appendSections([.results])
+            resultSnapshot.appendItems(featuredDeals, toSection: .results)
+            print("Result deals: \(featuredDeals.count)")
+            
+            await resultsViewController.dataSource.apply(resultSnapshot)
         }
 
     }
@@ -219,7 +249,7 @@ class HomeViewController: UIViewController {
 
     func configureDataSource() {
         // MARK: Data Source Initialization
-        dataSource = .init(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             let section = self.sections[indexPath.section]
             switch section {
             case .featured:
@@ -240,11 +270,10 @@ class HomeViewController: UIViewController {
 
                 return cell
             }
-        })
+        }
 
         // MARK: Supplementary View Provider
         dataSource.supplementaryViewProvider = { collectionView, kind, indexPath -> UICollectionReusableView? in
-
             switch kind {
             case SupplementaryViewKind.header:
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: SupplementaryViewKind.header, withReuseIdentifier: SectionHeaderView.reuseIdentifier, for: indexPath) as! SectionHeaderView
@@ -257,7 +286,7 @@ class HomeViewController: UIViewController {
                 case .standard(let name):
                     sectionName = name
                 case .shops:
-                    sectionName = "PC Game Shops"
+                    sectionName = "Deals by Shop"
                 }
 
                 headerView.setTitle(sectionName)
@@ -290,6 +319,36 @@ class HomeViewController: UIViewController {
             return []
         }
     }
+    
+    func getGames(title: String) async -> [Item] {
+        do {
+            let searchItems: [SearchItem] = try await service.getSearchItems(title: title)
+            var games: [Game] = []
+            var prices: [Price] = []
+            var items: [Item] = []
+            
+            for item in searchItems {
+                let game: Game = try await service.getGame(id: item.id)
+                games.append(game)
+            }
+            
+            prices = try await service.getPrices(gameIDs: games.map { $0.id })
+            
+            for game in games {
+                guard let price = prices.first(where: { $0.id == game.id }),
+                      let cheapestDeal = price.deals.min(by: { $0.price.amount < $1.price.amount})
+                else { continue }
+                
+                let dealItem = DealItem(id: game.id, title: game.title, deal: cheapestDeal)
+                items.append(Item.game(game, dealItem))
+            }
+            
+            return items
+        } catch {
+            print("Error fetching \(title): \(error)")
+            return []
+        }
+    }
 
     func getShops() async -> [Item] {
         do {
@@ -306,3 +365,34 @@ class HomeViewController: UIViewController {
     }
 }
 
+extension HomeViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let title = searchBar.text else { return }
+        print("Searching for \(title)...")
+        
+        searchTask?.cancel()
+        searchTask = Task {
+            let games = await getGames(title: title)
+            var snapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
+            
+            snapshot.appendSections([.results])
+            snapshot.appendItems(games, toSection: .results)
+            
+            await resultsViewController.dataSource.apply(snapshot)
+        }
+    }
+}
+
+extension HomeViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        // The system calls this method when the search bar becomes the first responder or the search bar’s text changes. Perform any required filtering and updating of search results or suggestions inside of this method.
+        guard let searchBarText = searchController.searchBar.text else { return }
+
+        if searchBarText.isEmpty {
+            var snapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
+            snapshot.appendSections([.results])
+            snapshot.appendItems(resultsViewController.originalResults, toSection: .results)
+            resultsViewController.dataSource.apply(snapshot)
+        }
+    }
+}

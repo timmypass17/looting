@@ -11,19 +11,10 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "FeaturedDealCollectionViewCell"
     
-    let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 0
-        return stackView
-    }()
-    
     let headlineLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.textColor = .accent
-        label.setContentHuggingPriority(.required, for: .vertical)
-        
         return label
     }()
     
@@ -31,43 +22,87 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 24, weight: .regular)
         label.textColor = UIColor.label
-        label.setContentHuggingPriority(.required, for: .vertical)
-        
+        label.setContentCompressionResistancePriority(.required, for: .vertical) // fix bug with being compressed and clipped
         return label
     }()
     
     let subTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 24, weight: .regular)
+        label.font = .preferredFont(forTextStyle: .subheadline)
         label.textColor = UIColor.secondaryLabel
-        label.setContentHuggingPriority(.required, for: .vertical)
-        
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
         return label
     }()
     
+    let priceView = PriceView()
+    
+    let discountView = DiscountView()
+    
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true    // for crop
+        imageView.backgroundColor = .placeholderText
         return imageView
+    }()
+    
+    let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    let vstack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        return stackView
+    }()
+    
+    let hstack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        return stackView
+    }()
+    
+    let priceContainer: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        return stackView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        vstack.addArrangedSubview(titleLabel)
+        vstack.addArrangedSubview(subTitleLabel)
+        
+        hstack.addArrangedSubview(vstack)
+        hstack.addArrangedSubview(UIView())
+        hstack.addArrangedSubview(discountView)
+        hstack.setCustomSpacing(10, after: discountView)
+        hstack.addArrangedSubview(priceView)
+        
         stackView.addArrangedSubview(headlineLabel)
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(subTitleLabel)
-        stackView.setCustomSpacing(10, after: subTitleLabel)
+        stackView.addArrangedSubview(hstack)
+
+        stackView.setCustomSpacing(10, after: hstack)
+
         stackView.addArrangedSubview(imageView)
         
         addSubview(stackView)
         
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            discountView.topAnchor.constraint(equalTo: priceView.topAnchor),
+            discountView.bottomAnchor.constraint(equalTo: priceView.bottomAnchor)
         ])
     }
     
@@ -76,18 +111,26 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     }
     
     func update(with game: Game, dealItem: DealItem) {
+        let attributeString = NSMutableAttributedString(string: "$\(dealItem.deal!.regular.amount)")
+        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
+        
         headlineLabel.text = "Trending Games"
         titleLabel.text = game.title
         if let shop: Shop = Settings.shared.shops.first(where: { $0.id == dealItem.deal?.shop.id }) {
             subTitleLabel.text = shop.title
         }
-        imageView.backgroundColor = .placeholderText
+        
+        discountView.discountLabel.text = "-\(dealItem.deal!.cut)%"
+        
+        priceView.regularLabel.attributedText = attributeString
+        priceView.saleLabel.text = "$\(dealItem.deal!.price.amount)"
         
         Task {
-            let imageRequest = ImageAPIRequest(url: URL(string: game.assets.banner600)!)
+            guard let assets = game.assets else { return }
+            let imageRequest = ImageAPIRequest(url: URL(string: assets.banner600)!)
             if let image = try? await sendRequest(imageRequest) {
                 imageView.image = image
-                imageView.backgroundColor = .clear
+                //                imageView.backgroundColor = .clear
             }
         }
     }

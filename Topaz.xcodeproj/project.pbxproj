@@ -32,7 +32,6 @@
 		320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
 		320206042C24D98400725DC5 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206002C24C16700725DC5 /* Deal.swift */; };
 		32961DFB2C24DE9E00B2BB9C /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
-		32961DFD2C24E1A000B2BB9C /* StoreDeals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961DFC2C24E1A000B2BB9C /* StoreDeals.swift */; };
 		32961E002C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961DFF2C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift */; };
 		32961E022C2637D700B2BB9C /* DealSmallCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E012C2637D700B2BB9C /* DealSmallCollectionViewCell.swift */; };
 		32961E042C2A1BE800B2BB9C /* StoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E032C2A1BE800B2BB9C /* StoreCollectionViewCell.swift */; };
@@ -49,6 +48,15 @@
 		32961E1B2C2B79EC00B2BB9C /* GameAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E1A2C2B79EC00B2BB9C /* GameAPIRequest.swift */; };
 		32961E1C2C2B843B00B2BB9C /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E182C2B76D900B2BB9C /* Game.swift */; };
 		32961E1D2C2B849400B2BB9C /* GameAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E1A2C2B79EC00B2BB9C /* GameAPIRequest.swift */; };
+		32961E202C2D01C600B2BB9C /* PriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E1F2C2D01C600B2BB9C /* PriceView.swift */; };
+		32961E222C2D0FC100B2BB9C /* DiscountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E212C2D0FC100B2BB9C /* DiscountView.swift */; };
+		32961E242C2DDFD500B2BB9C /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E232C2DDFD500B2BB9C /* Test.swift */; };
+		32961E262C2DE7CF00B2BB9C /* DiscountPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E252C2DE7CF00B2BB9C /* DiscountPriceView.swift */; };
+		32961E282C2E2A7C00B2BB9C /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E272C2E2A7C00B2BB9C /* ResultsViewController.swift */; };
+		32961E2A2C32224500B2BB9C /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E292C32224500B2BB9C /* Price.swift */; };
+		32961E2C2C32325500B2BB9C /* PricesAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */; };
+		32961E2D2C32368500B2BB9C /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E292C32224500B2BB9C /* Price.swift */; };
+		32961E2E2C3237EC00B2BB9C /* PricesAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,7 +93,6 @@
 		320205FE2C24BB1700725DC5 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		320206002C24C16700725DC5 /* Deal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deal.swift; sourceTree = "<group>"; };
 		320206022C24CDD600725DC5 /* DealsAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsAPIRequest.swift; sourceTree = "<group>"; };
-		32961DFC2C24E1A000B2BB9C /* StoreDeals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDeals.swift; sourceTree = "<group>"; };
 		32961DFF2C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedDealCollectionViewCell.swift; sourceTree = "<group>"; };
 		32961E012C2637D700B2BB9C /* DealSmallCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealSmallCollectionViewCell.swift; sourceTree = "<group>"; };
 		32961E032C2A1BE800B2BB9C /* StoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -98,6 +105,13 @@
 		32961E152C2B6D9F00B2BB9C /* SearchAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPIRequest.swift; sourceTree = "<group>"; };
 		32961E182C2B76D900B2BB9C /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		32961E1A2C2B79EC00B2BB9C /* GameAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAPIRequest.swift; sourceTree = "<group>"; };
+		32961E1F2C2D01C600B2BB9C /* PriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceView.swift; sourceTree = "<group>"; };
+		32961E212C2D0FC100B2BB9C /* DiscountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscountView.swift; sourceTree = "<group>"; };
+		32961E232C2DDFD500B2BB9C /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		32961E252C2DE7CF00B2BB9C /* DiscountPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscountPriceView.swift; sourceTree = "<group>"; };
+		32961E272C2E2A7C00B2BB9C /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
+		32961E292C32224500B2BB9C /* Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
+		32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricesAPIRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +153,7 @@
 		320205B02C23A45800725DC5 /* Topaz */ = {
 			isa = PBXGroup;
 			children = (
+				32961E1E2C2D01B600B2BB9C /* Views */,
 				32961E052C2A1E2D00B2BB9C /* SupplementaryViews */,
 				32961DFE2C2630D100B2BB9C /* Cells */,
 				320205F42C23C42700725DC5 /* Networking */,
@@ -164,6 +179,7 @@
 				320205CE2C23AC8400725DC5 /* SettingsViewController.swift */,
 				320205D02C23AC9900725DC5 /* StoresViewController.swift */,
 				320205D42C23AD0A00725DC5 /* WishlistViewController.swift */,
+				32961E272C2E2A7C00B2BB9C /* ResultsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -174,9 +190,9 @@
 				320205E62C23BD9A00725DC5 /* Shop.swift */,
 				320205FE2C24BB1700725DC5 /* Item.swift */,
 				320206002C24C16700725DC5 /* Deal.swift */,
-				32961DFC2C24E1A000B2BB9C /* StoreDeals.swift */,
 				32961E122C2B6C1600B2BB9C /* SearchItem.swift */,
 				32961E182C2B76D900B2BB9C /* Game.swift */,
+				32961E292C32224500B2BB9C /* Price.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -201,6 +217,7 @@
 				32961E0C2C2A389D00B2BB9C /* ImageAPIRequest.swift */,
 				32961E152C2B6D9F00B2BB9C /* SearchAPIRequest.swift */,
 				32961E1A2C2B79EC00B2BB9C /* GameAPIRequest.swift */,
+				32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -222,6 +239,17 @@
 				32961E082C2A1E8B00B2BB9C /* LineView.swift */,
 			);
 			path = SupplementaryViews;
+			sourceTree = "<group>";
+		};
+		32961E1E2C2D01B600B2BB9C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				32961E1F2C2D01C600B2BB9C /* PriceView.swift */,
+				32961E212C2D0FC100B2BB9C /* DiscountView.swift */,
+				32961E232C2DDFD500B2BB9C /* Test.swift */,
+				32961E252C2DE7CF00B2BB9C /* DiscountPriceView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -324,14 +352,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32961E222C2D0FC100B2BB9C /* DiscountView.swift in Sources */,
 				320205BC2C23A45800725DC5 /* Topaz.xcdatamodeld in Sources */,
-				32961DFD2C24E1A000B2BB9C /* StoreDeals.swift in Sources */,
 				320205B62C23A45800725DC5 /* HomeViewController.swift in Sources */,
 				32961E042C2A1BE800B2BB9C /* StoreCollectionViewCell.swift in Sources */,
 				320205D12C23AC9900725DC5 /* StoresViewController.swift in Sources */,
 				32961E092C2A1E8B00B2BB9C /* LineView.swift in Sources */,
 				32961E002C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift in Sources */,
+				32961E2A2C32224500B2BB9C /* Price.swift in Sources */,
 				320205FA2C23C61500725DC5 /* GameService.swift in Sources */,
+				32961E2C2C32325500B2BB9C /* PricesAPIRequest.swift in Sources */,
+				32961E202C2D01C600B2BB9C /* PriceView.swift in Sources */,
+				32961E282C2E2A7C00B2BB9C /* ResultsViewController.swift in Sources */,
 				32961E1B2C2B79EC00B2BB9C /* GameAPIRequest.swift in Sources */,
 				32961E0D2C2A389D00B2BB9C /* ImageAPIRequest.swift in Sources */,
 				32961E072C2A1E5A00B2BB9C /* SectionHeaderView.swift in Sources */,
@@ -339,6 +371,7 @@
 				32961E162C2B6D9F00B2BB9C /* SearchAPIRequest.swift in Sources */,
 				320205D32C23ACFB00725DC5 /* GiveawayViewController.swift in Sources */,
 				320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */,
+				32961E242C2DDFD500B2BB9C /* Test.swift in Sources */,
 				320205B22C23A45800725DC5 /* AppDelegate.swift in Sources */,
 				320205FF2C24BB1700725DC5 /* Item.swift in Sources */,
 				320205D52C23AD0A00725DC5 /* WishlistViewController.swift in Sources */,
@@ -350,6 +383,7 @@
 				32961E022C2637D700B2BB9C /* DealSmallCollectionViewCell.swift in Sources */,
 				32961E0B2C2A2ED200B2BB9C /* Settings.swift in Sources */,
 				320206012C24C16700725DC5 /* Deal.swift in Sources */,
+				32961E262C2DE7CF00B2BB9C /* DiscountPriceView.swift in Sources */,
 				32961E192C2B76D900B2BB9C /* Game.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,6 +393,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				320205FC2C23C85500725DC5 /* ShopsAPIRequest.swift in Sources */,
+				32961E2D2C32368500B2BB9C /* Price.swift in Sources */,
 				320205F12C23C1F900725DC5 /* Shop.swift in Sources */,
 				320205F02C23C1A500725DC5 /* CheapSharkAPITests.swift in Sources */,
 				320205E92C23BDFC00725DC5 /* TestData.swift in Sources */,
@@ -366,6 +401,7 @@
 				320205FD2C23C86400725DC5 /* APIRequest.swift in Sources */,
 				32961E142C2B6CF200B2BB9C /* SearchItem.swift in Sources */,
 				32961E1C2C2B843B00B2BB9C /* Game.swift in Sources */,
+				32961E2E2C3237EC00B2BB9C /* PricesAPIRequest.swift in Sources */,
 				320205FB2C23C78500725DC5 /* GameService.swift in Sources */,
 				320206042C24D98400725DC5 /* Deal.swift in Sources */,
 				32961E1D2C2B849400B2BB9C /* GameAPIRequest.swift in Sources */,

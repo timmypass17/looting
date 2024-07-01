@@ -1366,3 +1366,141 @@ let shopsJSON =
     }
 ]
 """.data(using: .utf8)!
+
+let pricesJSON =
+"""
+[
+    {
+        "id": "018d937f-4adb-73a6-a9e5-94ff5f2b847b",
+        "deals": [
+            {
+                "shop": {
+                    "id": 61,
+                    "name": "Steam"
+                },
+                "price": {
+                    "amount": 34.49,
+                    "amountInt": 3449,
+                    "currency": "USD"
+                },
+                "regular": {
+                    "amount": 49.99,
+                    "amountInt": 4999,
+                    "currency": "USD"
+                },
+                "cut": 31,
+                "voucher": null,
+                "storeLow": {
+                    "amount": 34.49,
+                    "amountInt": 3449,
+                    "currency": "USD"
+                },
+                "historyLow": {
+                    "amount": 19.99,
+                    "amountInt": 1999,
+                    "currency": "USD"
+                },
+                "flag": "S",
+                "drm": [],
+                "platforms": [
+                    {
+                        "id": 1,
+                        "name": "Windows"
+                    }
+                ],
+                "timestamp": "2024-06-13T18:03:04+02:00",
+                "expiry": "2024-06-27T19:00:03+02:00",
+                "url": "https://itad.link/01901254-33a3-733b-9549-a09c8a663a9b/"
+            },
+            {
+                "shop": {
+                    "id": 37,
+                    "name": "Humble Store"
+                },
+                "price": {
+                    "amount": 34.49,
+                    "amountInt": 3449,
+                    "currency": "USD"
+                },
+                "regular": {
+                    "amount": 49.99,
+                    "amountInt": 4999,
+                    "currency": "USD"
+                },
+                "cut": 31,
+                "voucher": null,
+                "storeLow": {
+                    "amount": 34.49,
+                    "amountInt": 3449,
+                    "currency": "USD"
+                },
+                "historyLow": {
+                    "amount": 19.99,
+                    "amountInt": 1999,
+                    "currency": "USD"
+                },
+                "flag": "S",
+                "drm": [
+                    {
+                        "id": 61,
+                        "name": "Steam"
+                    }
+                ],
+                "platforms": [
+                    {
+                        "id": 1,
+                        "name": "Windows"
+                    }
+                ],
+                "timestamp": "2024-06-13T19:07:11+02:00",
+                "expiry": "2024-07-11T19:00:00+02:00",
+                "url": "https://itad.link/01901291-5020-72a1-aa24-a7b0ca415c21/"
+            },
+            {
+                "shop": {
+                    "id": 36,
+                    "name": "GreenManGaming"
+                },
+                "price": {
+                    "amount": 34.49,
+                    "amountInt": 3449,
+                    "currency": "USD"
+                },
+                "regular": {
+                    "amount": 49.99,
+                    "amountInt": 4999,
+                    "currency": "USD"
+                },
+                "cut": 31,
+                "voucher": null,
+                "storeLow": {
+                    "amount": 34.49,
+                    "amountInt": 3449,
+                    "currency": "USD"
+                },
+                "historyLow": {
+                    "amount": 19.99,
+                    "amountInt": 1999,
+                    "currency": "USD"
+                },
+                "flag": "S",
+                "drm": [
+                    {
+                        "id": 61,
+                        "name": "Steam"
+                    }
+                ],
+                "platforms": [
+                    {
+                        "id": 1,
+                        "name": "Windows"
+                    }
+                ],
+                "timestamp": "2024-06-13T19:11:10+02:00",
+                "expiry": null,
+                "url": "https://itad.link/018f9620-1da5-72a1-b85e-a91a0954bb7e/"
+            }
+        ]
+    }
+]
+""".data(using: .utf8)!

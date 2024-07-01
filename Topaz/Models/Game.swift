@@ -13,19 +13,40 @@ struct Game: Decodable, Hashable  {
     var title: String
     var type: String
     var mature: Bool
-    var assets: Assets
+    var assets: Assets?
     var earlyAccess: Bool
     var achievements: Bool
     var tradingCards: Bool
     var steamID: Int? // steam id
     var tags: [String]
-    var releaseDate: String // "2013-08-13"
+    var releaseDate: String? // "2013-08-13"
     var developers: [Developer]
     var publishers: [Publisher]
     var reviews: [Review]
     var stats: Stats
     var players: PlayerStats?
     var isThereAnyDealURL: IsThereAnyDealURL
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.title = try container.decode(String.self, forKey: .title)
+        self.type = try container.decode(String.self, forKey: .type)
+        self.mature = try container.decode(Bool.self, forKey: .mature)
+        self.assets = try? container.decode(Assets.self, forKey: .assets) // value could be array type for some reason..
+        self.earlyAccess = try container.decode(Bool.self, forKey: .earlyAccess)
+        self.achievements = try container.decode(Bool.self, forKey: .achievements)
+        self.tradingCards = try container.decode(Bool.self, forKey: .tradingCards)
+        self.steamID = try container.decodeIfPresent(Int.self, forKey: .steamID)
+        self.tags = try container.decode([String].self, forKey: .tags)
+        self.releaseDate = try container.decodeIfPresent(String.self, forKey: .releaseDate) // handles missing key or nil values
+        self.developers = try container.decode([Developer].self, forKey: .developers)
+        self.publishers = try container.decode([Publisher].self, forKey: .publishers)
+        self.reviews = try container.decode([Review].self, forKey: .reviews)
+        self.stats = try container.decode(Stats.self, forKey: .stats)
+        self.players = try container.decodeIfPresent(PlayerStats.self, forKey: .players)
+        self.isThereAnyDealURL = try container.decode(IsThereAnyDealURL.self, forKey: .isThereAnyDealURL)
+    }
 }
 
 extension Game {

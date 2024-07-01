@@ -10,6 +10,7 @@ import XCTest
 final class IsThereAnyDealAPITests: XCTestCase {
 
     let service = IsThereAnyDealService()
+    let kingdomHeartsID = "018d937f-4adb-73a6-a9e5-94ff5f2b847b"
     
     func testFetchingDeals() async {
         do {
@@ -51,7 +52,6 @@ final class IsThereAnyDealAPITests: XCTestCase {
     
     func testFetchingGame() async {
         do {
-            let kingdomHeartsID = "018d937f-4adb-73a6-a9e5-94ff5f2b847b"
             let game: Game = try await service.getGame(id: kingdomHeartsID)
             XCTAssertTrue(game.title == "KINGDOM HEARTS - HD 1 5+2 5 ReMIX")
         } catch {
@@ -85,6 +85,25 @@ final class IsThereAnyDealAPITests: XCTestCase {
             XCTAssertTrue(shops.count > 0)
         } catch {
             XCTFail("Failed to decode deals: \(error)")
+        }
+    }
+    
+    func testFetchingPrices() async {
+        do {
+            let prices: [Price] = try await service.getPrices(gameIDs: [kingdomHeartsID])
+            XCTAssertTrue(prices.count > 0)
+        } catch {
+            XCTFail("Failed to fetch games by title: \(error)")
+        }
+    }
+    
+    func testDecodingPrices() {
+        do {
+            let decoder = JSONDecoder()
+            let prices: [Price] = try decoder.decode([Price].self, from: pricesJSON)
+            XCTAssertTrue(prices.count > 0)
+        } catch {
+            XCTFail("Failed to decode prices: \(error)")
         }
     }
     

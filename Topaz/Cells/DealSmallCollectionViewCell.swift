@@ -38,62 +38,11 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = .label
-        label.numberOfLines = 1
+        label.numberOfLines = 2
         return label
     }()
-    
-    let subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .secondaryLabel
-        return label
-    }()
-    
-    let labelStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 4
-        stackView.distribution = .equalSpacing
-//        stackView.backgroundColor = .blue
-        return stackView
-    }()
-    
-    let priceStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .trailing
-//        stackView.backgroundColor = .secondaryLabel
-        return stackView
-    }()
-    
-    let regularLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .secondaryLabel
-        label.font = .preferredFont(forTextStyle: .caption1)
-        return label
-    }()
-    
-    let saleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .accent
-        label.font = .systemFont(ofSize: 16, weight: .bold)
-//        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return label
-    }()
-    
-    
-//    let installButton: UIButton = {
-//        let button = UIButton()
-//        button.backgroundColor = UIColor(white: 0.95, alpha: 1)
-//        button.layer.cornerRadius = 12
-//        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-//        button.setTitleColor(.systemBlue, for: .normal)
-//        button.setContentHuggingPriority(.required, for: .horizontal)
-//        button.widthAnchor.constraint(equalToConstant: 65).isActive = true
-//        
-//        return button
-//    }()
+
+    let priceView = PriceView()
     
     let lineView: UIView = {
         let view = UIView()
@@ -105,14 +54,9 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        labelStackView.addArrangedSubview(titleLabel)
-        
-        priceStackView.addArrangedSubview(regularLabel)
-        priceStackView.addArrangedSubview(saleLabel)
-        
         stackView.addArrangedSubview(imageView)
-        stackView.addArrangedSubview(labelStackView)
-        stackView.addArrangedSubview(priceStackView)
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(priceView)
         
         addSubview(stackView)
         addSubview(lineView)
@@ -123,10 +67,9 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 8),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             lineView.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale),
-//            lineView.topAnchor.constraint(equalTo: imageView.bottomAnchor),
             lineView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
-            lineView.leadingAnchor.constraint(equalTo: labelStackView.leadingAnchor),
-            lineView.trailingAnchor.constraint(equalTo: priceStackView.trailingAnchor)
+            lineView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            lineView.trailingAnchor.constraint(equalTo: priceView.trailingAnchor)
         ])
     }
     
@@ -134,25 +77,23 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(with game: Game, _ dealItem: DealItem, hideBottomLine: Bool) {
-        titleLabel.text = game.title
-        subtitleLabel.text = "Description"
-//        regularLabel.text = "$\(dealItem.deal!.regular.amount)"
-        saleLabel.text = "$\(dealItem.deal!.price.amount)"
+    func update(with game: Game, _ dealItem: DealItem, hideBottomLine: Bool = false) {
+        let attributeString = NSMutableAttributedString(string: "$\(dealItem.deal!.regular.amount)")
+        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
         
+        titleLabel.text = game.title
+        priceView.regularLabel.attributedText = attributeString
+        priceView.saleLabel.text = "$\(dealItem.deal!.price.amount)"
         lineView.isHidden = hideBottomLine
         
         Task {
-            let imageRequest = ImageAPIRequest(url: URL(string: game.assets.banner400)!)
+            guard let assets = game.assets else { return }
+            let imageRequest = ImageAPIRequest(url: URL(string: assets.banner400)!)
             if let image = try? await sendRequest(imageRequest) {
                 imageView.image = image
                 imageView.backgroundColor = .clear
             }
         }
         
-        let attributeString = NSMutableAttributedString(string: "$\(dealItem.deal!.regular.amount)")
-        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
-        
-        regularLabel.attributedText = attributeString
     }
 }
