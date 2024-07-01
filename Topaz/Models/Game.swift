@@ -11,7 +11,7 @@ struct Game: Decodable, Hashable  {
     var uuid = UUID() // Can't have same item in multiple sections in diffable collection view (needs to have uniqueness via hash)
     var id: String
     var title: String
-    var type: String
+    var type: String?
     var mature: Bool
     var assets: Assets?
     var earlyAccess: Bool
@@ -31,7 +31,7 @@ struct Game: Decodable, Hashable  {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         self.title = try container.decode(String.self, forKey: .title)
-        self.type = try container.decode(String.self, forKey: .type)
+        self.type = try container.decodeIfPresent(String.self, forKey: .type)
         self.mature = try container.decode(Bool.self, forKey: .mature)
         self.assets = try? container.decode(Assets.self, forKey: .assets) // value could be array type for some reason..
         self.earlyAccess = try container.decode(Bool.self, forKey: .earlyAccess)

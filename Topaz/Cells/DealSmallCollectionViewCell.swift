@@ -77,7 +77,7 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(with game: Game, _ dealItem: DealItem, hideBottomLine: Bool = false) {
+    func update(with game: Game, _ dealItem: DealItem, hideBottomLine: Bool = false) async {
         let attributeString = NSMutableAttributedString(string: "$\(dealItem.deal!.regular.amount)")
         attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
         
@@ -86,14 +86,12 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         priceView.saleLabel.text = "$\(dealItem.deal!.price.amount)"
         lineView.isHidden = hideBottomLine
         
-        Task {
-            guard let assets = game.assets else { return }
+        if let assets = game.assets {
             let imageRequest = ImageAPIRequest(url: URL(string: assets.banner400)!)
             if let image = try? await sendRequest(imageRequest) {
                 imageView.image = image
                 imageView.backgroundColor = .clear
             }
         }
-        
     }
 }

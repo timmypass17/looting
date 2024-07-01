@@ -28,7 +28,7 @@ struct Deal: Decodable, Hashable {
     var regular: Cost
     var cut: Int    // 22 -> 22% discount
     // var vouncher: nil
-    var storeLow: Cost
+    var storeLow: Cost?
     var historyLow: Cost
     // var flag: nil
     var drm: [DRM] // Digital Rights Management (e.g. Steam)

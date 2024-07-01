@@ -10,6 +10,8 @@ import UIKit
 // TODO: Add discount percent to banner (ex. -%50) with white text black bg or steam but orange
 class HomeViewController: UIViewController {
 
+    var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+    
     var searchController: UISearchController!
     private var resultsViewController: ResultsViewController!
 
@@ -34,8 +36,13 @@ class HomeViewController: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     var sections = [Section]()
     let service = IsThereAnyDealService()
+    
+    var imageTasks: [IndexPath: Task<Void, Never>] = [:]
     var searchTask: Task<Void, Never>? = nil
 
+    let steamID = 61
+    let gogID = 35
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Stores"
@@ -83,45 +90,48 @@ class HomeViewController: UIViewController {
         configureDataSource() // provides cell
 
         // MARK: Snapshot Definition
+        snapshot.appendSections([.featured, .standard("Steam"), .standard("GOG"), .shops])
+        sections = snapshot.sectionIdentifiers
+        
         Task {
-            let shops: [Item] = Array(await getShops().prefix(7))
+            try await fetchAndLoadGames()
             
-            let featuredDeals: [Item] = await getGames()
-            let steamID = 61
-            let gogID = 35
-            let steamDeals: [Item] = Array(await getGames(limit: 10, shops: [steamID]))
-            let gogDeals: [Item] = Array(await getGames(limit: 10, shops: [gogID]))
-            
-            // Represents collectionView's contents at a moment in time
-            var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-            snapshot.appendSections([.featured])
-            snapshot.appendItems(featuredDeals, toSection: .featured)
-
-            if steamDeals.count > 0 {
-                snapshot.appendSections([.standard("Steam")])
-                snapshot.appendItems(steamDeals, toSection: .standard("Steam"))
-            }
-            
-            if gogDeals.count > 0 {
-                snapshot.appendSections([.standard("GOG")])
-                snapshot.appendItems(gogDeals, toSection: .standard("GOG"))
-            }
-            
-            snapshot.appendSections([.shops])
-            snapshot.appendItems(shops, toSection: .shops)
-
-            sections = snapshot.sectionIdentifiers  // keep track of sections (e.g. [.featured, .standard(), .standard(), .shops])
-            await dataSource.apply(snapshot)        // update UI with current data
-            
-            // Init results view controller
-            resultsViewController.originalResults = featuredDeals
-            var resultSnapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
-            
-            resultSnapshot.appendSections([.results])
-            resultSnapshot.appendItems(featuredDeals, toSection: .results)
-            print("Result deals: \(featuredDeals.count)")
-            
-            await resultsViewController.dataSource.apply(resultSnapshot)
+//            
+//            let featuredDeals: [Item] = await getGames()
+//            let steamID = 61
+//            let gogID = 35
+//            let steamDeals: [Item] = Array(await getGames(limit: 10, shops: [steamID]))
+//            let gogDeals: [Item] = Array(await getGames(limit: 10, shops: [gogID]))
+//            
+//            // Represents collectionView's contents at a moment in time
+//            var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+//            snapshot.appendSections([.featured])
+//            snapshot.appendItems(featuredDeals, toSection: .featured)
+//
+//            if steamDeals.count > 0 {
+//                snapshot.appendSections([.standard("Steam")])
+//                snapshot.appendItems(steamDeals, toSection: .standard("Steam"))
+//            }
+//            
+//            if gogDeals.count > 0 {
+//                snapshot.appendSections([.standard("GOG")])
+//                snapshot.appendItems(gogDeals, toSection: .standard("GOG"))
+//            }
+//            
+//            snapshot.appendSections([.shops])
+//            snapshot.appendItems(shops, toSection: .shops)
+//
+//            sections = snapshot.sectionIdentifiers  // keep track of sections (e.g. [.featured, .standard(), .standard(), .shops])
+//            await dataSource.apply(snapshot)        // update UI with current data
+//            
+//            // Init results view controller
+//            resultsViewController.originalResults = featuredDeals
+//            var resultSnapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
+//            
+//            resultSnapshot.appendSections([.results])
+//            resultSnapshot.appendItems(featuredDeals, toSection: .results)
+//            
+//            await resultsViewController.dataSource.apply(resultSnapshot)
         }
 
     }
@@ -254,14 +264,21 @@ class HomeViewController: UIViewController {
             switch section {
             case .featured:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeaturedDealCollectionViewCell.reuseIdentifier, for: indexPath) as! FeaturedDealCollectionViewCell
-                cell.update(with: itemIdentifier.game!, dealItem: itemIdentifier.dealItem!)
-
+                self.imageTasks[indexPath]?.cancel()
+                self.imageTasks[indexPath] = Task {
+                    await cell.update(with: itemIdentifier.game!, dealItem: itemIdentifier.dealItem!)
+                    self.imageTasks[indexPath] = nil
+                }
+                
                 return cell
             case .standard:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier, for: indexPath) as! DealSmallCollectionViewCell
-
-                let isThirdItem = (indexPath.row + 1).isMultiple(of: 4)
-                cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!, hideBottomLine: isThirdItem)
+                self.imageTasks[indexPath]?.cancel()
+                self.imageTasks[indexPath] = Task {
+                    let isThirdItem = (indexPath.row + 1).isMultiple(of: 4)
+                    await cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!, hideBottomLine: isThirdItem)
+                    self.imageTasks[indexPath] = nil
+                }
                 return cell
             case .shops:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreCollectionViewCell.reuseIdentifier, for: indexPath) as! StoreCollectionViewCell
@@ -363,6 +380,59 @@ class HomeViewController: UIViewController {
             return []
         }
     }
+    
+    // Fetches 3 apis request simulatenously
+    // Managing all these tasks with a single searchTask variable and can cancel the whole TaskGroup with a single call.
+    func fetchAndLoadGames() async throws {
+
+        try await withThrowingTaskGroup(of: (Section, [Item]).self) { group in
+            // Featured games
+            group.addTask {
+                try Task.checkCancellation()
+                let featuredGames = await self.getGames()
+                
+                return (Section.featured, featuredGames)
+            }
+            
+            group.addTask {
+                try Task.checkCancellation()
+                return (Section.standard("Steam"), await self.getGames(limit: 10, shops: [self.steamID]))
+            }
+            
+            group.addTask {
+                try Task.checkCancellation()
+                return (Section.standard("GOG"), await self.getGames(limit: 10, shops: [self.gogID]))
+            }
+            
+            group.addTask {
+                try Task.checkCancellation()
+                return (Section.shops, await self.getShops())
+            }
+
+            // As the result is returned from each task in the group, you process them using handleFetchedItems().
+            // - the for-try-await statement process the items as they are returned in the context of the MainActor so that you can update the ui
+            // - this processing could not be done in each task in the group, because they are executing concurrently
+            // Process order is random because they are executing concurrently -> could return [book, music, movie, app]
+
+            for try await (section, items) in group {
+                try Task.checkCancellation()
+    
+                snapshot.appendItems(items, toSection: section)
+                
+                await dataSource.apply(snapshot, animatingDifferences: true)
+                
+                if section == .featured {
+                    resultsViewController.originalResults = items
+                    var resultSnapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
+        
+                    resultSnapshot.appendSections([.results])
+                    resultSnapshot.appendItems(items, toSection: .results)
+        
+                    await resultsViewController.dataSource.apply(resultSnapshot)
+                }
+            }
+        }
+    }
 }
 
 extension HomeViewController: UISearchBarDelegate {
@@ -374,10 +444,8 @@ extension HomeViewController: UISearchBarDelegate {
         searchTask = Task {
             let games = await getGames(title: title)
             var snapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
-            
             snapshot.appendSections([.results])
             snapshot.appendItems(games, toSection: .results)
-            
             await resultsViewController.dataSource.apply(snapshot)
         }
     }

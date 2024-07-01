@@ -14,8 +14,11 @@ struct PricesAPIRequest: APIRequest {
     var urlRequest: URLRequest {
         var urlComponents = URLComponents(string: "https://api.isthereanydeal.com/games/prices/v2")!
         urlComponents.queryItems = [
-            "key": apiKey
+            "country": "US",
+            "nondeals": "1"
         ].map { URLQueryItem(name: $0.key, value: $0.value) }
+        
+        urlComponents.queryItems?.append(URLQueryItem(name: "key", value: apiKey))
         
         var request = URLRequest(url: urlComponents.url!)
         request.httpMethod = "POST"

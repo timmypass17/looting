@@ -110,7 +110,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(with game: Game, dealItem: DealItem) {
+    func update(with game: Game, dealItem: DealItem) async {
         let attributeString = NSMutableAttributedString(string: "$\(dealItem.deal!.regular.amount)")
         attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
         
@@ -125,8 +125,16 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         priceView.regularLabel.attributedText = attributeString
         priceView.saleLabel.text = "$\(dealItem.deal!.price.amount)"
         
-        Task {
-            guard let assets = game.assets else { return }
+//        Task {
+//            guard let assets = game.assets else { return }
+//            let imageRequest = ImageAPIRequest(url: URL(string: assets.banner600)!)
+//            if let image = try? await sendRequest(imageRequest) {
+//                imageView.image = image
+//                //                imageView.backgroundColor = .clear
+//            }
+//        }
+        
+        if let assets = game.assets {
             let imageRequest = ImageAPIRequest(url: URL(string: assets.banner600)!)
             if let image = try? await sendRequest(imageRequest) {
                 imageView.image = image

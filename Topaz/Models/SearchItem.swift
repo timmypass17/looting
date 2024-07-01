@@ -10,7 +10,7 @@ import Foundation
 struct SearchItem {
     var id: String
     var title: String
-    var type: String // game, dlc
+    var type: String? // game, dlc
     var mature: Bool
 }
 

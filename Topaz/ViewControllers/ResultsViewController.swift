@@ -24,6 +24,7 @@ class ResultsViewController: UIViewController {
     }()
 
     var sections = [Section]()
+    var imageTasks: [IndexPath: Task<Void, Never>] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,8 +79,11 @@ class ResultsViewController: UIViewController {
         // MARK: Data Source Initialization
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier, for: indexPath) as! DealSmallCollectionViewCell
-
-            cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!)
+            self.imageTasks[indexPath]?.cancel()
+            self.imageTasks[indexPath] = Task {
+                await cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!)
+                self.imageTasks[indexPath] = nil
+            }
             return cell
         }
     }
