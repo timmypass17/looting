@@ -57,11 +57,11 @@ class PriceView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    func update(price: Double, discountedPrice: Double) {
-//        let attributeString = NSMutableAttributedString(string: "$\(price)")
-//        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
-//        
-//        regularLabel.attributedText = attributeString
-//        saleLabel.text = "$\(discountedPrice)"
-//    }
+    func update(amount: Double, regular: Double) {
+        let attributeString = NSMutableAttributedString(string: "$\(String(format: "%.2f", regular))")
+        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
+        
+        regularLabel.attributedText = attributeString
+        saleLabel.text = "$\(String(format: "%.2f", amount))"
+    }
 }

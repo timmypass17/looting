@@ -22,7 +22,7 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
 //        imageView.layer.cornerRadius = 4
         imageView.layer.masksToBounds = true    // for crop
         imageView.backgroundColor = .placeholderText
@@ -78,20 +78,18 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
     }
     
     func update(with game: Game, _ dealItem: DealItem, hideBottomLine: Bool = false) async {
-        let attributeString = NSMutableAttributedString(string: "$\(dealItem.deal!.regular.amount)")
-        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
-        
         titleLabel.text = game.title
-        priceView.regularLabel.attributedText = attributeString
-        priceView.saleLabel.text = "$\(dealItem.deal!.price.amount)"
+        priceView.update(amount: dealItem.deal!.price.amount, regular: dealItem.deal!.regular.amount)
         lineView.isHidden = hideBottomLine
         
         if let assets = game.assets {
             let imageRequest = ImageAPIRequest(url: URL(string: assets.banner400)!)
             if let image = try? await sendRequest(imageRequest) {
                 imageView.image = image
-                imageView.backgroundColor = .clear
             }
+        } else {
+            imageView.image = nil
         }
     }
+    
 }

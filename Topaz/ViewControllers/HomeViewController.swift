@@ -17,7 +17,7 @@ class HomeViewController: UIViewController {
 
     enum Section: Hashable {
         case featured
-        case standard(String) // "Steam", "Blizzard"...
+        case standard(String)
         case shops
     }
 
@@ -37,12 +37,11 @@ class HomeViewController: UIViewController {
     var sections = [Section]()
     let service = IsThereAnyDealService()
     
-    var imageTasks: [IndexPath: Task<Void, Never>] = [:]
     var searchTask: Task<Void, Never>? = nil
-
-    let steamID = 61
-    let gogID = 35
+    var imageTasks: [IndexPath: Task<Void, Never>] = [:]
     
+    var timer: Timer?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Stores"
@@ -95,43 +94,6 @@ class HomeViewController: UIViewController {
         
         Task {
             try await fetchAndLoadGames()
-            
-//            
-//            let featuredDeals: [Item] = await getGames()
-//            let steamID = 61
-//            let gogID = 35
-//            let steamDeals: [Item] = Array(await getGames(limit: 10, shops: [steamID]))
-//            let gogDeals: [Item] = Array(await getGames(limit: 10, shops: [gogID]))
-//            
-//            // Represents collectionView's contents at a moment in time
-//            var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-//            snapshot.appendSections([.featured])
-//            snapshot.appendItems(featuredDeals, toSection: .featured)
-//
-//            if steamDeals.count > 0 {
-//                snapshot.appendSections([.standard("Steam")])
-//                snapshot.appendItems(steamDeals, toSection: .standard("Steam"))
-//            }
-//            
-//            if gogDeals.count > 0 {
-//                snapshot.appendSections([.standard("GOG")])
-//                snapshot.appendItems(gogDeals, toSection: .standard("GOG"))
-//            }
-//            
-//            snapshot.appendSections([.shops])
-//            snapshot.appendItems(shops, toSection: .shops)
-//
-//            sections = snapshot.sectionIdentifiers  // keep track of sections (e.g. [.featured, .standard(), .standard(), .shops])
-//            await dataSource.apply(snapshot)        // update UI with current data
-//            
-//            // Init results view controller
-//            resultsViewController.originalResults = featuredDeals
-//            var resultSnapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
-//            
-//            resultSnapshot.appendSections([.results])
-//            resultSnapshot.appendItems(featuredDeals, toSection: .results)
-//            
-//            await resultsViewController.dataSource.apply(resultSnapshot)
         }
 
     }
@@ -322,14 +284,30 @@ class HomeViewController: UIViewController {
 
     func getGames(limit: Int = 20, shops: [Int] = []) async -> [Item] {
         do {
-            var gameDeals: [(Game, DealItem)] = []
+            var gameDealsMap: [String: (Game, DealItem)] = [:]
             let deals: [DealItem] = try await service.getDeals(limit: limit, shops: shops).list
-            for deal in deals {
-                let game: Game = try await service.getGame(id: deal.id)
+            
+            try await withThrowingTaskGroup(of: (Game, DealItem).self) { group in
+                for deal in deals {
+                    group.addTask {
+                        try Task.checkCancellation()
+                        let game = try await self.service.getGame(id: deal.id)
+                        return (game, deal)
+                    }
+                }
                 
-                gameDeals.append((game, deal))
+                for try await (game, deal) in group {
+                    gameDealsMap[game.id] = ((game, deal))
+                }
             }
-            print("Game count: \(gameDeals.count)")
+            
+            var gameDeals: [(Game, DealItem)] = []
+            // Sorted in order of deals
+            for deal in deals {
+                guard let result = gameDealsMap[deal.id] else { continue }
+                gameDeals.append(result)
+            }
+            
             return gameDeals.map { Item.game($0, $1) }
         } catch {
             print("Failed to fetch games: \(error)")
@@ -339,23 +317,32 @@ class HomeViewController: UIViewController {
     
     func getGames(title: String) async -> [Item] {
         do {
-            let searchItems: [SearchItem] = try await service.getSearchItems(title: title)
-            var games: [Game] = []
-            var prices: [Price] = []
             var items: [Item] = []
-            
-            for item in searchItems {
-                let game: Game = try await service.getGame(id: item.id)
-                games.append(game)
+            let searchItems: [SearchItem] = try await service.getSearchItems(title: title)
+            var gameMap: [String: Game] = [:]
+            var prices: [Price] = []
+                        
+            try await withThrowingTaskGroup(of: Game.self) { group in
+                for item in searchItems {
+                    group.addTask {
+                        try Task.checkCancellation()
+                        let game = try await self.service.getGame(id: item.id)
+                        return game
+                    }
+                }
+
+                for try await game in group {
+                    gameMap[game.id] = game
+                }
             }
             
-            prices = try await service.getPrices(gameIDs: games.map { $0.id })
+            prices = try await service.getPrices(gameIDs: gameMap.values.map { $0.id})
             
-            for game in games {
-                guard let price = prices.first(where: { $0.id == game.id }),
-                      let cheapestDeal = price.deals.min(by: { $0.price.amount < $1.price.amount})
+            for item in searchItems {
+                guard let game = gameMap[item.id],
+                      let price = prices.first(where: { $0.id == item.id }),
+                      let cheapestDeal = price.deals.min(by: { $0.price.amount < $1.price.amount })
                 else { continue }
-                
                 let dealItem = DealItem(id: game.id, title: game.title, deal: cheapestDeal)
                 items.append(Item.game(game, dealItem))
             }
@@ -374,7 +361,10 @@ class HomeViewController: UIViewController {
                 Settings.shared.shops = try await service.getShops()
             }
 
-            let shops: [Shop] = Settings.shared.shops
+            let shops: [Shop] = Array(Settings.shared.shops
+                .sorted { $0.deals > $1.deals }
+                .prefix(7))
+                
             return shops.map { Item.shop($0) }
         } catch {
             return []
@@ -396,12 +386,14 @@ class HomeViewController: UIViewController {
             
             group.addTask {
                 try Task.checkCancellation()
-                return (Section.standard("Steam"), await self.getGames(limit: 10, shops: [self.steamID]))
+                let steamID = 61
+                return (Section.standard("Steam"), await self.getGames(shops: [steamID]))
             }
             
             group.addTask {
                 try Task.checkCancellation()
-                return (Section.standard("GOG"), await self.getGames(limit: 10, shops: [self.gogID]))
+                let gogID = 35
+                return (Section.standard("GOG"), await self.getGames(shops: [gogID]))
             }
             
             group.addTask {
@@ -433,13 +425,8 @@ class HomeViewController: UIViewController {
             }
         }
     }
-}
-
-extension HomeViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let title = searchBar.text else { return }
-        print("Searching for \(title)...")
-        
+    
+    func handleSearchingGames(title: String) {
         searchTask?.cancel()
         searchTask = Task {
             let games = await getGames(title: title)
@@ -447,20 +434,35 @@ extension HomeViewController: UISearchBarDelegate {
             snapshot.appendSections([.results])
             snapshot.appendItems(games, toSection: .results)
             await resultsViewController.dataSource.apply(snapshot)
+            searchTask = nil
         }
     }
 }
 
-extension HomeViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        // The system calls this method when the search bar becomes the first responder or the search bar’s text changes. Perform any required filtering and updating of search results or suggestions inside of this method.
-        guard let searchBarText = searchController.searchBar.text else { return }
+extension HomeViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let title = searchBar.text else { return }
+        print("Searching for \(title)...")
+        
+        handleSearchingGames(title: title)
+    }
+}
 
-        if searchBarText.isEmpty {
+extension HomeViewController: UISearchResultsUpdating {
+    // Called when search bar is selected or searchbar text changes
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let title = searchController.searchBar.text else { return }
+
+        if title.isEmpty {
             var snapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
             snapshot.appendSections([.results])
             snapshot.appendItems(resultsViewController.originalResults, toSection: .results)
             resultsViewController.dataSource.apply(snapshot)
+        } else {
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { [self] _ in
+                handleSearchingGames(title: title)
+            }
         }
     }
 }

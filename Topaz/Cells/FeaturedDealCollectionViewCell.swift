@@ -111,9 +111,6 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     }
     
     func update(with game: Game, dealItem: DealItem) async {
-        let attributeString = NSMutableAttributedString(string: "$\(dealItem.deal!.regular.amount)")
-        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
-        
         headlineLabel.text = "Trending Games"
         titleLabel.text = game.title
         if let shop: Shop = Settings.shared.shops.first(where: { $0.id == dealItem.deal?.shop.id }) {
@@ -121,25 +118,15 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         }
         
         discountView.discountLabel.text = "-\(dealItem.deal!.cut)%"
-        
-        priceView.regularLabel.attributedText = attributeString
-        priceView.saleLabel.text = "$\(dealItem.deal!.price.amount)"
-        
-//        Task {
-//            guard let assets = game.assets else { return }
-//            let imageRequest = ImageAPIRequest(url: URL(string: assets.banner600)!)
-//            if let image = try? await sendRequest(imageRequest) {
-//                imageView.image = image
-//                //                imageView.backgroundColor = .clear
-//            }
-//        }
+        priceView.update(amount: dealItem.deal!.price.amount, regular: dealItem.deal!.regular.amount)
         
         if let assets = game.assets {
             let imageRequest = ImageAPIRequest(url: URL(string: assets.banner600)!)
             if let image = try? await sendRequest(imageRequest) {
                 imageView.image = image
-                //                imageView.backgroundColor = .clear
             }
+        } else {
+            imageView.image = nil
         }
     }
 }
