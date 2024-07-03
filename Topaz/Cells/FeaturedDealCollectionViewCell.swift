@@ -117,16 +117,16 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
             subTitleLabel.text = shop.title
         }
         
-        discountView.discountLabel.text = "-\(dealItem.deal!.cut)%"
+        discountView.update(cut: dealItem.deal!.cut)
         priceView.update(amount: dealItem.deal!.price.amount, regular: dealItem.deal!.regular.amount)
         
+        imageView.image = nil
+
         if let assets = game.assets {
             let imageRequest = ImageAPIRequest(url: URL(string: assets.banner600)!)
             if let image = try? await sendRequest(imageRequest) {
                 imageView.image = image
             }
-        } else {
-            imageView.image = nil
         }
     }
 }

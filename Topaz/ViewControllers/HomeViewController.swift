@@ -17,6 +17,7 @@ class HomeViewController: UIViewController {
 
     enum Section: Hashable {
         case featured
+        case medium(String)
         case standard(String)
         case shops
     }
@@ -62,6 +63,10 @@ class HomeViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), primaryAction: nil, menu: nil)
 
         setupCollectionView()
+        
+        Task {
+            try await fetchAndLoadGames()
+        }
     }
 
     private func setupCollectionView() {
@@ -76,6 +81,7 @@ class HomeViewController: UIViewController {
 
         // MARK: Register cells/supplmentary views
         collectionView.register(FeaturedDealCollectionViewCell.self, forCellWithReuseIdentifier: FeaturedDealCollectionViewCell.reuseIdentifier)
+        collectionView.register(DealMediumCollectionViewCell.self, forCellWithReuseIdentifier: DealMediumCollectionViewCell.reuseIdentifier)
         collectionView.register(DealSmallCollectionViewCell.self, forCellWithReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier)
         collectionView.register(StoreCollectionViewCell.self, forCellWithReuseIdentifier: StoreCollectionViewCell.reuseIdentifier)
 
@@ -89,13 +95,8 @@ class HomeViewController: UIViewController {
         configureDataSource() // provides cell
 
         // MARK: Snapshot Definition
-        snapshot.appendSections([.featured, .standard("Steam"), .standard("GOG"), .shops])
+        snapshot.appendSections([.featured, .medium("Steam"), .standard("GOG"), .shops])
         sections = snapshot.sectionIdentifiers
-        
-        Task {
-            try await fetchAndLoadGames()
-        }
-
     }
 
     func createLayout() -> UICollectionViewLayout {
@@ -154,6 +155,38 @@ class HomeViewController: UIViewController {
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 20, trailing: 0)
 
                 return section
+            case .medium:
+                let item = NSCollectionLayoutItem(
+                    layoutSize:
+                        NSCollectionLayoutSize(
+                            widthDimension: .fractionalWidth(1),
+                            heightDimension: .fractionalHeight(1)
+                            )
+                )
+                
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4)
+
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: NSCollectionLayoutSize(
+                        widthDimension: .fractionalWidth(1/3),
+                        heightDimension: .absolute(300)),
+                    repeatingSubitem: item,
+                    count: 1
+                )
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+                section.boundarySupplementaryItems = [headerItem, bottomLineItem]
+                
+                let availableLayoutWidth = layoutEnvironment.container.effectiveContentSize.width
+                let groupWidth = availableLayoutWidth * 0.92
+                let remainingWidth = availableLayoutWidth - groupWidth
+                let halfOfRemainingWidth = remainingWidth / 2.0
+                let itemLeadingAndTrailingInset = halfOfRemainingWidth
+
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: itemLeadingAndTrailingInset, bottom: 20, trailing: itemLeadingAndTrailingInset)
+                
+                return section
             case .standard:
                 // MARK: Standard Section Layout
                 let item = NSCollectionLayoutItem(
@@ -176,7 +209,6 @@ class HomeViewController: UIViewController {
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .groupPagingCentered
                 section.boundarySupplementaryItems = [headerItem, bottomLineItem]
-
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 20, trailing: 0)
 
                 return section
@@ -233,6 +265,10 @@ class HomeViewController: UIViewController {
                 }
                 
                 return cell
+            case .medium:
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DealMediumCollectionViewCell.reuseIdentifier, for: indexPath) as! DealMediumCollectionViewCell
+                cell.update(game: itemIdentifier.game!, dealItem: itemIdentifier.dealItem!)
+                return cell
             case .standard:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier, for: indexPath) as! DealSmallCollectionViewCell
                 self.imageTasks[indexPath]?.cancel()
@@ -262,6 +298,8 @@ class HomeViewController: UIViewController {
                 switch section {
                 case .featured:
                     return nil
+                case .medium(let name):
+                    sectionName = name
                 case .standard(let name):
                     sectionName = name
                 case .shops:
@@ -374,9 +412,8 @@ class HomeViewController: UIViewController {
     // Fetches 3 apis request simulatenously
     // Managing all these tasks with a single searchTask variable and can cancel the whole TaskGroup with a single call.
     func fetchAndLoadGames() async throws {
-
+        // Run tasks concurrently
         try await withThrowingTaskGroup(of: (Section, [Item]).self) { group in
-            // Featured games
             group.addTask {
                 try Task.checkCancellation()
                 let featuredGames = await self.getGames()
@@ -387,7 +424,7 @@ class HomeViewController: UIViewController {
             group.addTask {
                 try Task.checkCancellation()
                 let steamID = 61
-                return (Section.standard("Steam"), await self.getGames(shops: [steamID]))
+                return (Section.medium("Steam"), await self.getGames(shops: [steamID]))
             }
             
             group.addTask {
@@ -401,11 +438,7 @@ class HomeViewController: UIViewController {
                 return (Section.shops, await self.getShops())
             }
 
-            // As the result is returned from each task in the group, you process them using handleFetchedItems().
-            // - the for-try-await statement process the items as they are returned in the context of the MainActor so that you can update the ui
-            // - this processing could not be done in each task in the group, because they are executing concurrently
-            // Process order is random because they are executing concurrently -> could return [book, music, movie, app]
-
+            // Process items as we get them
             for try await (section, items) in group {
                 try Task.checkCancellation()
     
@@ -424,6 +457,8 @@ class HomeViewController: UIViewController {
                 }
             }
         }
+        
+        // Do something after we collected all data
     }
     
     func handleSearchingGames(title: String) {

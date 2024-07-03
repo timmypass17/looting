@@ -57,6 +57,7 @@
 		32961E2C2C32325500B2BB9C /* PricesAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */; };
 		32961E2D2C32368500B2BB9C /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E292C32224500B2BB9C /* Price.swift */; };
 		32961E2E2C3237EC00B2BB9C /* PricesAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */; };
+		32A66CBB2C35EC5200919F2F /* DealMediumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CBA2C35EC5200919F2F /* DealMediumCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		32961E272C2E2A7C00B2BB9C /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		32961E292C32224500B2BB9C /* Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
 		32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricesAPIRequest.swift; sourceTree = "<group>"; };
+		32A66CBA2C35EC5200919F2F /* DealMediumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealMediumCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +230,7 @@
 				32961DFF2C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift */,
 				32961E012C2637D700B2BB9C /* DealSmallCollectionViewCell.swift */,
 				32961E032C2A1BE800B2BB9C /* StoreCollectionViewCell.swift */,
+				32A66CBA2C35EC5200919F2F /* DealMediumCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				320205CF2C23AC8400725DC5 /* SettingsViewController.swift in Sources */,
 				32961E132C2B6C1600B2BB9C /* SearchItem.swift in Sources */,
 				320205F62C23C43100725DC5 /* APIRequest.swift in Sources */,
+				32A66CBB2C35EC5200919F2F /* DealMediumCollectionViewCell.swift in Sources */,
 				320205B42C23A45800725DC5 /* SceneDelegate.swift in Sources */,
 				32961E022C2637D700B2BB9C /* DealSmallCollectionViewCell.swift in Sources */,
 				32961E0B2C2A2ED200B2BB9C /* Settings.swift in Sources */,
