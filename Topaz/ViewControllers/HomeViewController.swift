@@ -95,7 +95,7 @@ class HomeViewController: UIViewController {
         configureDataSource() // provides cell
 
         // MARK: Snapshot Definition
-        snapshot.appendSections([.featured, .medium("Steam"), .standard("GOG"), .shops])
+        snapshot.appendSections([.featured, .medium("Most Waitlisted"), .standard("Steam"), .standard("GOG"), .shops])
         sections = snapshot.sectionIdentifiers
     }
 
@@ -355,20 +355,40 @@ class HomeViewController: UIViewController {
     
     func getGames(title: String) async -> [Item] {
         do {
-            var items: [Item] = []
             let searchItems: [SearchItem] = try await service.getSearchItems(title: title)
+            return await getGames(gameIDs: searchItems.map { $0.id })
+        } catch {
+            print("Error fetching \(title): \(error)")
+            return []
+        }
+    }
+    
+    func getMostWaitlisted() async -> [Item] {
+        do {
+            let waitlist: [Waitlist] = try await self.service.getMostWaitlist()
+            let games = await self.getGames(gameIDs: waitlist.map { $0.id })
+            return games
+        } catch {
+            print("Error fetching waitlist: \(error)")
+            return []
+        }
+    }
+    
+    private func getGames(gameIDs: [String]) async -> [Item] {
+        do {
+            var items: [Item] = []
             var gameMap: [String: Game] = [:]
             var prices: [Price] = []
-                        
+            
             try await withThrowingTaskGroup(of: Game.self) { group in
-                for item in searchItems {
+                for id in gameIDs {
                     group.addTask {
                         try Task.checkCancellation()
-                        let game = try await self.service.getGame(id: item.id)
+                        let game = try await self.service.getGame(id: id)
                         return game
                     }
                 }
-
+                
                 for try await game in group {
                     gameMap[game.id] = game
                 }
@@ -376,9 +396,9 @@ class HomeViewController: UIViewController {
             
             prices = try await service.getPrices(gameIDs: gameMap.values.map { $0.id})
             
-            for item in searchItems {
-                guard let game = gameMap[item.id],
-                      let price = prices.first(where: { $0.id == item.id }),
+            for id in gameIDs {
+                guard let game = gameMap[id],
+                      let price = prices.first(where: { $0.id == id }),
                       let cheapestDeal = price.deals.min(by: { $0.price.amount < $1.price.amount })
                 else { continue }
                 let dealItem = DealItem(id: game.id, title: game.title, deal: cheapestDeal)
@@ -387,7 +407,7 @@ class HomeViewController: UIViewController {
             
             return items
         } catch {
-            print("Error fetching \(title): \(error)")
+            print("Error getting games: \(error)")
             return []
         }
     }
@@ -422,9 +442,14 @@ class HomeViewController: UIViewController {
             }
             
             group.addTask {
+                try Task.checkCancellation()                
+                return (Section.medium("Most Waitlisted"), await self.getMostWaitlisted())
+            }
+            
+            group.addTask {
                 try Task.checkCancellation()
                 let steamID = 61
-                return (Section.medium("Steam"), await self.getGames(shops: [steamID]))
+                return (Section.standard("Steam"), await self.getGames(shops: [steamID]))
             }
             
             group.addTask {

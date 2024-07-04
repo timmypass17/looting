@@ -37,6 +37,12 @@ struct IsThereAnyDealService {
         let prices: [Price] = try await sendRequest(request)
         return prices
     }
+    
+    func getMostWaitlist(offset: Int = 0, limit: Int = 20) async throws -> [Waitlist] {
+        let request = WaitlistAPIRequest(offset: offset, limit: limit)
+        let waitlist: [Waitlist] = try await sendRequest(request)
+        return waitlist
+    }
 }
 
 extension IsThereAnyDealService {
