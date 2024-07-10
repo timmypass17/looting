@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ResultsViewControllerDelegate: AnyObject {
+    func resultsViewController(_ viewController: ResultsViewController, didSelectItem item: Item)
+}
+
 class ResultsViewController: UIViewController {
     
     var originalResults: [Item] = []
@@ -25,9 +29,12 @@ class ResultsViewController: UIViewController {
 
     var sections = [Section]()
     var imageTasks: [IndexPath: Task<Void, Never>] = [:]
+    
+    weak var delegate: ResultsViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.delegate = self
         collectionView.keyboardDismissMode = .onDrag
 
         view.addSubview(collectionView)
@@ -86,5 +93,13 @@ class ResultsViewController: UIViewController {
             }
             return cell
         }
+    }
+    
+}
+
+extension ResultsViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
+        delegate?.resultsViewController(self, didSelectItem: item)
     }
 }

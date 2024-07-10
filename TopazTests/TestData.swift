@@ -1504,3 +1504,355 @@ let pricesJSON =
     }
 ]
 """.data(using: .utf8)!
+
+let gameDetailJSON =
+"""
+{
+    "2552430": {
+        "success": true,
+        "data": {
+            "type": "game",
+            "name": "KINGDOM HEARTS -HD 1.5+2.5 ReMIX-",
+            "steam_appid": 2552430,
+            "required_age": 0,
+            "is_free": false,
+            "controller_support": "full",
+            "detailed_description": "<h1>KINGDOM HEARTS INTEGRUM MASTERPIECE</h1><p><img src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/extras/Main-Capsule_en.png?t=1719584592\" /><br>※The items in this bundle are also available as individual purchases. <br><br>Experience the full story of KINGDOM HEARTS! The journey begins in KINGDOM HEARTS -HD 1.5+2.5 ReMIX- as Sora, Donald, and Goofy battle the Heartless, making friends and having spectacular adventures along the way. The story culminates in KINGDOM HEARTS III + Re Mind, where our heroes take on tremendous challenges and persevere against the darkness threatening iconic Disney and Pixar worlds.</p><br><h1>About the Game</h1><img src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/extras/Sollertia_GIFs_KH1_01.gif?t=1719584592\" /><br>KINGDOM HEARTS -HD 1.5+2.5 ReMIX- is an essential collection of the first six stories in the KINGDOM HEARTS series, a collaboration between Disney and SQUARE ENIX. Wield the legendary Keyblade and unlock the true power of friendship as you explore Disney worlds and defend them from darkness.<br><br><ul class=\"bb_ul\"><li>KINGDOM HEARTS FINAL MIX<br></li><li>KINGDOM HEARTS Re:Chain of Memories<br></li><li>KINGDOM HEARTS II FINAL MIX<br></li><li>KINGDOM HEARTS 358/2 Days (HD cutscene compilation)<br></li><li>KINGDOM HEARTS Birth by Sleep FINAL MIX<br></li><li>KINGDOM HEARTS Re:coded (HD cutscene compilation)</li></ul><br><img src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/extras/Sollertia_GIFs_KH2_01.gif?t=1719584592\" /><br><br>Enhanced backgrounds make this collection more stunning than ever before. Start your KINGDOM HEARTS journey now!<br><img src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/extras/in-text-benner.gif?t=1719584592\" /><br><br>This game is available in two versions: Japanese and International.<br>Select your preferred language via the Steam launcher by right-clicking the title, then selecting &quot;Properties&quot; followed by &quot;General&quot;.<br><br>NOTICE: Save data cannot be transferred between the Japanese and International versions.<br><br>An issue with the below GPUs may arise during gameplay preventing progress in the listed titles. The timeline for a potential fix is currently being determined. <br>Please check your device before purchasing this product.<br>Affected GPUs: <br>　- AMD Radeon RX 7800 XT<br>　- AMD Radeon RX 7900 XT<br>Affected titles:<br>　- KINGDOM HEARTS FINAL MIX<br>　- KINGDOM HEARTS II FINAL MIX<br>　- KINGDOM HEARTS Birth by Sleep FINAL MIX",
+            "about_the_game": "<img src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/extras/Sollertia_GIFs_KH1_01.gif?t=1719584592\" /><br>KINGDOM HEARTS -HD 1.5+2.5 ReMIX- is an essential collection of the first six stories in the KINGDOM HEARTS series, a collaboration between Disney and SQUARE ENIX. Wield the legendary Keyblade and unlock the true power of friendship as you explore Disney worlds and defend them from darkness.<br><br><ul class=\"bb_ul\"><li>KINGDOM HEARTS FINAL MIX<br></li><li>KINGDOM HEARTS Re:Chain of Memories<br></li><li>KINGDOM HEARTS II FINAL MIX<br></li><li>KINGDOM HEARTS 358/2 Days (HD cutscene compilation)<br></li><li>KINGDOM HEARTS Birth by Sleep FINAL MIX<br></li><li>KINGDOM HEARTS Re:coded (HD cutscene compilation)</li></ul><br><img src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/extras/Sollertia_GIFs_KH2_01.gif?t=1719584592\" /><br><br>Enhanced backgrounds make this collection more stunning than ever before. Start your KINGDOM HEARTS journey now!<br><img src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/extras/in-text-benner.gif?t=1719584592\" /><br><br>This game is available in two versions: Japanese and International.<br>Select your preferred language via the Steam launcher by right-clicking the title, then selecting &quot;Properties&quot; followed by &quot;General&quot;.<br><br>NOTICE: Save data cannot be transferred between the Japanese and International versions.<br><br>An issue with the below GPUs may arise during gameplay preventing progress in the listed titles. The timeline for a potential fix is currently being determined. <br>Please check your device before purchasing this product.<br>Affected GPUs: <br>　- AMD Radeon RX 7800 XT<br>　- AMD Radeon RX 7900 XT<br>Affected titles:<br>　- KINGDOM HEARTS FINAL MIX<br>　- KINGDOM HEARTS II FINAL MIX<br>　- KINGDOM HEARTS Birth by Sleep FINAL MIX",
+            "short_description": "KINGDOM HEARTS -HD 1.5+2.5 ReMIX- is an HD remastered collection of 6 unforgettable KINGDOM HEARTS experiences. Take up your Keyblade to save the Disney worlds from darkness.",
+            "supported_languages": "English<strong>*</strong>, French, Italian, German, Spanish - Spain, Japanese<strong>*</strong><br><strong>*</strong>languages with full audio support",
+            "reviews": "“The definitive Kingdom Hearts experience”<br>9/10 – <a href=\"https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Fwww.sportskeeda.com%2Fesports%2Fkingdom-hearts-integrum-masterpiece-pc-review-the-definitive-kingdom-hearts-experience\" target=\"_blank\" rel=\" noopener\"  >Sportskeeda</a><br><br>“a wonderful way to continue the saga”<br>4/5 – <a href=\"https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Fsteamdeckhq.com%2Fgame-reviews%2Fkingdom-hearts-hd-1-52-5-remix%2F\" target=\"_blank\" rel=\" noopener\"  >Steam Deck HQ</a><br>",
+            "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/header.jpg?t=1719584592",
+            "capsule_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/capsule_231x87.jpg?t=1719584592",
+            "capsule_imagev5": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/capsule_184x69.jpg?t=1719584592",
+            "website": "https://www.kingdomhearts.com/",
+            "pc_requirements": {
+                "minimum": "<strong>Minimum:</strong><br><ul class=\"bb_ul\"><li>Requires a 64-bit processor and operating system<br></li><li><strong>OS:</strong> Windows 10 64-bit (ver.1909 or later)<br></li><li><strong>Processor:</strong> Intel® Core™ i3-3210 / AMD A8-7600<br></li><li><strong>Memory:</strong> 4 GB RAM<br></li><li><strong>Graphics:</strong> NVIDIA® GeForce® GTX 750 / AMD Radeon™ RX 460<br></li><li><strong>DirectX:</strong> Version 11<br></li><li><strong>Storage:</strong> 60 GB available space<br></li><li><strong>Additional Notes:</strong> 30FPS @1280×720</li></ul>",
+                "recommended": "<strong>Recommended:</strong><br><ul class=\"bb_ul\"><li>Requires a 64-bit processor and operating system<br></li><li><strong>OS:</strong> Windows 10 64-bit (ver.1909 or later)<br></li><li><strong>Processor:</strong> Intel® Core™ i3-3210 / AMD A8-7600<br></li><li><strong>Memory:</strong> 8 GB RAM<br></li><li><strong>Graphics:</strong> NVIDIA® GeForce® GTX 750 / AMD Radeon™ RX 460<br></li><li><strong>DirectX:</strong> Version 11<br></li><li><strong>Storage:</strong> 60 GB available space<br></li><li><strong>Additional Notes:</strong> 60FPS @1920×1080</li></ul>"
+            },
+            "mac_requirements": {
+                "minimum": "<strong>Minimum:</strong><br><ul class=\"bb_ul\"></ul>",
+                "recommended": "<strong>Recommended:</strong><br><ul class=\"bb_ul\"></ul>"
+            },
+            "linux_requirements": {
+                "minimum": "<strong>Minimum:</strong><br><ul class=\"bb_ul\"></ul>",
+                "recommended": "<strong>Recommended:</strong><br><ul class=\"bb_ul\"></ul>"
+            },
+            "legal_notice": "© Disney © Disney/Pixar Developed by SQUARE ENIX.",
+            "developers": [
+                "Square Enix"
+            ],
+            "publishers": [
+                "Square Enix"
+            ],
+            "price_overview": {
+                "currency": "USD",
+                "initial": 4999,
+                "final": 3449,
+                "discount_percent": 31,
+                "initial_formatted": "$49.99",
+                "final_formatted": "$34.49"
+            },
+            "packages": [
+                916836,
+                1000794
+            ],
+            "package_groups": [
+                {
+                    "name": "default",
+                    "title": "Buy KINGDOM HEARTS -HD 1.5+2.5 ReMIX-",
+                    "description": "",
+                    "selection_text": "Select a purchase option",
+                    "save_text": "",
+                    "display_type": 0,
+                    "is_recurring_subscription": "false",
+                    "subs": [
+                        {
+                            "packageid": 916836,
+                            "percent_savings_text": "-31% ",
+                            "percent_savings": 0,
+                            "option_text": "KINGDOM HEARTS -HD 1.5+2.5 ReMIX- - <span class=\"discount_original_price\">$49.99</span> $34.49",
+                            "option_description": "",
+                            "can_get_free_license": "0",
+                            "is_free_license": false,
+                            "price_in_cents_with_discount": 3449
+                        },
+                        {
+                            "packageid": 1000794,
+                            "percent_savings_text": "-31% ",
+                            "percent_savings": 0,
+                            "option_text": "KINGDOM HEARTS INTEGRUM MASTERPIECE - <span class=\"discount_original_price\">$99.99</span> $68.99",
+                            "option_description": "",
+                            "can_get_free_license": "0",
+                            "is_free_license": false,
+                            "price_in_cents_with_discount": 6899
+                        }
+                    ]
+                }
+            ],
+            "platforms": {
+                "windows": true,
+                "mac": false,
+                "linux": false
+            },
+            "categories": [
+                {
+                    "id": 2,
+                    "description": "Single-player"
+                },
+                {
+                    "id": 22,
+                    "description": "Steam Achievements"
+                },
+                {
+                    "id": 28,
+                    "description": "Full controller support"
+                },
+                {
+                    "id": 23,
+                    "description": "Steam Cloud"
+                },
+                {
+                    "id": 62,
+                    "description": "Family Sharing"
+                }
+            ],
+            "genres": [
+                {
+                    "id": "1",
+                    "description": "Action"
+                },
+                {
+                    "id": "25",
+                    "description": "Adventure"
+                },
+                {
+                    "id": "3",
+                    "description": "RPG"
+                }
+            ],
+            "screenshots": [
+                {
+                    "id": 0,
+                    "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_7fec87ad80856a7a3f4cf487cd70ce3a2ad8b280.600x338.jpg?t=1719584592",
+                    "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_7fec87ad80856a7a3f4cf487cd70ce3a2ad8b280.1920x1080.jpg?t=1719584592"
+                },
+                {
+                    "id": 1,
+                    "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_9cd43d79e8206460e989d653fa4461c1c9cfc849.600x338.jpg?t=1719584592",
+                    "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_9cd43d79e8206460e989d653fa4461c1c9cfc849.1920x1080.jpg?t=1719584592"
+                },
+                {
+                    "id": 2,
+                    "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_44a263601363334fdd598144813d2a96f0b030e1.600x338.jpg?t=1719584592",
+                    "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_44a263601363334fdd598144813d2a96f0b030e1.1920x1080.jpg?t=1719584592"
+                },
+                {
+                    "id": 3,
+                    "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_65f24887aba04097139dc3553532da7d374e30af.600x338.jpg?t=1719584592",
+                    "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_65f24887aba04097139dc3553532da7d374e30af.1920x1080.jpg?t=1719584592"
+                },
+                {
+                    "id": 4,
+                    "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_f02606d4b776c08ec208fe0eb69f245cf613b0ad.600x338.jpg?t=1719584592",
+                    "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_f02606d4b776c08ec208fe0eb69f245cf613b0ad.1920x1080.jpg?t=1719584592"
+                },
+                {
+                    "id": 5,
+                    "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_90018480206111722fc95718bbf61ac5683d25d2.600x338.jpg?t=1719584592",
+                    "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/ss_90018480206111722fc95718bbf61ac5683d25d2.1920x1080.jpg?t=1719584592"
+                }
+            ],
+            "movies": [
+                {
+                    "id": 257030994,
+                    "name": "ESRB EN Launch",
+                    "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257030994/movie.293x165.jpg?t=1718294236",
+                    "webm": {
+                        "480": "http://cdn.akamai.steamstatic.com/steam/apps/257030994/movie480_vp9.webm?t=1718294236",
+                        "max": "http://cdn.akamai.steamstatic.com/steam/apps/257030994/movie_max_vp9.webm?t=1718294236"
+                    },
+                    "mp4": {
+                        "480": "http://cdn.akamai.steamstatic.com/steam/apps/257030994/movie480.mp4?t=1718294236",
+                        "max": "http://cdn.akamai.steamstatic.com/steam/apps/257030994/movie_max.mp4?t=1718294236"
+                    },
+                    "highlight": true
+                }
+            ],
+            "recommendations": {
+                "total": 3055
+            },
+            "achievements": {
+                "total": 197,
+                "highlighted": [
+                    {
+                        "name": "Proud Player",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/0f80170c30ec5de91fe4ec9ef621a2f3c1d4208b.jpg"
+                    },
+                    {
+                        "name": "Final Mix Master",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/29f5502da37723c4842c2fe751bf419d46f9ab6a.jpg"
+                    },
+                    {
+                        "name": "Novice Player",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/be89b9ccdf8dc294e780ba376644decbe549244c.jpg"
+                    },
+                    {
+                        "name": "Unchanging Armor",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/1b231e4afc39f29b08d2fdd9f5c06cd9836233a6.jpg"
+                    },
+                    {
+                        "name": "Undefeated",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/b6b88abcd892e32407caddbb8b3b67470a204324.jpg"
+                    },
+                    {
+                        "name": "Speedster",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/2b55ceea6149e90d863c2dfb6f7f383deebb3ee8.jpg"
+                    },
+                    {
+                        "name": "He Who Doesn't Exist",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/dd37062ddcce82c9f35dfe3fae9b82209a44b2fe.jpg"
+                    },
+                    {
+                        "name": "The Cloaked Shadow",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/a398bbad0f9bd2ae57dc332b1e271337394c16f5.jpg"
+                    },
+                    {
+                        "name": "The Sandy Blade",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/4736c7659ff78f2b1bd7e4a36440fceca6ff19ac.jpg"
+                    },
+                    {
+                        "name": "Novice Hero",
+                        "path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/2552430/868e98604ed85901c66dfdc19a1166d3c086e797.jpg"
+                    }
+                ]
+            },
+            "release_date": {
+                "coming_soon": false,
+                "date": "Jun 13, 2024"
+            },
+            "support_info": {
+                "url": "https://support.square-enix-games.com/",
+                "email": ""
+            },
+            "background": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/page_bg_generated_v6b.jpg?t=1719584592",
+            "background_raw": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2552430/page.bg.jpg?t=1719584592",
+            "content_descriptors": {
+                "ids": [],
+                "notes": null
+            },
+            "ratings": {
+                "esrb": {
+                    "rating": "e10",
+                    "descriptors": "Fantasy Violence\r\nMild Blood\r\nUse of Alcohol"
+                },
+                "pegi": {
+                    "rating": "12",
+                    "descriptors": "Violence"
+                },
+                "usk": {
+                    "rating": "6"
+                },
+                "cero": {
+                    "rating": "a"
+                },
+                "csrr": {
+                    "rating": "G"
+                },
+                "oflc": {
+                    "rating": "pg",
+                    "descriptors": "Mild fantasy violence"
+                },
+                "kgrb": {
+                    "rating": "12",
+                    "descriptors": "폭력성"
+                },
+                "dejus": {
+                    "rating_generated": "1",
+                    "rating": "10",
+                    "required_age": "10",
+                    "banned": "0",
+                    "use_age_gate": "0",
+                    "descriptors": "Violência"
+                },
+                "steam_germany": {
+                    "rating_generated": "1",
+                    "rating": "12",
+                    "required_age": "12",
+                    "banned": "0",
+                    "use_age_gate": "0",
+                    "descriptors": "Gewalt"
+                }
+            }
+        }
+    }
+}
+""".data(using: .utf8)!
+
+let priceOverviewJSON =
+"""
+{
+    "prices": [
+        {
+            "id": "018d937f-4adb-73a6-a9e5-94ff5f2b847b",
+            "current": {
+                "shop": {
+                    "id": 36,
+                    "name": "GreenManGaming"
+                },
+                "price": {
+                    "amount": 29.32,
+                    "amountInt": 2932,
+                    "currency": "USD"
+                },
+                "regular": {
+                    "amount": 49.99,
+                    "amountInt": 4999,
+                    "currency": "USD"
+                },
+                "cut": 41,
+                "voucher": "SIZZLE15",
+                "flag": "S",
+                "drm": [
+                    {
+                        "id": 61,
+                        "name": "Steam"
+                    }
+                ],
+                "platforms": [
+                    {
+                        "id": 1,
+                        "name": "Windows"
+                    }
+                ],
+                "timestamp": "2024-06-13T19:11:10+02:00",
+                "expiry": null,
+                "url": "https://itad.link/018f9620-1da5-72a1-b85e-a91a0954bb7e/"
+            },
+            "lowest": {
+                "shop": {
+                    "id": 16,
+                    "name": "Epic Game Store"
+                },
+                "price": {
+                    "amount": 19.99,
+                    "amountInt": 1999,
+                    "currency": "USD"
+                },
+                "regular": {
+                    "amount": 49.99,
+                    "amountInt": 4999,
+                    "currency": "USD"
+                },
+                "cut": 60,
+                "timestamp": "2023-12-13T17:01:10+01:00"
+            },
+            "bundled": 0,
+            "urls": {
+                "game": "https://isthereanydeal.com/game/id:018d937f-4adb-73a6-a9e5-94ff5f2b847b/"
+            }
+        }
+    ],
+    "bundles": []
+}
+""".data(using: .utf8)!

@@ -38,10 +38,30 @@ struct IsThereAnyDealService {
         return prices
     }
     
-    func getMostWaitlist(offset: Int = 0, limit: Int = 20) async throws -> [Waitlist] {
+    func getMostWaitlist(offset: Int = 0, limit: Int = 20) async throws -> [Stat] {
         let request = WaitlistAPIRequest(offset: offset, limit: limit)
-        let waitlist: [Waitlist] = try await sendRequest(request)
+        let waitlist: [Stat] = try await sendRequest(request)
         return waitlist
+    }
+    
+    func getPopular(offset: Int = 0, limit: Int = 20) async throws -> [Stat] {
+        let request = PopularAPIRequest(offset: offset, limit: limit)
+        let popular: [Stat] = try await sendRequest(request)
+        return popular
+    }
+    
+    func getPriceOverview(gameIDs: [String]) async throws -> PriceOverview {
+        let request = PriceOverviewAPIRequest(gameIDs: gameIDs)
+        let priceOverview: PriceOverview = try await sendRequest(request)
+        return priceOverview
+    }
+}
+
+struct SteamWebService {
+    func getGameDetail(gameID: String) async throws -> GameDetail {
+        let request = GameDetailAPIRequest(gameID: gameID)
+        let gameDetail: GameDetail = try await sendRequest(request)
+        return gameDetail
     }
 }
 

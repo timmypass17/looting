@@ -1,19 +1,19 @@
 //
-//  DiscountView.swift
+//  CutView.swift
 //  Topaz
 //
-//  Created by Timmy Nguyen on 6/26/24.
+//  Created by Timmy Nguyen on 7/6/24.
 //
 
 import UIKit
 
-class DiscountView: UIView {
+class CutView: UIView {
 
     let discountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(.required, for: .horizontal)
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .semibold)
         
         return label
     }()
@@ -21,14 +21,16 @@ class DiscountView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .accent
+        layer.cornerRadius = 4
+        layer.masksToBounds = true
         
         addSubview(discountLabel)
-
+        
         NSLayoutConstraint.activate([
             discountLabel.topAnchor.constraint(equalTo: topAnchor),
             discountLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-            discountLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),    // padding
-            discountLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            discountLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),    // padding
+            discountLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
         ])
     }
     
@@ -36,7 +38,7 @@ class DiscountView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(cut: Int) {
+    func setCut(cut: Int) {
         discountLabel.text = "-\(cut)%"
     }
 }

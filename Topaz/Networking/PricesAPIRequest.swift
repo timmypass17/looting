@@ -15,7 +15,8 @@ struct PricesAPIRequest: APIRequest {
         var urlComponents = URLComponents(string: "https://api.isthereanydeal.com/games/prices/v2")!
         urlComponents.queryItems = [
             "country": "US",
-            "nondeals": "1"
+            "nondeals": "1",
+            "vouchers": "1"
         ].map { URLQueryItem(name: $0.key, value: $0.value) }
         
         urlComponents.queryItems?.append(URLQueryItem(name: "key", value: apiKey))

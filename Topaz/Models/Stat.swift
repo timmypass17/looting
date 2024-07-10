@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Waitlist: Decodable {
+struct Stat: Decodable {
     var id: String
     var title: String
     var count: Int

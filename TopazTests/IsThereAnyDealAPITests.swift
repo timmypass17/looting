@@ -107,4 +107,25 @@ final class IsThereAnyDealAPITests: XCTestCase {
         }
     }
     
+    func testFetchingPriceOverview() async {
+        do {
+            let priceOverview: PriceOverview = try await service.getPriceOverview(gameIDs: [kingdomHeartsID])
+            XCTAssertTrue(priceOverview.prices.count > 0)
+        } catch {
+            XCTFail("Failed to fetch games by title: \(error)")
+        }
+    }
+    
+    func testDecodingPriceOverview() {
+        do {
+            let decoder = JSONDecoder()
+            let priceOverview: PriceOverview = try decoder.decode(PriceOverview.self, from: priceOverviewJSON)
+            XCTAssertTrue(priceOverview.prices.count > 0)
+        } catch {
+            XCTFail("Failed to decode price overview: \(error)")
+        }
+    }
+    
+    
+    
 }

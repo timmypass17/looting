@@ -47,8 +47,10 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Stores"
         navigationController?.navigationBar.prefersLargeTitles = true
+        collectionView.delegate = self
 
         resultsViewController = ResultsViewController()
+        resultsViewController.delegate = self
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
@@ -95,7 +97,14 @@ class HomeViewController: UIViewController {
         configureDataSource() // provides cell
 
         // MARK: Snapshot Definition
-        snapshot.appendSections([.featured, .medium("Most Waitlisted"), .standard("Steam"), .standard("GOG"), .shops])
+        snapshot.appendSections([
+            .featured,
+            .medium("Most Popular"),
+            .medium("Most Waitlisted"),
+            .standard("Steam"),
+            .standard("GOG"),
+            .shops
+        ])
         sections = snapshot.sectionIdentifiers
     }
 
@@ -365,8 +374,19 @@ class HomeViewController: UIViewController {
     
     func getMostWaitlisted() async -> [Item] {
         do {
-            let waitlist: [Waitlist] = try await self.service.getMostWaitlist()
+            let waitlist: [Stat] = try await self.service.getMostWaitlist()
             let games = await self.getGames(gameIDs: waitlist.map { $0.id })
+            return games
+        } catch {
+            print("Error fetching waitlist: \(error)")
+            return []
+        }
+    }
+    
+    func getMostPopular() async -> [Item] {
+        do {
+            let popular: [Stat] = try await self.service.getPopular()
+            let games = await self.getGames(gameIDs: popular.map { $0.id })
             return games
         } catch {
             print("Error fetching waitlist: \(error)")
@@ -442,7 +462,12 @@ class HomeViewController: UIViewController {
             }
             
             group.addTask {
-                try Task.checkCancellation()                
+                try Task.checkCancellation()
+                return (Section.medium("Most Popular"), await self.getMostPopular())
+            }
+            
+            group.addTask {
+                try Task.checkCancellation()
                 return (Section.medium("Most Waitlisted"), await self.getMostWaitlisted())
             }
             
@@ -524,5 +549,23 @@ extension HomeViewController: UISearchResultsUpdating {
                 handleSearchingGames(title: title)
             }
         }
+    }
+}
+
+extension HomeViewController: ResultsViewControllerDelegate {
+    func resultsViewController(_ viewController: ResultsViewController, didSelectItem item: Item) {
+        let detailViewController = GameDetailViewController(game: item.game!, dealItem: item.dealItem!)
+//        detailViewController.modalPresentationStyle = .currentContext
+//        present(detailViewController, animated: true)
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
+        let detailViewController = GameDetailViewController(game: item.game!, dealItem: item.dealItem!)
+        navigationController?.pushViewController(detailViewController, animated: true)
+//        present(detailViewController, animated: true)
     }
 }

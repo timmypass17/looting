@@ -1,19 +1,18 @@
 //
-//  WaitlistAPIRequest.swift
+//  PopularAPIRequest.swift
 //  Topaz
 //
-//  Created by Timmy Nguyen on 7/3/24.
+//  Created by Timmy Nguyen on 7/4/24.
 //
 
 import Foundation
 
-struct WaitlistAPIRequest: APIRequest {
-    
+struct PopularAPIRequest: APIRequest {
     var offset: Int
     var limit: Int
     
     var urlRequest: URLRequest {
-        var urlComponents = URLComponents(string: "https://api.isthereanydeal.com/stats/most-waitlisted/v1")!
+        var urlComponents = URLComponents(string: "https://api.isthereanydeal.com/stats/most-popular/v1")!
         urlComponents.queryItems = [
             "offset": "\(offset)",
             "limit": "\(limit)"

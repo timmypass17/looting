@@ -41,6 +41,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true    // for crop
         imageView.backgroundColor = .placeholderText
         return imageView
