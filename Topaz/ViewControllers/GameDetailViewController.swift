@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class GameDetailViewController: UIViewController {
 
@@ -51,7 +52,7 @@ class GameDetailViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         tableView.delegate = self   // not needed?
         tableView.dataSource = self
-        
+                
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), primaryAction: nil)
                 
         tableView.register(BannerTableViewCell.self, forCellReuseIdentifier: BannerTableViewCell.reuseIdentifier)
@@ -104,7 +105,6 @@ class GameDetailViewController: UIViewController {
                     deals = deals.filter { $0 != bestDeal }
                     
                     tableView.reloadSections(IndexSet(arrayLiteral: Section.price.rawValue, Section.allPrices.rawValue), with: .automatic)
-                    print("Voucher: \(bestDeal?.voucher)")
                 }
                 
             } catch {
@@ -123,6 +123,11 @@ class GameDetailViewController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selectedIndexPath, animated: true)
+        }
+    }
 }
 
 extension GameDetailViewController: UITableViewDelegate, UITableViewDataSource {
@@ -210,7 +215,7 @@ extension GameDetailViewController: UITableViewDelegate, UITableViewDataSource {
         guard let section = Section(rawValue: section) else { return nil }
         switch section {
         case .banner:
-            return game.title
+            return nil
         case .description:
             return "Synopsis"
         case .price:
@@ -222,19 +227,23 @@ extension GameDetailViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == Section.price.rawValue {
-            return 44
-        }
-        
-        return UITableView.automaticDimension
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? ShowMoreTableViewCell {
-            print("Did tap show more button")
             showAllDeals = !showAllDeals
             tableView.reloadSections(IndexSet(integer: Section.allPrices.rawValue), with: .automatic)
+        } else if let cell = tableView.cellForRow(at: indexPath) as? PriceTableViewCell {
+            var url: URL? = nil
+            if indexPath.section == Section.price.rawValue {
+                guard let urlString = bestDeal?.url else { return }
+                url = URL(string: urlString)
+            } else {
+                guard let urlString = deals[indexPath.row].url else { return }
+                url = URL(string: urlString)
+            }
+            
+            if let url {
+                present(SFSafariViewController(url: url), animated: true)
+            }
         }
     }
 }

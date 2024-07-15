@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBf39N6tFP_Kuqp_LmrDS3V0kkJdETyN9w</string>
+	<key>GCM_SENDER_ID</key>
+	<string>331511861737</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.timmynguyen.Topaz</string>
+	<key>PROJECT_ID</key>
+	<string>topaz-273aa</string>
+	<key>STORAGE_BUCKET</key>
+	<string>topaz-273aa.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:331511861737:ios:bc95125acdcf67a884bb78</string>
+</dict>
+</plist>

@@ -29,11 +29,54 @@ class PriceTableViewCell: UITableViewCell {
         return label
     }()
     
-    let container: UIStackView = {
+    var expireImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "clock"))
+        
+        imageView.contentMode = .scaleAspectFit
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+        imageView.tintColor = .secondaryLabel
+        imageView.isHidden = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 15),  // Set the desired width
+            imageView.heightAnchor.constraint(equalToConstant: 15) // Set the desired height
+        ])
+        return imageView
+    }()
+    
+    let expireLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.font = .preferredFont(forTextStyle: .caption1)
+        return label
+    }()
+    
+    let storeLowLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.font = .preferredFont(forTextStyle: .caption1)
+        return label
+    }()
+    
+    let storeHStack: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 8
+        return stackView
+    }()
+    
+    let dateHStack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        return stackView
+    }()
+    
+    let container: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -43,20 +86,28 @@ class PriceTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        container.addArrangedSubview(storeLabel)
-        container.addArrangedSubview(cutLabel)
-        container.addArrangedSubview(regularLabel)
-        container.addArrangedSubview(priceLabel)
+        storeHStack.addArrangedSubview(storeLabel)
+        storeHStack.addArrangedSubview(cutLabel)
+        storeHStack.addArrangedSubview(regularLabel)
+        storeHStack.addArrangedSubview(priceLabel)
+        
+        dateHStack.addArrangedSubview(expireImageView)
+        dateHStack.addArrangedSubview(expireLabel)
+        dateHStack.addArrangedSubview(UIView())
+        dateHStack.addArrangedSubview(storeLowLabel)
+        
+        container.addArrangedSubview(storeHStack)
+        container.addArrangedSubview(dateHStack)
         
         contentView.addSubview(container)
         
-        defaultTrailingConstraint = container.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor)
+        defaultTrailingConstraint = container.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
         chevronTrailingConstraint = container.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
         
         NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-            container.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
-            container.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            container.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            container.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
+            container.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             defaultTrailingConstraint
         ])
     }
@@ -74,6 +125,20 @@ class PriceTableViewCell: UITableViewCell {
         regularLabel.attributedText = attributeString
         priceLabel.text = "$\(String(format: "%.2f", deal.price.amount))"
         
+        if let expirationDateString = deal.expiry,
+           let formattedDateString = formatISODateString(expirationDateString) {
+            expireLabel.text = formattedDateString
+            expireLabel.isHidden = false
+            expireImageView.isHidden = false
+        } else {
+            expireLabel.isHidden = true
+            expireImageView.isHidden = true
+        }
+        
+        if let storeLowPrice = deal.storeLow?.amount {
+            storeLowLabel.text = "Low: $\(String(format: "%.2f", storeLowPrice))"
+        }
+    
         if deal.url != nil {
             accessoryType = .disclosureIndicator
             if defaultTrailingConstraint.isActive {
@@ -96,7 +161,37 @@ class PriceTableViewCell: UITableViewCell {
         } else {
             cutLabel.isHidden = true
             regularLabel.isHidden = true
-            priceLabel.textColor = .secondaryLabel
+            priceLabel.textColor = .label
         }
+        
+        if deal.expiry == nil && deal.storeLow?.amount == nil {
+            if container.arrangedSubviews.contains(dateHStack) {
+                container.removeArrangedSubview(dateHStack)
+            }
+        } else {
+            if !container.arrangedSubviews.contains(dateHStack) {
+                container.addArrangedSubview(dateHStack)
+            }
+        }
+    }
+    
+    func formatISODateString(_ dateString: String) -> String? {
+        // Create ISO8601DateFormatter to parse the input ISO 8601 date string
+        let isoDateFormatter = ISO8601DateFormatter()
+        isoDateFormatter.formatOptions = [.withInternetDateTime]
+        
+        // Parse the ISO 8601 date string to a Date object
+        guard let date = isoDateFormatter.date(from: dateString) else {
+            return nil
+        }
+        
+        // Create a DateFormatter for the desired output format
+        let customDateFormatter = DateFormatter()
+        customDateFormatter.dateFormat = "MMMM d @ h:mma"
+        customDateFormatter.amSymbol = "am"
+        customDateFormatter.pmSymbol = "pm"
+        
+        // Convert the Date object to the desired format string
+        return customDateFormatter.string(from: date)
     }
 }
