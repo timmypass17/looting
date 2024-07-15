@@ -6,12 +6,12 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.timmynguyen.Topaz</string>
+			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>timmyTopaz</string>
+				<string>com.googleusercontent.apps.331511861737-ss4kdktb4ou0691gd91fmm6p452odu58</string>
 			</array>
 		</dict>
 	</array>
