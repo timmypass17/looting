@@ -17,7 +17,7 @@ class PriceView: UIView {
         return stackView
     }()
     
-    let regularLabel: UILabel = {
+    let secondaryPriceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .secondaryLabel
         label.font = .preferredFont(forTextStyle: .caption1)
@@ -26,7 +26,7 @@ class PriceView: UIView {
         return label
     }()
     
-    let saleLabel: UILabel = {
+    let priceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .accent
         label.font = .systemFont(ofSize: 16, weight: .bold)
@@ -40,8 +40,8 @@ class PriceView: UIView {
         
 //        backgroundColor = .blue
         
-        stackView.addArrangedSubview(regularLabel)
-        stackView.addArrangedSubview(saleLabel)
+        stackView.addArrangedSubview(secondaryPriceLabel)
+        stackView.addArrangedSubview(priceLabel)
         
         addSubview(stackView)
         
@@ -57,11 +57,15 @@ class PriceView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(amount: Double, regular: Double) {
-        let attributeString = NSMutableAttributedString(string: "$\(String(format: "%.2f", regular))")
-        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
-        
-        regularLabel.attributedText = attributeString
-        saleLabel.text = "$\(String(format: "%.2f", amount))"
+    func update(current: Double?, regular: Double) {
+        if let current {
+            let attributeString = NSMutableAttributedString(string: "$\(String(format: "%.2f", regular))")
+            attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
+            
+            secondaryPriceLabel.attributedText = attributeString
+            priceLabel.text = "$\(String(format: "%.2f", current))"
+        } else {
+            priceLabel.text = "$\(String(format: "%.2f", regular))"
+        }
     }
 }

@@ -7,6 +7,8 @@
 
 import UIKit
 import SafariServices
+import FirebaseAuth
+import FirebaseFirestore
 
 class GameDetailViewController: UIViewController {
 
@@ -22,11 +24,19 @@ class GameDetailViewController: UIViewController {
     var deals: [Deal] = []
     var bestDeal: Deal?
     var historicDeal: Deal?
+    var user: User?
     
     var showAllDeals = false // tableview/datsource should manage state. cell should be "view only"
     
     let isThereAnyDealService =  IsThereAnyDealService()
     let steamService = SteamWebService()
+    
+    var favoriteButton: UIBarButtonItem!
+    var favoriteButtonIsSelected = false    // using barButtonItem.isSelected makes button highlight (ugly), can't disable highlight
+    
+    var db = Firestore.firestore()
+    
+    var listener: ListenerRegistration?
     
     enum Section: Int, CaseIterable {
         case banner
@@ -52,8 +62,10 @@ class GameDetailViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         tableView.delegate = self   // not needed?
         tableView.dataSource = self
-                
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), primaryAction: nil)
+        
+        favoriteButton = UIBarButtonItem(image: UIImage(systemName: "star"), primaryAction: didTapWishlistButton())
+        favoriteButton.target = self
+        navigationItem.rightBarButtonItem = favoriteButton
                 
         tableView.register(BannerTableViewCell.self, forCellReuseIdentifier: BannerTableViewCell.reuseIdentifier)
         tableView.register(DescriptionTableViewCell.self, forCellReuseIdentifier: DescriptionTableViewCell.reuseIdentifier)
@@ -69,6 +81,38 @@ class GameDetailViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+        
+        Auth.auth().addStateDidChangeListener { [self] auth, user in
+            if let user {
+                self.user = user
+                favoriteButton.isEnabled = true
+                
+                // maybe remove in viewwilldisappear when use preses back
+                listener = db.collection("wishlist").document(user.uid + game.id)
+                    .addSnapshotListener { [self] documentSnapshot, error in
+                        guard let document = documentSnapshot else {
+                            print("Error fetching document: \(error!)")
+                            return
+                        }
+                        
+                        if let wishlistItem = try? document.data(as: WishlistItem.self) {
+                            print("Current data: \(wishlistItem.title)")
+                            favoriteButton.image = UIImage(systemName: "star.fill")
+//                            favoriteButton.isSelected = true
+                            favoriteButtonIsSelected = true
+                        } else {
+                            print("Document not found")
+                            favoriteButton.image = UIImage(systemName: "star")
+//                            favoriteButton.isSelected = false
+                            favoriteButtonIsSelected = false
+                        }
+                    }
+            } else {
+                self.user = nil
+                favoriteButton.isEnabled = false
+                listener?.remove()
+            }
+        }
         
         Task {
             do {
@@ -121,13 +165,53 @@ class GameDetailViewController: UIViewController {
                 print("Error fetching prices")
             }
         }
-    }
 
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: selectedIndexPath, animated: true)
         }
     }
+    
+    @objc func didTapWishlistButton() -> UIAction {
+        return UIAction { [self] _ in
+            guard let userID = Auth.auth().currentUser?.uid else {
+                print("User is not authenticated")
+                return
+            }
+            
+            if favoriteButtonIsSelected {
+                print("Remove \(game.title) from wishlist")
+                db.collection("wishlist").document(userID + game.id).delete()
+            } else {
+                print("Add \(game.title) to wishlist")
+                let wishlistItem = WishlistItem(
+                    userID: userID,
+                    gameID: game.id,
+                    title: game.title,
+                    regularPrice: dealItem?.deal?.regular.amount,
+                    posterURL: game.assets?.banner400
+                )
+                
+                do {
+                    try db.collection("wishlist").document(userID + game.id).setData(from: wishlistItem)
+                    print("Document added with ID: \(userID + game.id)")
+                } catch {
+                    print("Error adding document: \(error)")
+                }
+            }
+            
+        }
+    }
+    
+//    @objc func didTapUnwishlistButton() -> UIAction {
+//        return UIAction { [self] _ in
+//            guard let user else { return }
+//            print(#function)
+//            db.collection("wishlist").document(user.uid + game.id).delete()
+//        }
+//    }
 }
 
 extension GameDetailViewController: UITableViewDelegate, UITableViewDataSource {

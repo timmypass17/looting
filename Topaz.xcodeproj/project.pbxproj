@@ -23,22 +23,20 @@
 		320205F12C23C1F900725DC5 /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E62C23BD9A00725DC5 /* Shop.swift */; };
 		320205F62C23C43100725DC5 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F52C23C43100725DC5 /* APIRequest.swift */; };
 		320205F82C23C48600725DC5 /* ShopsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F72C23C48600725DC5 /* ShopsAPIRequest.swift */; };
-		320205FA2C23C61500725DC5 /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F92C23C61500725DC5 /* GameService.swift */; };
-		320205FB2C23C78500725DC5 /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F92C23C61500725DC5 /* GameService.swift */; };
+		320205FA2C23C61500725DC5 /* IsThereAnyDealService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F92C23C61500725DC5 /* IsThereAnyDealService.swift */; };
+		320205FB2C23C78500725DC5 /* IsThereAnyDealService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F92C23C61500725DC5 /* IsThereAnyDealService.swift */; };
 		320205FC2C23C85500725DC5 /* ShopsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F72C23C48600725DC5 /* ShopsAPIRequest.swift */; };
 		320205FD2C23C86400725DC5 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F52C23C43100725DC5 /* APIRequest.swift */; };
 		320205FF2C24BB1700725DC5 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205FE2C24BB1700725DC5 /* Item.swift */; };
 		320206012C24C16700725DC5 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206002C24C16700725DC5 /* Deal.swift */; };
 		320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
 		320206042C24D98400725DC5 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206002C24C16700725DC5 /* Deal.swift */; };
+		32324E4E2C476844009D3E74 /* GoogleSignInHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32324E4D2C476844009D3E74 /* GoogleSignInHeaderView.swift */; };
 		3248352B2C3C874E00130324 /* PriceOverviewAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */; };
 		3248352D2C3C877A00130324 /* PriceOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352C2C3C877A00130324 /* PriceOverview.swift */; };
 		3248352E2C3C8A3D00130324 /* PriceOverviewAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */; };
 		3248352F2C3C8A4500130324 /* PriceOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352C2C3C877A00130324 /* PriceOverview.swift */; };
 		32961DFB2C24DE9E00B2BB9C /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
-		32961E002C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961DFF2C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift */; };
-		32961E022C2637D700B2BB9C /* DealSmallCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E012C2637D700B2BB9C /* DealSmallCollectionViewCell.swift */; };
-		32961E042C2A1BE800B2BB9C /* StoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E032C2A1BE800B2BB9C /* StoreCollectionViewCell.swift */; };
 		32961E072C2A1E5A00B2BB9C /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */; };
 		32961E092C2A1E8B00B2BB9C /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E082C2A1E8B00B2BB9C /* LineView.swift */; };
 		32961E0B2C2A2ED200B2BB9C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E0A2C2A2ED200B2BB9C /* Settings.swift */; };
@@ -61,7 +59,6 @@
 		32961E2C2C32325500B2BB9C /* PricesAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */; };
 		32961E2D2C32368500B2BB9C /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E292C32224500B2BB9C /* Price.swift */; };
 		32961E2E2C3237EC00B2BB9C /* PricesAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */; };
-		32A66CBB2C35EC5200919F2F /* DealMediumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CBA2C35EC5200919F2F /* DealMediumCollectionViewCell.swift */; };
 		32A66CBD2C360E4400919F2F /* Stat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CBC2C360E4400919F2F /* Stat.swift */; };
 		32A66CBF2C360EE700919F2F /* WaitlistAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CBE2C360EE700919F2F /* WaitlistAPIRequest.swift */; };
 		32A66CC12C3724CD00919F2F /* PopularAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CC02C3724CD00919F2F /* PopularAPIRequest.swift */; };
@@ -74,13 +71,7 @@
 		32A66CCB2C37373A00919F2F /* PopularAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CC02C3724CD00919F2F /* PopularAPIRequest.swift */; };
 		32A66CCC2C37373D00919F2F /* GameDetailAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CC42C372E6700919F2F /* GameDetailAPIRequest.swift */; };
 		32A66CCE2C373F5200919F2F /* GameDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CCD2C373F5200919F2F /* GameDetailViewController.swift */; };
-		32A66CD12C3A007B00919F2F /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CD02C3A007B00919F2F /* BannerTableViewCell.swift */; };
-		32A66CD32C3A0F0500919F2F /* DescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CD22C3A0F0500919F2F /* DescriptionTableViewCell.swift */; };
-		32A66CD52C3A14E300919F2F /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CD42C3A14E300919F2F /* BackgroundView.swift */; };
-		32A66CD72C3A23DE00919F2F /* PriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CD62C3A23DE00919F2F /* PriceTableViewCell.swift */; };
-		32A66CD92C3A307500919F2F /* CutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A66CD82C3A307500919F2F /* CutView.swift */; };
-		32D3D4662C3DDF530036E964 /* ShowMoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4652C3DDF530036E964 /* ShowMoreTableViewCell.swift */; };
-		32D3D4682C3DECE20036E964 /* VoucherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4672C3DECE20036E964 /* VoucherTableViewCell.swift */; };
+		32B66CFE2C585F8F00A33612 /* WishlistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B66CFD2C585F8F00A33612 /* WishlistItem.swift */; };
 		32D3D46D2C44B6DC0036E964 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D46C2C44B6DC0036E964 /* FirebaseAnalytics */; };
 		32D3D46F2C44B6DC0036E964 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D46E2C44B6DC0036E964 /* FirebaseAnalyticsSwift */; };
 		32D3D4712C44B6DC0036E964 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D4702C44B6DC0036E964 /* FirebaseAuth */; };
@@ -91,6 +82,20 @@
 		32D3D4892C44C4C50036E964 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D4882C44C4C50036E964 /* GoogleSignIn */; };
 		32D3D48B2C44C4C50036E964 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D48A2C44C4C50036E964 /* GoogleSignInSwift */; };
 		32D3D48D2C44C5E60036E964 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32D3D48C2C44C5E60036E964 /* GoogleService-Info.plist */; };
+		32D3D4BE2C47486B0036E964 /* SignInTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4AE2C47486A0036E964 /* SignInTableViewCell.swift */; };
+		32D3D4BF2C47486B0036E964 /* FeaturedDealCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4AF2C47486A0036E964 /* FeaturedDealCollectionViewCell.swift */; };
+		32D3D4C12C47486B0036E964 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4B12C47486A0036E964 /* SettingsTableViewCell.swift */; };
+		32D3D4C22C47486B0036E964 /* ShowMoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4B22C47486A0036E964 /* ShowMoreTableViewCell.swift */; };
+		32D3D4C32C47486B0036E964 /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4B32C47486A0036E964 /* BannerTableViewCell.swift */; };
+		32D3D4C42C47486B0036E964 /* VoucherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4B42C47486A0036E964 /* VoucherTableViewCell.swift */; };
+		32D3D4C52C47486B0036E964 /* CutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4B52C47486A0036E964 /* CutView.swift */; };
+		32D3D4C62C47486B0036E964 /* DealSmallCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4B62C47486A0036E964 /* DealSmallCollectionViewCell.swift */; };
+		32D3D4C82C47486B0036E964 /* PriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4B82C47486A0036E964 /* PriceTableViewCell.swift */; };
+		32D3D4C92C47486B0036E964 /* DealMediumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4B92C47486A0036E964 /* DealMediumCollectionViewCell.swift */; };
+		32D3D4CA2C47486B0036E964 /* DescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4BB2C47486A0036E964 /* DescriptionTableViewCell.swift */; };
+		32D3D4CB2C47486B0036E964 /* StoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4BC2C47486A0036E964 /* StoreCollectionViewCell.swift */; };
+		32D3D4CE2C4749170036E964 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4CD2C4749170036E964 /* BackgroundView.swift */; };
+		32D3D4D22C4751B00036E964 /* SignOutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3D4D12C4751B00036E964 /* SignOutTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,15 +128,13 @@
 		320205E82C23BDFC00725DC5 /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		320205F52C23C43100725DC5 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		320205F72C23C48600725DC5 /* ShopsAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopsAPIRequest.swift; sourceTree = "<group>"; };
-		320205F92C23C61500725DC5 /* GameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameService.swift; sourceTree = "<group>"; };
+		320205F92C23C61500725DC5 /* IsThereAnyDealService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsThereAnyDealService.swift; sourceTree = "<group>"; };
 		320205FE2C24BB1700725DC5 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		320206002C24C16700725DC5 /* Deal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deal.swift; sourceTree = "<group>"; };
 		320206022C24CDD600725DC5 /* DealsAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsAPIRequest.swift; sourceTree = "<group>"; };
+		32324E4D2C476844009D3E74 /* GoogleSignInHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInHeaderView.swift; sourceTree = "<group>"; };
 		3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceOverviewAPIRequest.swift; sourceTree = "<group>"; };
 		3248352C2C3C877A00130324 /* PriceOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceOverview.swift; sourceTree = "<group>"; };
-		32961DFF2C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedDealCollectionViewCell.swift; sourceTree = "<group>"; };
-		32961E012C2637D700B2BB9C /* DealSmallCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealSmallCollectionViewCell.swift; sourceTree = "<group>"; };
-		32961E032C2A1BE800B2BB9C /* StoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionViewCell.swift; sourceTree = "<group>"; };
 		32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		32961E082C2A1E8B00B2BB9C /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		32961E0A2C2A2ED200B2BB9C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -148,7 +151,6 @@
 		32961E272C2E2A7C00B2BB9C /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		32961E292C32224500B2BB9C /* Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
 		32961E2B2C32325500B2BB9C /* PricesAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricesAPIRequest.swift; sourceTree = "<group>"; };
-		32A66CBA2C35EC5200919F2F /* DealMediumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealMediumCollectionViewCell.swift; sourceTree = "<group>"; };
 		32A66CBC2C360E4400919F2F /* Stat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stat.swift; sourceTree = "<group>"; };
 		32A66CBE2C360EE700919F2F /* WaitlistAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitlistAPIRequest.swift; sourceTree = "<group>"; };
 		32A66CC02C3724CD00919F2F /* PopularAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularAPIRequest.swift; sourceTree = "<group>"; };
@@ -156,14 +158,22 @@
 		32A66CC42C372E6700919F2F /* GameDetailAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailAPIRequest.swift; sourceTree = "<group>"; };
 		32A66CC62C37362200919F2F /* SteamWebAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SteamWebAPITests.swift; sourceTree = "<group>"; };
 		32A66CCD2C373F5200919F2F /* GameDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailViewController.swift; sourceTree = "<group>"; };
-		32A66CD02C3A007B00919F2F /* BannerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
-		32A66CD22C3A0F0500919F2F /* DescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionTableViewCell.swift; sourceTree = "<group>"; };
-		32A66CD42C3A14E300919F2F /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
-		32A66CD62C3A23DE00919F2F /* PriceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTableViewCell.swift; sourceTree = "<group>"; };
-		32A66CD82C3A307500919F2F /* CutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutView.swift; sourceTree = "<group>"; };
-		32D3D4652C3DDF530036E964 /* ShowMoreTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreTableViewCell.swift; sourceTree = "<group>"; };
-		32D3D4672C3DECE20036E964 /* VoucherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherTableViewCell.swift; sourceTree = "<group>"; };
+		32B66CFD2C585F8F00A33612 /* WishlistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistItem.swift; sourceTree = "<group>"; };
 		32D3D48C2C44C5E60036E964 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		32D3D4AE2C47486A0036E964 /* SignInTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInTableViewCell.swift; sourceTree = "<group>"; };
+		32D3D4AF2C47486A0036E964 /* FeaturedDealCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedDealCollectionViewCell.swift; sourceTree = "<group>"; };
+		32D3D4B12C47486A0036E964 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		32D3D4B22C47486A0036E964 /* ShowMoreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMoreTableViewCell.swift; sourceTree = "<group>"; };
+		32D3D4B32C47486A0036E964 /* BannerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
+		32D3D4B42C47486A0036E964 /* VoucherTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoucherTableViewCell.swift; sourceTree = "<group>"; };
+		32D3D4B52C47486A0036E964 /* CutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutView.swift; sourceTree = "<group>"; };
+		32D3D4B62C47486A0036E964 /* DealSmallCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DealSmallCollectionViewCell.swift; sourceTree = "<group>"; };
+		32D3D4B82C47486A0036E964 /* PriceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceTableViewCell.swift; sourceTree = "<group>"; };
+		32D3D4B92C47486A0036E964 /* DealMediumCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DealMediumCollectionViewCell.swift; sourceTree = "<group>"; };
+		32D3D4BB2C47486A0036E964 /* DescriptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTableViewCell.swift; sourceTree = "<group>"; };
+		32D3D4BC2C47486A0036E964 /* StoreCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreCollectionViewCell.swift; sourceTree = "<group>"; };
+		32D3D4CD2C4749170036E964 /* BackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		32D3D4D12C4751B00036E964 /* SignOutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +269,7 @@
 				32A66CBC2C360E4400919F2F /* Stat.swift */,
 				32A66CC22C372CCE00919F2F /* GameDetail.swift */,
 				3248352C2C3C877A00130324 /* PriceOverview.swift */,
+				32B66CFD2C585F8F00A33612 /* WishlistItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -279,7 +290,7 @@
 			children = (
 				320205F52C23C43100725DC5 /* APIRequest.swift */,
 				320205F72C23C48600725DC5 /* ShopsAPIRequest.swift */,
-				320205F92C23C61500725DC5 /* GameService.swift */,
+				320205F92C23C61500725DC5 /* IsThereAnyDealService.swift */,
 				320206022C24CDD600725DC5 /* DealsAPIRequest.swift */,
 				32961E0C2C2A389D00B2BB9C /* ImageAPIRequest.swift */,
 				32961E152C2B6D9F00B2BB9C /* SearchAPIRequest.swift */,
@@ -296,12 +307,14 @@
 		32961DFE2C2630D100B2BB9C /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				32A66CCF2C3A006600919F2F /* GameDetail */,
-				32961DFF2C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift */,
-				32961E012C2637D700B2BB9C /* DealSmallCollectionViewCell.swift */,
-				32961E032C2A1BE800B2BB9C /* StoreCollectionViewCell.swift */,
-				32A66CBA2C35EC5200919F2F /* DealMediumCollectionViewCell.swift */,
-				32D3D4652C3DDF530036E964 /* ShowMoreTableViewCell.swift */,
+				32D3D4BA2C47486A0036E964 /* GameDetail */,
+				32D3D4B82C47486A0036E964 /* PriceTableViewCell.swift */,
+				32D3D4B12C47486A0036E964 /* SettingsTableViewCell.swift */,
+				32D3D4B22C47486A0036E964 /* ShowMoreTableViewCell.swift */,
+				32D3D4AE2C47486A0036E964 /* SignInTableViewCell.swift */,
+				32D3D4BC2C47486A0036E964 /* StoreCollectionViewCell.swift */,
+				32D3D4B42C47486A0036E964 /* VoucherTableViewCell.swift */,
+				32D3D4D12C4751B00036E964 /* SignOutTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -311,6 +324,7 @@
 			children = (
 				32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */,
 				32961E082C2A1E8B00B2BB9C /* LineView.swift */,
+				32324E4D2C476844009D3E74 /* GoogleSignInHeaderView.swift */,
 			);
 			path = SupplementaryViews;
 			sourceTree = "<group>";
@@ -326,15 +340,16 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		32A66CCF2C3A006600919F2F /* GameDetail */ = {
+		32D3D4BA2C47486A0036E964 /* GameDetail */ = {
 			isa = PBXGroup;
 			children = (
-				32A66CD02C3A007B00919F2F /* BannerTableViewCell.swift */,
-				32A66CD22C3A0F0500919F2F /* DescriptionTableViewCell.swift */,
-				32A66CD42C3A14E300919F2F /* BackgroundView.swift */,
-				32A66CD62C3A23DE00919F2F /* PriceTableViewCell.swift */,
-				32A66CD82C3A307500919F2F /* CutView.swift */,
-				32D3D4672C3DECE20036E964 /* VoucherTableViewCell.swift */,
+				32D3D4CD2C4749170036E964 /* BackgroundView.swift */,
+				32D3D4B32C47486A0036E964 /* BannerTableViewCell.swift */,
+				32D3D4B52C47486A0036E964 /* CutView.swift */,
+				32D3D4B92C47486A0036E964 /* DealMediumCollectionViewCell.swift */,
+				32D3D4B62C47486A0036E964 /* DealSmallCollectionViewCell.swift */,
+				32D3D4BB2C47486A0036E964 /* DescriptionTableViewCell.swift */,
+				32D3D4AF2C47486A0036E964 /* FeaturedDealCollectionViewCell.swift */,
 			);
 			path = GameDetail;
 			sourceTree = "<group>";
@@ -457,52 +472,57 @@
 			files = (
 				32961E222C2D0FC100B2BB9C /* DiscountView.swift in Sources */,
 				32A66CC12C3724CD00919F2F /* PopularAPIRequest.swift in Sources */,
+				32D3D4C12C47486B0036E964 /* SettingsTableViewCell.swift in Sources */,
+				32D3D4BF2C47486B0036E964 /* FeaturedDealCollectionViewCell.swift in Sources */,
 				320205BC2C23A45800725DC5 /* Topaz.xcdatamodeld in Sources */,
+				32D3D4CE2C4749170036E964 /* BackgroundView.swift in Sources */,
 				320205B62C23A45800725DC5 /* HomeViewController.swift in Sources */,
-				32961E042C2A1BE800B2BB9C /* StoreCollectionViewCell.swift in Sources */,
 				320205D12C23AC9900725DC5 /* StoresViewController.swift in Sources */,
 				32961E092C2A1E8B00B2BB9C /* LineView.swift in Sources */,
-				32961E002C26315000B2BB9C /* FeaturedDealCollectionViewCell.swift in Sources */,
 				32A66CBF2C360EE700919F2F /* WaitlistAPIRequest.swift in Sources */,
+				32D3D4C22C47486B0036E964 /* ShowMoreTableViewCell.swift in Sources */,
 				32961E2A2C32224500B2BB9C /* Price.swift in Sources */,
-				320205FA2C23C61500725DC5 /* GameService.swift in Sources */,
+				320205FA2C23C61500725DC5 /* IsThereAnyDealService.swift in Sources */,
+				32D3D4D22C4751B00036E964 /* SignOutTableViewCell.swift in Sources */,
 				32961E2C2C32325500B2BB9C /* PricesAPIRequest.swift in Sources */,
+				32D3D4C92C47486B0036E964 /* DealMediumCollectionViewCell.swift in Sources */,
 				32961E202C2D01C600B2BB9C /* PriceView.swift in Sources */,
-				32A66CD72C3A23DE00919F2F /* PriceTableViewCell.swift in Sources */,
 				32961E282C2E2A7C00B2BB9C /* ResultsViewController.swift in Sources */,
 				32961E1B2C2B79EC00B2BB9C /* GameAPIRequest.swift in Sources */,
+				32D3D4C62C47486B0036E964 /* DealSmallCollectionViewCell.swift in Sources */,
 				32961E0D2C2A389D00B2BB9C /* ImageAPIRequest.swift in Sources */,
+				32B66CFE2C585F8F00A33612 /* WishlistItem.swift in Sources */,
 				32961E072C2A1E5A00B2BB9C /* SectionHeaderView.swift in Sources */,
+				32D3D4C52C47486B0036E964 /* CutView.swift in Sources */,
 				320205E72C23BD9A00725DC5 /* Shop.swift in Sources */,
 				32A66CC32C372CCE00919F2F /* GameDetail.swift in Sources */,
 				32961E162C2B6D9F00B2BB9C /* SearchAPIRequest.swift in Sources */,
 				3248352B2C3C874E00130324 /* PriceOverviewAPIRequest.swift in Sources */,
 				320205D32C23ACFB00725DC5 /* GiveawayViewController.swift in Sources */,
+				32D3D4C82C47486B0036E964 /* PriceTableViewCell.swift in Sources */,
 				32A66CCE2C373F5200919F2F /* GameDetailViewController.swift in Sources */,
+				32324E4E2C476844009D3E74 /* GoogleSignInHeaderView.swift in Sources */,
 				32A66CBD2C360E4400919F2F /* Stat.swift in Sources */,
 				32A66CC52C372E6700919F2F /* GameDetailAPIRequest.swift in Sources */,
+				32D3D4C32C47486B0036E964 /* BannerTableViewCell.swift in Sources */,
 				320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */,
 				32961E242C2DDFD500B2BB9C /* Test.swift in Sources */,
 				320205B22C23A45800725DC5 /* AppDelegate.swift in Sources */,
-				32D3D4662C3DDF530036E964 /* ShowMoreTableViewCell.swift in Sources */,
 				3248352D2C3C877A00130324 /* PriceOverview.swift in Sources */,
 				320205FF2C24BB1700725DC5 /* Item.swift in Sources */,
-				32A66CD92C3A307500919F2F /* CutView.swift in Sources */,
 				320205D52C23AD0A00725DC5 /* WishlistViewController.swift in Sources */,
-				32A66CD12C3A007B00919F2F /* BannerTableViewCell.swift in Sources */,
+				32D3D4CB2C47486B0036E964 /* StoreCollectionViewCell.swift in Sources */,
 				320205F82C23C48600725DC5 /* ShopsAPIRequest.swift in Sources */,
 				320205CF2C23AC8400725DC5 /* SettingsViewController.swift in Sources */,
 				32961E132C2B6C1600B2BB9C /* SearchItem.swift in Sources */,
-				32A66CD52C3A14E300919F2F /* BackgroundView.swift in Sources */,
 				320205F62C23C43100725DC5 /* APIRequest.swift in Sources */,
-				32A66CBB2C35EC5200919F2F /* DealMediumCollectionViewCell.swift in Sources */,
 				320205B42C23A45800725DC5 /* SceneDelegate.swift in Sources */,
-				32961E022C2637D700B2BB9C /* DealSmallCollectionViewCell.swift in Sources */,
 				32961E0B2C2A2ED200B2BB9C /* Settings.swift in Sources */,
 				320206012C24C16700725DC5 /* Deal.swift in Sources */,
-				32D3D4682C3DECE20036E964 /* VoucherTableViewCell.swift in Sources */,
+				32D3D4C42C47486B0036E964 /* VoucherTableViewCell.swift in Sources */,
+				32D3D4BE2C47486B0036E964 /* SignInTableViewCell.swift in Sources */,
 				32961E262C2DE7CF00B2BB9C /* DiscountPriceView.swift in Sources */,
-				32A66CD32C3A0F0500919F2F /* DescriptionTableViewCell.swift in Sources */,
+				32D3D4CA2C47486B0036E964 /* DescriptionTableViewCell.swift in Sources */,
 				32961E192C2B76D900B2BB9C /* Game.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,7 +547,7 @@
 				32961E142C2B6CF200B2BB9C /* SearchItem.swift in Sources */,
 				32961E1C2C2B843B00B2BB9C /* Game.swift in Sources */,
 				32961E2E2C3237EC00B2BB9C /* PricesAPIRequest.swift in Sources */,
-				320205FB2C23C78500725DC5 /* GameService.swift in Sources */,
+				320205FB2C23C78500725DC5 /* IsThereAnyDealService.swift in Sources */,
 				320206042C24D98400725DC5 /* Deal.swift in Sources */,
 				32961E1D2C2B849400B2BB9C /* GameAPIRequest.swift in Sources */,
 				32961E0F2C2B398800B2BB9C /* IsThereAnyDealAPITests.swift in Sources */,

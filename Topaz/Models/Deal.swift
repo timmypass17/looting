@@ -22,7 +22,7 @@ struct DealItem: Decodable, Hashable {
     var deal: Deal?
 }
 
-struct Deal: Decodable, Hashable {
+struct Deal: Codable, Hashable {
     var shop: ShopAbridged
     var price: Cost
     var regular: Cost
@@ -69,23 +69,23 @@ struct Deal: Decodable, Hashable {
     }
 }
 
-struct ShopAbridged: Decodable, Hashable {
+struct ShopAbridged: Codable, Hashable {
     var id: Int
     var name: String
 }
 
-struct Cost: Decodable, Hashable {
+struct Cost: Codable, Hashable {
     var amount: Double
     var amountInt: Int
     var currency: String
 }
 
-struct DRM: Decodable, Hashable {
+struct DRM: Codable, Hashable {
     var id: Int
     var name: String
 }
 
-struct Platform: Decodable, Hashable {
+struct Platform: Codable, Hashable {
     var id: Int
     var name: String
 }

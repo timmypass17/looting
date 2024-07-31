@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseCore
 import GoogleSignIn
+import FirebaseAuth
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        Auth.auth().addStateDidChangeListener { auth, user in
+            // Triggered when added and user logs in or out
+            if let user {
+                print("[AppDelegate] User: \(user.displayName)")
+            } else {
+                print("[AppDelegate] User is not logged in")
+            }
+        }
         return true
     }
     

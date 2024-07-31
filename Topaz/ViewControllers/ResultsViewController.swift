@@ -88,7 +88,8 @@ class ResultsViewController: UIViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier, for: indexPath) as! DealSmallCollectionViewCell
             self.imageTasks[indexPath]?.cancel()
             self.imageTasks[indexPath] = Task {
-                await cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!)
+                await cell.update(title: itemIdentifier.game!.title, imageURL: itemIdentifier.game!.assets?.banner400, deal: itemIdentifier.dealItem?.deal)
+//                await cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!)
                 self.imageTasks[indexPath] = nil
             }
             return cell

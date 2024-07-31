@@ -39,15 +39,15 @@ class DiscountPriceView: UIView {
     }
     
     func update(regular: Double, amount: Double, cut: Int) {
-        priceView.update(amount: amount, regular: regular)
+        priceView.update(current: amount, regular: regular)
         discountView.update(cut: cut)
     }
 }
 
-#Preview {
-    let view = DiscountPriceView()
-    view.priceView.regularLabel.text = "$59.99"
-    view.priceView.saleLabel.text = "$32.99"
-    view.discountView.discountLabel.text = "-%45"
-    return view
-}
+//#Preview {
+//    let view = DiscountPriceView()
+//    view.priceView.regularLabel.text = "$59.99"
+//    view.priceView.saleLabel.text = "$32.99"
+//    view.discountView.discountLabel.text = "-%45"
+//    return view
+//}

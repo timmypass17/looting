@@ -8,6 +8,7 @@
 import UIKit
 
 // TODO: Add discount percent to banner (ex. -%50) with white text black bg or steam but orange
+// TODO: Game deals aren't using lowest deal
 class HomeViewController: UIViewController {
 
     var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
@@ -282,8 +283,10 @@ class HomeViewController: UIViewController {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier, for: indexPath) as! DealSmallCollectionViewCell
                 self.imageTasks[indexPath]?.cancel()
                 self.imageTasks[indexPath] = Task {
-                    let isThirdItem = (indexPath.row + 1).isMultiple(of: 4)
-                    await cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!, hideBottomLine: isThirdItem)
+                    let isFourthItem = (indexPath.row + 1).isMultiple(of: 4)
+                    await cell.update(title: itemIdentifier.game!.title, imageURL: itemIdentifier.game!.assets?.banner400, deal: itemIdentifier.dealItem?.deal, hideBottomLine: isFourthItem)
+
+//                    await cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!, hideBottomLine: isThirdItem)
                     self.imageTasks[indexPath] = nil
                 }
                 return cell
