@@ -39,9 +39,12 @@ class WishlistViewController: UIViewController {
     var imageTasks: [IndexPath: Task<Void, Never>] = [:]
     
     var listener: ListenerRegistration?
+    var lastDocument: QueryDocumentSnapshot?
+    var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.delegate = self
 
         navigationItem.title = "Wishlist"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -68,30 +71,18 @@ class WishlistViewController: UIViewController {
         collectionView.collectionViewLayout = createLayout()
         configureDataSource() // provides cell
         
+        // Don't use realtime listneers with pagination (tricky)
+        // Just use 1 time fetch and use swipe to refresh
+        
         Auth.auth().addStateDidChangeListener { [self] auth, user in
             if let user {
+                self.user = user
                 button.isHidden = true
-                listener = db.collection("wishlist").whereField("userID", isEqualTo: user.uid)
-                    .addSnapshotListener { querySnapshot, error in
-                        guard let documents = querySnapshot?.documents else {
-                            print("Error fetching documents: \(error!)")
-                            return
-                        }
-                        
-                        var wishlist: [WishlistItem] = documents
-                            .compactMap { try? $0.data(as: WishlistItem.self) }
-                        
-                        Task {
-                            let items: [Item] = await self.getGames(gameIDs: wishlist.map { $0.gameID } )
-                            
-                            var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-                            snapshot.appendSections([.wishlist])
-                            snapshot.appendItems(items, toSection: .wishlist)
-                            await self.dataSource.apply(snapshot)
-                            
-                            print(wishlist.map { $0.title } )
-                        }
-                    }
+                
+                // Initalize 10 games fetch
+                Task {
+                    await loadWishlist()
+                }
 
             } else {
                 button.isHidden = false
@@ -103,6 +94,44 @@ class WishlistViewController: UIViewController {
                 dataSource.apply(snapshot)
             }
         }
+    }
+    
+    // Generic method to load wishlist data
+    private func loadWishlist(after document: DocumentSnapshot? = nil) async {
+        do {
+            guard let user else { return }
+            
+            // Query to get first 10 games
+            var query = db.collection("wishlist")
+                .whereField("userID", isEqualTo: user.uid)
+                .limit(to: 10)
+            
+            if let lastDocument = document {
+                // Query to get 10 games after last document fetch
+                query = query
+                    .start(afterDocument: lastDocument)
+            }
+
+            let querySnapshot = try await query.getDocuments()
+            lastDocument = querySnapshot.documents.last
+            
+            let wishlist: [WishlistItem] = querySnapshot.documents
+                .compactMap { try? $0.data(as: WishlistItem.self) }
+            
+            let items: [Item] = await getGames(gameIDs: wishlist.map { $0.gameID })
+            updateSnapshot(with: items)
+        } catch {
+            print("Error loading wishlist: \(error)")
+        }
+    }
+    
+    // Update the collection view snapshot
+    private func updateSnapshot(with items: [Item]) {
+        let currentItems = dataSource.snapshot().itemIdentifiers
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        snapshot.appendSections([.wishlist])
+        snapshot.appendItems(currentItems + items, toSection: .wishlist)
+        dataSource.apply(snapshot)
     }
     
     func createLayout() -> UICollectionViewLayout {
@@ -235,6 +264,20 @@ extension WishlistViewController {
                 return wishlistItem
             } else {
                 return nil
+            }
+        }
+    }
+}
+
+extension WishlistViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if (indexPath.row == collectionView.numberOfItems(inSection: 0) - 1 ) {   //it's your last cell
+          //Load more data & reload your collection view
+            print("Load more data \(indexPath.row)")
+            Task {
+                if let lastDocument {
+                    await loadWishlist(after: lastDocument)
+                }
             }
         }
     }

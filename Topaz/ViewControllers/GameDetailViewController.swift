@@ -98,12 +98,10 @@ class GameDetailViewController: UIViewController {
                         if let wishlistItem = try? document.data(as: WishlistItem.self) {
                             print("Current data: \(wishlistItem.title)")
                             favoriteButton.image = UIImage(systemName: "star.fill")
-//                            favoriteButton.isSelected = true
                             favoriteButtonIsSelected = true
                         } else {
                             print("Document not found")
                             favoriteButton.image = UIImage(systemName: "star")
-//                            favoriteButton.isSelected = false
                             favoriteButtonIsSelected = false
                         }
                     }
