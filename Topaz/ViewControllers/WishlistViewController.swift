@@ -38,7 +38,6 @@ class WishlistViewController: UIViewController {
     let service = IsThereAnyDealService()
     var imageTasks: [IndexPath: Task<Void, Never>] = [:]
     
-    var listener: ListenerRegistration?
     var lastDocument: QueryDocumentSnapshot?
     var user: User?
     
@@ -79,19 +78,13 @@ class WishlistViewController: UIViewController {
                 self.user = user
                 button.isHidden = true
                 
-                // Initalize 10 games fetch
                 Task {
                     await loadWishlist()
                 }
 
             } else {
                 button.isHidden = false
-                listener?.remove()
-                
-                var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-                snapshot.appendSections([.wishlist])
-                snapshot.appendItems([], toSection: .wishlist)
-                dataSource.apply(snapshot)
+                clearDatasource()
             }
         }
     }
@@ -134,6 +127,10 @@ class WishlistViewController: UIViewController {
         dataSource.apply(snapshot)
     }
     
+    private func clearDatasource() {
+        updateSnapshot(with: [])
+    }
+    
     func createLayout() -> UICollectionViewLayout {
         // MARK: Standard Section Layout
         let item = NSCollectionLayoutItem(
@@ -174,7 +171,6 @@ class WishlistViewController: UIViewController {
                     title: itemIdentifier.wishlistItem!.title,
                     imageURL: itemIdentifier.wishlistItem!.posterURL,
                     deal: itemIdentifier.wishlistItem!.deal)
-//                await cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!)
                 self.imageTasks[indexPath] = nil
             }
             return cell

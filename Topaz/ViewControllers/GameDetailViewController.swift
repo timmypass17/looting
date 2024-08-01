@@ -44,8 +44,12 @@ class GameDetailViewController: UIViewController {
         case price
         case historic
         case allPrices
+        
+        var index: Int {
+            return self.rawValue
+        }
     }
-    
+        
     init(game: Game, dealItem: DealItem?) {
         self.game = game
         self.dealItem = dealItem
@@ -202,17 +206,9 @@ class GameDetailViewController: UIViewController {
             
         }
     }
-    
-//    @objc func didTapUnwishlistButton() -> UIAction {
-//        return UIAction { [self] _ in
-//            guard let user else { return }
-//            print(#function)
-//            db.collection("wishlist").document(user.uid + game.id).delete()
-//        }
-//    }
 }
 
-extension GameDetailViewController: UITableViewDelegate, UITableViewDataSource {
+extension GameDetailViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return Section.allCases.count
@@ -269,6 +265,7 @@ extension GameDetailViewController: UITableViewDelegate, UITableViewDataSource {
             if let historicDeal {
                 cell.update(with: historicDeal)
             }
+
             return cell
         case .allPrices:
             if !showAllDeals && indexPath.row == min(deals.count, 3) {
@@ -292,6 +289,10 @@ extension GameDetailViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }
     }
+
+}
+
+extension GameDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard let section = Section(rawValue: section) else { return nil }
@@ -311,9 +312,10 @@ extension GameDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? ShowMoreTableViewCell {
-            showAllDeals = !showAllDeals
+            showAllDeals.toggle()
             tableView.reloadSections(IndexSet(integer: Section.allPrices.rawValue), with: .automatic)
         } else if let cell = tableView.cellForRow(at: indexPath) as? PriceTableViewCell {
+            guard indexPath.section != Section.historic.index else { return }
             var url: URL? = nil
             if indexPath.section == Section.price.rawValue {
                 guard let urlString = bestDeal?.url else { return }
@@ -327,5 +329,15 @@ extension GameDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 present(SFSafariViewController(url: url), animated: true)
             }
         }
+    }
+
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard ![Section.description.index, Section.historic.index].contains(indexPath.section) else { return nil }
+        return indexPath
+    }
+    
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        guard ![Section.description.index, Section.historic.index].contains(indexPath.section) else { return false }
+        return true
     }
 }

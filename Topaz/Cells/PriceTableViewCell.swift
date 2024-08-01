@@ -131,6 +131,7 @@ class PriceTableViewCell: UITableViewCell {
             expireLabel.isHidden = false
             expireImageView.isHidden = false
         } else {
+            expireLabel.text = ""
             expireLabel.isHidden = true
             expireImageView.isHidden = true
         }
@@ -141,15 +142,11 @@ class PriceTableViewCell: UITableViewCell {
     
         if deal.url != nil {
             accessoryType = .disclosureIndicator
-            if defaultTrailingConstraint.isActive {
-                defaultTrailingConstraint.isActive = false
-            }
             chevronTrailingConstraint.isActive = true
+            defaultTrailingConstraint.isActive = false
         } else {
             accessoryType = .none
-            if chevronTrailingConstraint.isActive {
-                chevronTrailingConstraint.isActive = false
-            }
+            chevronTrailingConstraint.isActive = false
             defaultTrailingConstraint.isActive = true
         }
         
@@ -166,11 +163,15 @@ class PriceTableViewCell: UITableViewCell {
         
         if deal.expiry == nil && deal.storeLow?.amount == nil {
             if container.arrangedSubviews.contains(dateHStack) {
-                container.removeArrangedSubview(dateHStack)
+                container.removeArrangedSubview(dateHStack) // does not remove stack's children (either remove children explicity, or hide them)
+                expireLabel.isHidden = true
+                storeLowLabel.isHidden = true
             }
         } else {
             if !container.arrangedSubviews.contains(dateHStack) {
                 container.addArrangedSubview(dateHStack)
+                expireLabel.isHidden = false
+                storeLowLabel.isHidden = false
             }
         }
     }
