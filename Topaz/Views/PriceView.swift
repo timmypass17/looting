@@ -19,7 +19,7 @@ class PriceView: UIView {
     
     let secondaryPriceLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .secondaryLabel
+//        label.textColor = .secondaryLabel
         label.font = .preferredFont(forTextStyle: .caption1)
         label.textAlignment = .right    // Fixed!
         label.setContentCompressionResistancePriority(.required, for: .horizontal)   // never compress text to ...
@@ -28,7 +28,7 @@ class PriceView: UIView {
     
     let priceLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .accent
+//        label.textColor = .accent
         label.font = .systemFont(ofSize: 16, weight: .bold)
         label.textAlignment = .right    // Fixed!
         label.setContentCompressionResistancePriority(.required, for: .horizontal)   // never compress text to ...
@@ -37,9 +37,7 @@ class PriceView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-//        backgroundColor = .blue
-        
+                
         stackView.addArrangedSubview(secondaryPriceLabel)
         stackView.addArrangedSubview(priceLabel)
         
@@ -58,14 +56,52 @@ class PriceView: UIView {
     }
     
     func update(current: Double?, regular: Double) {
-        if let current {
-            let attributeString = NSMutableAttributedString(string: "$\(String(format: "%.2f", regular))")
-            attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
-            
-            secondaryPriceLabel.attributedText = attributeString
-            priceLabel.text = "$\(String(format: "%.2f", current))"
-        } else {
-            priceLabel.text = "$\(String(format: "%.2f", regular))"
+        let isFree = regular == 0
+        if isFree {
+            secondaryPriceLabel.isHidden = true
+            priceLabel.text = "Free"
+            priceLabel.textColor = .white
+            priceLabel.isHidden = false
+            return
         }
+        
+        guard let current else {
+            secondaryPriceLabel.isHidden = true
+            priceLabel.text = regular.priceString()
+            priceLabel.textColor = .white
+            return
+        }
+        
+        let isOnSale = current < regular
+        if isOnSale {
+            secondaryPriceLabel.attributedText = regular.discountString()
+            secondaryPriceLabel.isHidden = false
+            secondaryPriceLabel.textColor = .secondaryLabel
+            
+            priceLabel.text = current.priceString()
+            priceLabel.textColor = .accent
+        } else {
+            secondaryPriceLabel.isHidden = true
+            priceLabel.text = current.priceString()
+            priceLabel.textColor = .white
+        }
+    }
+}
+
+extension Double {
+    func priceString() -> String {
+        return  "$\(String(format: "%.2f", self))"
+    }
+    
+    func discountString() -> NSMutableAttributedString {
+        return self.priceString().strikethrough
+    }
+}
+
+extension String {
+    var strikethrough: NSMutableAttributedString {
+        let attributeString = NSMutableAttributedString(string: self)
+        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
+        return attributeString
     }
 }

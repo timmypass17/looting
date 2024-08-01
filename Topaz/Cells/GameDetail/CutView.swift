@@ -38,7 +38,13 @@ class CutView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setCut(cut: Int) {
-        discountLabel.text = "-\(cut)%"
+    func update(cut: Int) {
+        if cut == 0 {
+            isHidden = true
+        } else {
+            discountLabel.text = "-\(cut)%"
+            isHidden = false
+        }
     }
+
 }

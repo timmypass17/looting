@@ -42,14 +42,14 @@ class TestView: UIView {
     
     let priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "$20.00"
+//        label.text = "$20.00"
         label.font = .preferredFont(forTextStyle: .caption1)
         return label
     }()
     
     let discountLabel: UILabel = {
         let label = UILabel()
-        label.text = "$15.00"
+//        label.text = "$15.00"
         return label
     }()
     

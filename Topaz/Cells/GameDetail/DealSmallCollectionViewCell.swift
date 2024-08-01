@@ -23,7 +23,6 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-//        imageView.layer.cornerRadius = 4
         imageView.layer.masksToBounds = true    // for crop
         imageView.backgroundColor = .placeholderText
         NSLayoutConstraint.activate([

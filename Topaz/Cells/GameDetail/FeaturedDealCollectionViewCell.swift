@@ -81,10 +81,11 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         
         hstack.addArrangedSubview(vstack)
         hstack.addArrangedSubview(UIView())
+        
         hstack.addArrangedSubview(discountView)
         hstack.setCustomSpacing(10, after: discountView)
         hstack.addArrangedSubview(priceView)
-        
+                
         stackView.addArrangedSubview(headlineLabel)
         stackView.addArrangedSubview(hstack)
 

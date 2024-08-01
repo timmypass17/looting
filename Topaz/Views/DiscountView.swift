@@ -37,6 +37,11 @@ class DiscountView: UIView {
     }
     
     func update(cut: Int) {
-        discountLabel.text = "-\(cut)%"
+        if cut == 0 {
+            isHidden = true
+        } else {
+            discountLabel.text = "-\(cut)%"
+            isHidden = false
+        }
     }
 }

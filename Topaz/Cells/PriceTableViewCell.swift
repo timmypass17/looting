@@ -117,13 +117,10 @@ class PriceTableViewCell: UITableViewCell {
     }
     
     func update(with deal: Deal) {
-        let attributeString = NSMutableAttributedString(string: "$\(String(format: "%.2f", deal.regular.amount))")
-        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
-        
         storeLabel.text = deal.shop.name
-        cutLabel.setCut(cut: deal.cut)
-        regularLabel.attributedText = attributeString
-        priceLabel.text = "$\(String(format: "%.2f", deal.price.amount))"
+        cutLabel.update(cut: deal.cut)
+        regularLabel.attributedText = deal.regular.amount.discountString()
+        priceLabel.text = deal.price.amount.priceString()
         
         if let expirationDateString = deal.expiry,
            let formattedDateString = formatISODateString(expirationDateString) {
@@ -137,7 +134,7 @@ class PriceTableViewCell: UITableViewCell {
         }
         
         if let storeLowPrice = deal.storeLow?.amount {
-            storeLowLabel.text = "Low: $\(String(format: "%.2f", storeLowPrice))"
+            storeLowLabel.text = "Low: \(storeLowPrice.priceString())"
         }
     
         if deal.url != nil {
@@ -152,11 +149,9 @@ class PriceTableViewCell: UITableViewCell {
         
         let onSale: Bool = deal.price.amount < deal.regular.amount
         if onSale {
-            cutLabel.isHidden = false
             regularLabel.isHidden = false
             priceLabel.textColor = .accent
         } else {
-            cutLabel.isHidden = true
             regularLabel.isHidden = true
             priceLabel.textColor = .label
         }
