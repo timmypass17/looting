@@ -8,8 +8,8 @@
 import UIKit
 
 class DiscountPriceView: UIView {
-    let priceView = PriceView()
     let discountView = DiscountView()
+    let priceView = PriceView()
     
     let container: UIStackView = {
         let stackView = UIStackView()
@@ -22,6 +22,7 @@ class DiscountPriceView: UIView {
         super.init(frame: frame)
                 
         container.addArrangedSubview(discountView)
+        container.addArrangedSubview(UIView())
         container.addArrangedSubview(priceView)
         
         addSubview(container)

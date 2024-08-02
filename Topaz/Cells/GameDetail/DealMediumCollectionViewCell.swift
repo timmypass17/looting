@@ -24,17 +24,9 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    let ratingLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .caption1)
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
-        return label
-    }()
-    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.setContentHuggingPriority(.required, for: .vertical)
         return label
     }()
     
@@ -44,11 +36,14 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         label.font = .preferredFont(forTextStyle: .caption1)
         label.textColor = .secondaryLabel
         label.numberOfLines = 1
-        label.setContentHuggingPriority(.required, for: .vertical)
         return label
     }()
     
-    let discountPriceView = DiscountPriceView()
+    let discountPriceView: DiscountPriceView = {
+        let view = DiscountPriceView()
+        view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        return view
+    }()
     
     let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -63,14 +58,32 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        let ratingView = HCSStarRatingView()
+        ratingView.value = 4.5
+        ratingView.minimumValue = 0
+        ratingView.maximumValue = 5
+        ratingView.tintColor = .white
+        ratingView.allowsHalfStars = true
+        ratingView.backgroundColor = .systemBackground
+        ratingView.widthAnchor.constraint(equalToConstant: 75).isActive = true
+        
+        let ratingLabel = UILabel()
+        ratingLabel.text = "4.5"
+        ratingLabel.font = .preferredFont(forTextStyle: .caption1)
+
+        let ratingContainer = UIStackView()
+        ratingContainer.axis = .horizontal
+        ratingContainer.spacing = 8
+        ratingContainer.addArrangedSubview(ratingView)
+        ratingContainer.addArrangedSubview(ratingLabel)
+                
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(ratingLabel)
+        stackView.addArrangedSubview(ratingContainer)
         stackView.addArrangedSubview(tagsLabel)
+        stackView.addArrangedSubview(UIView())
         stackView.addArrangedSubview(discountPriceView)
         
-        stackView.setCustomSpacing(10, after: tagsLabel)
-
         addSubview(stackView)
         
         NSLayoutConstraint.activate([
@@ -87,7 +100,6 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
     
     func update(game: Game, dealItem: DealItem) {
         titleLabel.text = game.title.lowercased().capitalized
-        ratingLabel.text = "***** 4.5"
         if game.tags.count > 0 {
             tagsLabel.text = game.tags.prefix(2).joined(separator: ", ")
         }

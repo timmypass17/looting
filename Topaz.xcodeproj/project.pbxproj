@@ -31,6 +31,7 @@
 		320206012C24C16700725DC5 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206002C24C16700725DC5 /* Deal.swift */; };
 		320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
 		320206042C24D98400725DC5 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206002C24C16700725DC5 /* Deal.swift */; };
+		321C5D242C5D891C006919C0 /* HCSStarRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 321C5D222C5D891C006919C0 /* HCSStarRatingView.m */; };
 		32324E4E2C476844009D3E74 /* GoogleSignInHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32324E4D2C476844009D3E74 /* GoogleSignInHeaderView.swift */; };
 		3248352B2C3C874E00130324 /* PriceOverviewAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */; };
 		3248352D2C3C877A00130324 /* PriceOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352C2C3C877A00130324 /* PriceOverview.swift */; };
@@ -132,6 +133,9 @@
 		320205FE2C24BB1700725DC5 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		320206002C24C16700725DC5 /* Deal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deal.swift; sourceTree = "<group>"; };
 		320206022C24CDD600725DC5 /* DealsAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsAPIRequest.swift; sourceTree = "<group>"; };
+		321C5D212C5D891C006919C0 /* Topaz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Topaz-Bridging-Header.h"; sourceTree = "<group>"; };
+		321C5D222C5D891C006919C0 /* HCSStarRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCSStarRatingView.m; sourceTree = "<group>"; };
+		321C5D232C5D891C006919C0 /* HCSStarRatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCSStarRatingView.h; sourceTree = "<group>"; };
 		32324E4D2C476844009D3E74 /* GoogleSignInHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInHeaderView.swift; sourceTree = "<group>"; };
 		3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceOverviewAPIRequest.swift; sourceTree = "<group>"; };
 		3248352C2C3C877A00130324 /* PriceOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceOverview.swift; sourceTree = "<group>"; };
@@ -332,10 +336,13 @@
 		32961E1E2C2D01B600B2BB9C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				321C5D232C5D891C006919C0 /* HCSStarRatingView.h */,
+				321C5D222C5D891C006919C0 /* HCSStarRatingView.m */,
 				32961E1F2C2D01C600B2BB9C /* PriceView.swift */,
 				32961E212C2D0FC100B2BB9C /* DiscountView.swift */,
 				32961E232C2DDFD500B2BB9C /* Test.swift */,
 				32961E252C2DE7CF00B2BB9C /* DiscountPriceView.swift */,
+				321C5D212C5D891C006919C0 /* Topaz-Bridging-Header.h */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -415,6 +422,7 @@
 				TargetAttributes = {
 					320205AD2C23A45800725DC5 = {
 						CreatedOnToolsVersion = 15.0.1;
+						LastSwiftMigration = 1540;
 					};
 					320205DC2C23BCE500725DC5 = {
 						CreatedOnToolsVersion = 15.0.1;
@@ -501,6 +509,7 @@
 				320205D32C23ACFB00725DC5 /* GiveawayViewController.swift in Sources */,
 				32D3D4C82C47486B0036E964 /* PriceTableViewCell.swift in Sources */,
 				32A66CCE2C373F5200919F2F /* GameDetailViewController.swift in Sources */,
+				321C5D242C5D891C006919C0 /* HCSStarRatingView.m in Sources */,
 				32324E4E2C476844009D3E74 /* GoogleSignInHeaderView.swift in Sources */,
 				32A66CBD2C360E4400919F2F /* Stat.swift in Sources */,
 				32A66CC52C372E6700919F2F /* GameDetailAPIRequest.swift in Sources */,
@@ -703,6 +712,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Topaz/Topaz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -721,6 +731,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.timmynguyen.Topaz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Topaz/Views/Topaz-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -731,6 +743,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Topaz/Topaz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -749,6 +762,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.timmynguyen.Topaz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Topaz/Views/Topaz-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
