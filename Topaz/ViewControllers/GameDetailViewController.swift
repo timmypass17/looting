@@ -10,6 +10,11 @@ import SafariServices
 import FirebaseAuth
 import FirebaseFirestore
 
+protocol GameDetailViewControllerDelegate: AnyObject {
+    func gameDetailViewController(_ viewController: GameDetailViewController, didWishlistGame game: Game, price: Double?)
+    func gameDetailViewController(_ viewController: GameDetailViewController, didUnwishlistGame game: Game)
+}
+
 class GameDetailViewController: UIViewController {
 
     let tableView: UITableView = {
@@ -27,16 +32,16 @@ class GameDetailViewController: UIViewController {
     var user: User?
     
     var showAllDeals = false // tableview/datsource should manage state. cell should be "view only"
+    var favoriteButton: UIBarButtonItem!
+    var favoriteButtonIsSelected = false    // using barButtonItem.isSelected makes button highlight (ugly), can't disable highlight
     
     let isThereAnyDealService =  IsThereAnyDealService()
     let steamService = SteamWebService()
     
-    var favoriteButton: UIBarButtonItem!
-    var favoriteButtonIsSelected = false    // using barButtonItem.isSelected makes button highlight (ugly), can't disable highlight
-    
     var db = Firestore.firestore()
-    
     var listener: ListenerRegistration?
+    
+    weak var delegate: GameDetailViewControllerDelegate?
     
     enum Section: Int, CaseIterable {
         case banner
@@ -186,6 +191,7 @@ class GameDetailViewController: UIViewController {
             if favoriteButtonIsSelected {
                 print("Remove \(game.title) from wishlist")
                 db.collection("wishlist").document(userID + game.id).delete()
+                delegate?.gameDetailViewController(self, didUnwishlistGame: game)
             } else {
                 print("Add \(game.title) to wishlist")
                 let wishlistItem = WishlistItem(
@@ -198,6 +204,7 @@ class GameDetailViewController: UIViewController {
                 
                 do {
                     try db.collection("wishlist").document(userID + game.id).setData(from: wishlistItem)
+                    delegate?.gameDetailViewController(self, didWishlistGame: game, price: dealItem?.deal?.regular.amount)
                     print("Document added with ID: \(userID + game.id)")
                 } catch {
                     print("Error adding document: \(error)")

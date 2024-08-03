@@ -461,14 +461,6 @@ class HomeViewController: UIViewController {
 
     func getShops() async -> [Item] {
         do {
-//            if Settings.shared.shops.isEmpty {
-//                print("Fetching shops")
-//                Settings.shared.shops = try await service.getShops()
-//            }
-
-//            let shops: [Shop] = Array(Settings.shared.shops
-//                .sorted { $0.deals > $1.deals }
-//                .prefix(7))
             let shops = try await service.getShops()
                 .sorted { $0.deals > $1.deals }
                 .prefix(7)
@@ -584,8 +576,6 @@ extension HomeViewController: UISearchResultsUpdating {
 extension HomeViewController: ResultsViewControllerDelegate {
     func resultsViewController(_ viewController: ResultsViewController, didSelectItem item: Item) {
         let detailViewController = GameDetailViewController(game: item.game!, dealItem: item.dealItem!)
-//        detailViewController.modalPresentationStyle = .currentContext
-//        present(detailViewController, animated: true)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
@@ -594,7 +584,10 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         let detailViewController = GameDetailViewController(game: item.game!, dealItem: item.dealItem!)
+        if let wishlistViewController = (tabBarController?.viewControllers?[2] as? UINavigationController)?.viewControllers[0] as? WishlistViewController {
+            detailViewController.delegate = wishlistViewController
+        }
+
         navigationController?.pushViewController(detailViewController, animated: true)
-//        present(detailViewController, animated: true)
     }
 }

@@ -112,7 +112,8 @@ class WishlistViewController: UIViewController {
                 .compactMap { try? $0.data(as: WishlistItem.self) }
             
             let items: [Item] = await getGames(gameIDs: wishlist.map { $0.gameID })
-            updateSnapshot(with: items)
+            let currentItems = dataSource.snapshot().itemIdentifiers
+            updateSnapshot(with: currentItems + items)
         } catch {
             print("Error loading wishlist: \(error)")
         }
@@ -123,7 +124,7 @@ class WishlistViewController: UIViewController {
         let currentItems = dataSource.snapshot().itemIdentifiers
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections([.wishlist])
-        snapshot.appendItems(currentItems + items, toSection: .wishlist)
+        snapshot.appendItems(items, toSection: .wishlist)
         dataSource.apply(snapshot)
     }
     
@@ -277,4 +278,41 @@ extension WishlistViewController: UICollectionViewDelegate {
             }
         }
     }
+}
+
+extension WishlistViewController: GameDetailViewControllerDelegate {
+    
+    func gameDetailViewController(_ viewController: GameDetailViewController, didWishlistGame game: Game, price: Double?) {
+        let gameInWishlist = dataSource.snapshot().itemIdentifiers.contains { $0.wishlistItem!.gameID == game.id }
+        guard let user,
+              !gameInWishlist 
+        else { return }
+        
+        Task {
+            guard let currentPrice = try? await service.getPrices(gameIDs: [game.id]).first,
+                  let cheapestDeal = currentPrice.deals.min(by: { $0.price.amount < $1.price.amount })
+            else { return }
+            
+            let item: Item = Item.wishlistItem(
+                WishlistItem(
+                    userID: user.uid,
+                    gameID: game.id,
+                    title: game.title,
+                    regularPrice: price,
+                    posterURL: game.assets?.banner400,
+                    deal: cheapestDeal
+                )
+            )
+            
+            let currentItems = dataSource.snapshot().itemIdentifiers
+            updateSnapshot(with: [item] + currentItems)
+            print("didWishlistGame: \(game.title)")
+        }
+    }
+    
+    func gameDetailViewController(_ viewController: GameDetailViewController, didUnwishlistGame game: Game) {
+        print("didUnwishlistGame: \(game.title)")
+    }
+    
+    
 }
