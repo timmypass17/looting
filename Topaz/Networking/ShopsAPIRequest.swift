@@ -7,21 +7,6 @@
 
 import Foundation
 
-//struct StoresAPIRequest: APIRequest {
-//    var urlRequest: URLRequest {
-//        let url = URL(string: "https://www.cheapshark.com/api/1.0/stores")!
-//        let request = URLRequest(url: url)
-//        return request
-//    }
-//    
-//    func decodeResponse(data: Data) throws -> [Store] {
-//        let decoder = JSONDecoder()
-//        let stores = try decoder.decode([Store].self, from: data)
-//        return stores
-//    }
-//}
-
-
 struct ShopsAPIRequest: APIRequest {
     var country: String
     

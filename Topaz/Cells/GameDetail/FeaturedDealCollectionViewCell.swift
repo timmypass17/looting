@@ -31,6 +31,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         label.font = .preferredFont(forTextStyle: .subheadline)
         label.textColor = UIColor.secondaryLabel
         label.setContentCompressionResistancePriority(.required, for: .vertical)
+        label.numberOfLines = 1
         return label
     }()
     
@@ -115,9 +116,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     func update(with game: Game, dealItem: DealItem) async {
         headlineLabel.text = "Trending Games"
         titleLabel.text = game.title
-        if let shop: Shop = Settings.shared.shops.first(where: { $0.id == dealItem.deal?.shop.id }) {
-            subTitleLabel.text = shop.title
-        }
+        subTitleLabel.text = game.tags.prefix(2).map { $0 }.joined(separator: ", ")
         
         discountView.update(cut: dealItem.deal!.cut)
         priceView.update(current: dealItem.deal!.price.amount, regular: dealItem.deal!.regular.amount)

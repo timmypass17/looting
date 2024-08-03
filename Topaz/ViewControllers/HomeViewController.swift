@@ -166,12 +166,13 @@ class HomeViewController: UIViewController {
 
                 return section
             case .medium:
+                // Note: We had to set different header/footer (bottom line) because we not centering automatically using .groupPagingCentered
                 let item = NSCollectionLayoutItem(
                     layoutSize:
                         NSCollectionLayoutSize(
                             widthDimension: .fractionalWidth(1),
                             heightDimension: .fractionalHeight(1)
-                            )
+                        )
                 )
                 
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4)
@@ -184,8 +185,32 @@ class HomeViewController: UIViewController {
                     count: 1
                 )
                 
+                
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+                
+                let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: NSCollectionLayoutSize(
+                        widthDimension: .fractionalWidth(1), // diff, was .92
+                        heightDimension: .estimated(44)
+                    ),
+                    elementKind: SupplementaryViewKind.header,
+                    alignment: .top
+                )
+                headerItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4)
+                
+                let lineItemHeight = 1 / layoutEnvironment.traitCollection.displayScale
+                let lineItemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1), // diff, was .92
+                    heightDimension: .absolute(lineItemHeight)
+                )
+
+                let bottomLineItem = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: lineItemSize,
+                    elementKind: SupplementaryViewKind.bottomLine,
+                    alignment: .bottom
+                )
+                
                 section.boundarySupplementaryItems = [headerItem, bottomLineItem]
                 
                 let availableLayoutWidth = layoutEnvironment.container.effectiveContentSize.width
@@ -194,6 +219,7 @@ class HomeViewController: UIViewController {
                 let halfOfRemainingWidth = remainingWidth / 2.0
                 let itemLeadingAndTrailingInset = halfOfRemainingWidth
 
+                // effects headers/footer too
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: itemLeadingAndTrailingInset, bottom: 20, trailing: itemLeadingAndTrailingInset)
                 
                 return section
@@ -231,7 +257,7 @@ class HomeViewController: UIViewController {
                 )
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-                // Because the category items should align with the centered groups above them, you'll need to dynamically calculate their insets
+                // Because the category items should align with the centered groups above them, you'll need to dynamically calculate their insets (other cells dont need to cause they centered automatically using .groupPagingCentered)
                 let availableLayoutWidth = layoutEnvironment.container.effectiveContentSize.width
                 let groupWidth = availableLayoutWidth * 0.92
                 let remainingWidth = availableLayoutWidth - groupWidth
@@ -285,8 +311,6 @@ class HomeViewController: UIViewController {
                 self.imageTasks[indexPath] = Task {
                     let isFourthItem = (indexPath.row + 1).isMultiple(of: 4)
                     await cell.update(title: itemIdentifier.game!.title, imageURL: itemIdentifier.game!.assets?.banner400, deal: itemIdentifier.dealItem?.deal, hideBottomLine: isFourthItem)
-
-//                    await cell.update(with: itemIdentifier.game!, itemIdentifier.dealItem!, hideBottomLine: isThirdItem)
                     self.imageTasks[indexPath] = nil
                 }
                 return cell
@@ -437,15 +461,17 @@ class HomeViewController: UIViewController {
 
     func getShops() async -> [Item] {
         do {
-            if Settings.shared.shops.isEmpty {
-                print("Fetching shops")
-                Settings.shared.shops = try await service.getShops()
-            }
+//            if Settings.shared.shops.isEmpty {
+//                print("Fetching shops")
+//                Settings.shared.shops = try await service.getShops()
+//            }
 
-            let shops: [Shop] = Array(Settings.shared.shops
+//            let shops: [Shop] = Array(Settings.shared.shops
+//                .sorted { $0.deals > $1.deals }
+//                .prefix(7))
+            let shops = try await service.getShops()
                 .sorted { $0.deals > $1.deals }
-                .prefix(7))
-                
+                .prefix(7)
             return shops.map { Item.shop($0) }
         } catch {
             return []

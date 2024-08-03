@@ -27,6 +27,17 @@ struct Game: Decodable, Hashable  {
     var players: PlayerStats?
     var isThereAnyDealURL: IsThereAnyDealURL
     
+    var rating: Double? {
+        if let steamReview = reviews.first(where: { $0.source == "Steam" }),
+           let steamScore = steamReview.score {
+            return Double(steamScore) / 20
+        } else if let otherScore = reviews.first?.score {
+            return Double(otherScore) / 20
+        }
+        
+        return nil
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)

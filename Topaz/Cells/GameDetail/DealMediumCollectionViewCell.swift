@@ -30,9 +30,25 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    let ratingView: HCSStarRatingView = {
+        let ratingView = HCSStarRatingView()
+        ratingView.minimumValue = 0
+        ratingView.maximumValue = 5
+        ratingView.tintColor = .white
+        ratingView.allowsHalfStars = true
+        ratingView.backgroundColor = .systemBackground
+        ratingView.widthAnchor.constraint(equalToConstant: 75).isActive = true
+        return ratingView
+    }()
+    
+    let ratingLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .caption1)
+        return label
+    }()
+    
     let tagsLabel: UILabel = {
         let label = UILabel()
-        label.text = "No tags"
         label.font = .preferredFont(forTextStyle: .caption1)
         label.textColor = .secondaryLabel
         label.numberOfLines = 1
@@ -58,19 +74,6 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let ratingView = HCSStarRatingView()
-        ratingView.value = 4.5
-        ratingView.minimumValue = 0
-        ratingView.maximumValue = 5
-        ratingView.tintColor = .white
-        ratingView.allowsHalfStars = true
-        ratingView.backgroundColor = .systemBackground
-        ratingView.widthAnchor.constraint(equalToConstant: 75).isActive = true
-        
-        let ratingLabel = UILabel()
-        ratingLabel.text = "4.5"
-        ratingLabel.font = .preferredFont(forTextStyle: .caption1)
-
         let ratingContainer = UIStackView()
         ratingContainer.axis = .horizontal
         ratingContainer.spacing = 8
@@ -100,9 +103,20 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
     
     func update(game: Game, dealItem: DealItem) {
         titleLabel.text = game.title.lowercased().capitalized
+        tagsLabel.text = game.tags.prefix(2).joined(separator: ", ")
+        if let rating = game.rating {
+            ratingLabel.text = String(format: "%.1f", rating)
+            ratingView.value = rating
+        } else {
+            ratingLabel.text = "0.0"
+        }
+        
         if game.tags.count > 0 {
             tagsLabel.text = game.tags.prefix(2).joined(separator: ", ")
+        } else {
+            tagsLabel.text = "No tags"
         }
+        
         discountPriceView.update(regular: dealItem.deal!.regular.amount, amount: dealItem.deal!.price.amount, cut: dealItem.deal!.cut)
         
         imageTask?.cancel()
