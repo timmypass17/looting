@@ -543,6 +543,14 @@ class HomeViewController: UIViewController {
             searchTask = nil
         }
     }
+    
+    private func showDetailView(game item: Item) {
+        let detailViewController = GameDetailViewController(game: item.game!, dealItem: item.dealItem!)
+        if let wishlistViewController = (tabBarController?.viewControllers?[2] as? UINavigationController)?.viewControllers[0] as? WishlistViewController {
+            detailViewController.delegate = wishlistViewController
+        }
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
 }
 
 extension HomeViewController: UISearchBarDelegate {
@@ -575,19 +583,13 @@ extension HomeViewController: UISearchResultsUpdating {
 
 extension HomeViewController: ResultsViewControllerDelegate {
     func resultsViewController(_ viewController: ResultsViewController, didSelectItem item: Item) {
-        let detailViewController = GameDetailViewController(game: item.game!, dealItem: item.dealItem!)
-        navigationController?.pushViewController(detailViewController, animated: true)
+        showDetailView(game: item)
     }
 }
 
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
-        let detailViewController = GameDetailViewController(game: item.game!, dealItem: item.dealItem!)
-        if let wishlistViewController = (tabBarController?.viewControllers?[2] as? UINavigationController)?.viewControllers[0] as? WishlistViewController {
-            detailViewController.delegate = wishlistViewController
-        }
-
-        navigationController?.pushViewController(detailViewController, animated: true)
+        showDetailView(game: item)
     }
 }

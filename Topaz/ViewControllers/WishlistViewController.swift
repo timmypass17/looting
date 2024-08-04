@@ -71,6 +71,7 @@ class WishlistViewController: UIViewController {
         configureDataSource() // provides cell
         
         // Don't use realtime listneers with pagination (tricky)
+        // - Complicated to maintain multible realtime listeners for each paginated items
         // Just use 1 time fetch and use swipe to refresh
         
         Auth.auth().addStateDidChangeListener { [self] auth, user in
@@ -97,6 +98,7 @@ class WishlistViewController: UIViewController {
             // Query to get first 10 games
             var query = db.collection("wishlist")
                 .whereField("userID", isEqualTo: user.uid)
+                .order(by: "createdAt", descending: true) // require composite index
                 .limit(to: 10)
             
             if let lastDocument = document {
@@ -281,7 +283,6 @@ extension WishlistViewController: UICollectionViewDelegate {
 }
 
 extension WishlistViewController: GameDetailViewControllerDelegate {
-    
     func gameDetailViewController(_ viewController: GameDetailViewController, didWishlistGame game: Game, price: Double?) {
         let gameInWishlist = dataSource.snapshot().itemIdentifiers.contains { $0.wishlistItem!.gameID == game.id }
         guard let user,
@@ -311,7 +312,13 @@ extension WishlistViewController: GameDetailViewControllerDelegate {
     }
     
     func gameDetailViewController(_ viewController: GameDetailViewController, didUnwishlistGame game: Game) {
-        print("didUnwishlistGame: \(game.title)")
+        let gameInWishlist = dataSource.snapshot().itemIdentifiers.contains { $0.wishlistItem!.gameID == game.id }
+        guard gameInWishlist else { return }
+        
+        var currentItems = dataSource.snapshot().itemIdentifiers
+        currentItems = currentItems.filter { $0.wishlistItem!.gameID != game.id }
+        updateSnapshot(with: currentItems)
+        print("didWishlistGame: \(game.title)")
     }
     
     
