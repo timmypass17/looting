@@ -97,14 +97,17 @@ class GameDetailViewController: UIViewController {
                 favoriteButton.isEnabled = true
                 
                 // maybe remove in viewwilldisappear when use preses back
-                listener = db.collection("wishlist").document(user.uid + game.id)
+                listener = db.collection("users")
+                    .document(user.uid)
+                    .collection("wishlist")
+                    .document(game.id)  // TODO: do game id's have to be unique across subcollections? (i.e. can 2 users have same gameID)
                     .addSnapshotListener { [self] documentSnapshot, error in
-                        guard let document = documentSnapshot else {
+                        guard let documentSnapshot else {
                             print("Error fetching document: \(error!)")
                             return
                         }
-                        
-                        if let wishlistItem = try? document.data(as: WishlistItem.self) {
+
+                        if let wishlistItem = try? documentSnapshot.data(as: WishlistItem.self) {
                             print("Current data: \(wishlistItem.title)")
                             favoriteButton.image = UIImage(systemName: "star.fill")
                             favoriteButtonIsSelected = true
@@ -190,7 +193,11 @@ class GameDetailViewController: UIViewController {
             
             if favoriteButtonIsSelected {
                 print("Remove \(game.title) from wishlist")
-                db.collection("wishlist").document(userID + game.id).delete()
+                db.collection("users")
+                    .document(userID)
+                    .collection("wishlist")
+                    .document(game.id)
+                    .delete()
                 delegate?.gameDetailViewController(self, didUnwishlistGame: game)
             } else {
                 print("Add \(game.title) to wishlist")
@@ -203,7 +210,12 @@ class GameDetailViewController: UIViewController {
                 )
                 
                 do {
-                    try db.collection("wishlist").document(userID + game.id).setData(from: wishlistItem)
+                    try db.collection("users")
+                        .document(userID)
+                        .collection("wishlist")
+                        .document(game.id)
+                        .setData(from: wishlistItem)    // creates/overwrites
+                    
                     delegate?.gameDetailViewController(self, didWishlistGame: game, price: dealItem?.deal?.regular.amount)
                     print("Document added with ID: \(userID + game.id)")
                 } catch {

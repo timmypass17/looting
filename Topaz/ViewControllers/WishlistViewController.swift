@@ -42,11 +42,12 @@ class WishlistViewController: UIViewController {
     var user: User?
     
     override func viewDidLoad() {
+        print("WishlistViewController viewDidLoad()")
         super.viewDidLoad()
         collectionView.delegate = self
 
         navigationItem.title = "Wishlist"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bell"), primaryAction: nil)
         
         button.addAction(didTapGoogleSignIn(), for: .touchUpInside)
         
@@ -95,14 +96,15 @@ class WishlistViewController: UIViewController {
         do {
             guard let user else { return }
             
-            // Query to get first 10 games
-            var query = db.collection("wishlist")
-                .whereField("userID", isEqualTo: user.uid)
+            // Query to get first 20 games
+            var query = db.collection("users")
+                .document(user.uid)
+                .collection("wishlist")
                 .order(by: "createdAt", descending: true) // require composite index
-                .limit(to: 10)
+                .limit(to: 20)
             
             if let lastDocument = document {
-                // Query to get 10 games after last document fetch
+                // Query to get 20 games after last document fetch
                 query = query
                     .start(afterDocument: lastDocument)
             }
@@ -114,6 +116,7 @@ class WishlistViewController: UIViewController {
                 .compactMap { try? $0.data(as: WishlistItem.self) }
             
             let items: [Item] = await getGames(gameIDs: wishlist.map { $0.gameID })
+            print("Got games: \(items.count)")
             let currentItems = dataSource.snapshot().itemIdentifiers
             updateSnapshot(with: currentItems + items)
         } catch {
@@ -123,7 +126,6 @@ class WishlistViewController: UIViewController {
     
     // Update the collection view snapshot
     private func updateSnapshot(with items: [Item]) {
-        let currentItems = dataSource.snapshot().itemIdentifiers
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections([.wishlist])
         snapshot.appendItems(items, toSection: .wishlist)
@@ -284,6 +286,7 @@ extension WishlistViewController: UICollectionViewDelegate {
 
 extension WishlistViewController: GameDetailViewControllerDelegate {
     func gameDetailViewController(_ viewController: GameDetailViewController, didWishlistGame game: Game, price: Double?) {
+        // datasource not init until user opens wishlist view. Should preload wishlist
         let gameInWishlist = dataSource.snapshot().itemIdentifiers.contains { $0.wishlistItem!.gameID == game.id }
         guard let user,
               !gameInWishlist 
