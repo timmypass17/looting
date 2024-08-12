@@ -254,6 +254,16 @@ class WishlistViewController: UIViewController {
             return []
         }
     }
+    
+    private func showDetailView(game item: Item) {
+        Task {
+            let game = try await service.getGame(id: item.wishlistItem!.gameID)
+            let dealItem = DealItem(id: item.wishlistItem!.gameID, title: item.wishlistItem!.title)
+            let detailViewController = GameDetailViewController(game: game, dealItem: dealItem)
+            detailViewController.delegate = self
+            navigationController?.pushViewController(detailViewController, animated: true)
+        }
+    }
 }
 
 extension WishlistViewController {
@@ -271,9 +281,14 @@ extension WishlistViewController {
 }
 
 extension WishlistViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
+        showDetailView(game: item)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if (indexPath.row == collectionView.numberOfItems(inSection: 0) - 1 ) {   //it's your last cell
-          //Load more data & reload your collection view
+            // Pagination
             print("Load more data \(indexPath.row)")
             Task {
                 if let lastDocument {
@@ -282,6 +297,7 @@ extension WishlistViewController: UICollectionViewDelegate {
             }
         }
     }
+    
 }
 
 extension WishlistViewController: GameDetailViewControllerDelegate {
@@ -323,6 +339,4 @@ extension WishlistViewController: GameDetailViewControllerDelegate {
         updateSnapshot(with: currentItems)
         print("didWishlistGame: \(game.title)")
     }
-    
-    
 }

@@ -14,7 +14,6 @@ struct WishlistItem: Codable, Hashable {
     var title: String
     var regularPrice: Double?
     var posterURL: String?
-//    var createdAt: Date
     var createdAt = FirebaseFirestore.Timestamp()
     var deal: Deal? // fetch price using api
 }

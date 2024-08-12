@@ -33,4 +33,13 @@ struct Settings {
             archiveJSON(value: newValue, key: "shops")
         }
     }
+    
+    var deviceToken: String {
+        get {
+            return unarchiveJSON(key: "deviceToken") ?? ""
+        }
+        set {
+            archiveJSON(value: newValue, key: "deviceToken")
+        }
+    }
 }

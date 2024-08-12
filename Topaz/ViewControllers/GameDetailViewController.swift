@@ -23,8 +23,8 @@ class GameDetailViewController: UIViewController {
         return tableView
     }()
     
-    let game: Game
-    let dealItem: DealItem?
+    var game: Game?
+    var dealItem: DealItem?
     var gameDetail: GameDetail?
     var deals: [Deal] = []
     var bestDeal: Deal?
@@ -35,11 +35,12 @@ class GameDetailViewController: UIViewController {
     var favoriteButton: UIBarButtonItem!
     var favoriteButtonIsSelected = false    // using barButtonItem.isSelected makes button highlight (ugly), can't disable highlight
     
-    let isThereAnyDealService =  IsThereAnyDealService()
+    let isThereAnyDealService = IsThereAnyDealService()
     let steamService = SteamWebService()
     
     var db = Firestore.firestore()
     var listener: ListenerRegistration?
+    var authListener: AuthStateDidChangeListenerHandle?
     
     weak var delegate: GameDetailViewControllerDelegate?
     
@@ -54,7 +55,8 @@ class GameDetailViewController: UIViewController {
             return self.rawValue
         }
     }
-        
+    
+    // TODO: Just use deal
     init(game: Game, dealItem: DealItem?) {
         self.game = game
         self.dealItem = dealItem
@@ -67,7 +69,7 @@ class GameDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = game.title
+        navigationItem.title = game?.title
         navigationItem.largeTitleDisplayMode = .never
         tableView.delegate = self   // not needed?
         tableView.dataSource = self
@@ -91,91 +93,114 @@ class GameDetailViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         
-        Auth.auth().addStateDidChangeListener { [self] auth, user in
-            if let user {
-                self.user = user
-                favoriteButton.isEnabled = true
-                
-                // maybe remove in viewwilldisappear when use preses back
-                listener = db.collection("users")
-                    .document(user.uid)
-                    .collection("wishlist")
-                    .document(game.id)  // TODO: do game id's have to be unique across subcollections? (i.e. can 2 users have same gameID)
-                    .addSnapshotListener { [self] documentSnapshot, error in
-                        guard let documentSnapshot else {
-                            print("Error fetching document: \(error!)")
-                            return
-                        }
-
-                        if let wishlistItem = try? documentSnapshot.data(as: WishlistItem.self) {
-                            print("Current data: \(wishlistItem.title)")
-                            favoriteButton.image = UIImage(systemName: "star.fill")
-                            favoriteButtonIsSelected = true
-                        } else {
-                            print("Document not found")
-                            favoriteButton.image = UIImage(systemName: "star")
-                            favoriteButtonIsSelected = false
-                        }
+        
+        authListener = Auth.auth().addStateDidChangeListener { [self] auth, user in
+            handleAuthState(user: user)
+        }
+        
+        
+        Task {
+            await loadAdditionalGameInfo()
+        }
+        
+        Task {
+            await loadPrices()
+        }
+        
+        Task {
+            await loadPriceOverview()
+        }
+    }
+    
+    func handleAuthState(user: User?) {
+        guard let game: Game else { return }
+        if let user {
+            self.user = user
+            favoriteButton.isEnabled = true
+            
+            // maybe remove in viewwilldisappear when use preses back
+            listener = db.collection("users")
+                .document(user.uid)
+                .collection("wishlist")
+                .document(game.id)
+                .addSnapshotListener { [self] documentSnapshot, error in
+                    guard let documentSnapshot else {
+                        print("Error fetching document: \(error!)")
+                        return
                     }
-            } else {
-                self.user = nil
-                favoriteButton.isEnabled = false
-                listener?.remove()
-            }
-        }
-        
-        Task {
-            do {
-                guard let steamID = game.steamID else { return }
-                gameDetail = try await steamService.getGameDetail(gameID: "\(steamID)")
-                tableView.reloadData()
-                
-                if let imageUrl = gameDetail?.background_raw {
-                    let backgroundView = BackgroundView()
-                    await backgroundView.setImage(url: URL(string: imageUrl)!)
-                    tableView.backgroundView = backgroundView
-                }
-            } catch {
-                print("Error fetching game detail: \(error)")
-            }
-        }
-        
-        Task {
-            do {
-                if let price = try await isThereAnyDealService.getPrices(gameIDs: [game.id]).first {
-                    deals = price.deals
-                    if let minCost = (deals.min { $0.price.amount < $1.price.amount })?.price.amount {
-                        // Get all deals with minCost
-                        let lowestDeals = deals.filter { $0.price.amount == minCost }
-                        // Use steam version if it exists
-                        if let steamDeal = lowestDeals.first(where: { $0.shop.name == "Steam" }) {
-                            bestDeal = steamDeal
-                        } else {
-                            // Choose first
-                            bestDeal = lowestDeals.first
-                        }
-                    }
-                    // Filter out best deal from list of deals
-                    deals = deals.filter { $0 != bestDeal }
-                    
-                    tableView.reloadSections(IndexSet(arrayLiteral: Section.price.rawValue, Section.allPrices.rawValue), with: .automatic)
-                }
-                
-            } catch {
-                print("Error fetching prices")
-            }
-        }
-        
-        Task {
-            do {
-                let priceOverview = try await isThereAnyDealService.getPriceOverview(gameIDs: [game.id])
-                historicDeal = priceOverview.prices.first?.lowest
-                tableView.reloadSections(IndexSet(arrayLiteral: Section.historic.rawValue), with: .automatic)
-            } catch {
-                print("Error fetching prices")
-            }
-        }
 
+                    if let wishlistItem = try? documentSnapshot.data(as: WishlistItem.self) {
+                        print("Current data: \(wishlistItem.title)")
+                        favoriteButton.image = UIImage(systemName: "star.fill")
+                        favoriteButtonIsSelected = true
+                    } else {
+                        print("Document not found")
+                        favoriteButton.image = UIImage(systemName: "star")
+                        favoriteButtonIsSelected = false
+                    }
+                }
+        } else {
+            self.user = nil
+            favoriteButton.isEnabled = false
+            listener?.remove()
+        }
+    }
+    
+    func loadAdditionalGameInfo() async {
+        guard let game else { return }
+
+        do {
+            guard let steamID = game.steamID else { return }
+            gameDetail = try await steamService.getGameDetail(gameID: "\(steamID)")
+            tableView.reloadData()
+            
+            if let imageUrl = gameDetail?.background_raw {
+                let backgroundView = BackgroundView()
+                await backgroundView.setImage(url: URL(string: imageUrl)!)
+                tableView.backgroundView = backgroundView
+            }
+        } catch {
+            print("Error fetching game detail: \(error)")
+        }
+    }
+    
+    func loadPrices() async {
+        guard let game else { return }
+
+        do {
+            if let price = try await isThereAnyDealService.getPrices(gameIDs: [game.id]).first {
+                deals = price.deals
+                if let minCost = (deals.min { $0.price.amount < $1.price.amount })?.price.amount {
+                    // Get all deals with minCost
+                    let lowestDeals = deals.filter { $0.price.amount == minCost }
+                    // Use steam version if it exists
+                    if let steamDeal = lowestDeals.first(where: { $0.shop.name == "Steam" }) {
+                        bestDeal = steamDeal
+                    } else {
+                        // Choose first
+                        bestDeal = lowestDeals.first
+                    }
+                }
+                // Filter out best deal from list of deals
+                deals = deals.filter { $0 != bestDeal }
+                
+                tableView.reloadSections(IndexSet(arrayLiteral: Section.price.rawValue, Section.allPrices.rawValue), with: .automatic)
+            }
+            
+        } catch {
+            print("Error fetching prices")
+        }
+    }
+    
+    func loadPriceOverview() async {
+        guard let game else { return }
+        do {
+            let priceOverview = try await isThereAnyDealService.getPriceOverview(gameIDs: [game.id])
+            historicDeal = priceOverview.prices.first?.lowest
+            tableView.reloadSections(IndexSet(arrayLiteral: Section.historic.rawValue), with: .automatic)
+        } catch {
+            print("Error fetching prices: \(error)")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -186,7 +211,8 @@ class GameDetailViewController: UIViewController {
     
     @objc func didTapWishlistButton() -> UIAction {
         return UIAction { [self] _ in
-            guard let userID = Auth.auth().currentUser?.uid else {
+            guard let game,
+                  let userID = Auth.auth().currentUser?.uid else {
                 print("User is not authenticated")
                 return
             }
@@ -252,7 +278,7 @@ extension GameDetailViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
+        guard let game, let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
         switch section {
         case .banner:
             let cell = tableView.dequeueReusableCell(withIdentifier: BannerTableViewCell.reuseIdentifier, for: indexPath) as! BannerTableViewCell

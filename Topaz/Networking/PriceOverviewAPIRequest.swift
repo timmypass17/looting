@@ -13,6 +13,7 @@ struct PriceOverviewAPIRequest: APIRequest {
     var country: String = "US"
     var shops: [Int] = []
     var vouchers: Bool = true
+//    var nondeals: Bool
     
     var urlRequest: URLRequest {
         var urlComponents = URLComponents(string: "https://api.isthereanydeal.com/games/overview/v2")!
