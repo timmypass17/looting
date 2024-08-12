@@ -69,6 +69,8 @@ class WishlistViewController: UIViewController {
         
         collectionView.register(DealSmallCollectionViewCell.self, forCellWithReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier)
         collectionView.collectionViewLayout = createLayout()
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addAction(didSwipeToRefresh(), for: .valueChanged)
         configureDataSource() // provides cell
         
         // Don't use realtime listneers with pagination (tricky)
@@ -93,6 +95,7 @@ class WishlistViewController: UIViewController {
     
     // Generic method to load wishlist data
     private func loadWishlist(after document: DocumentSnapshot? = nil) async {
+        print(#function)
         do {
             guard let user else { return }
             
@@ -121,6 +124,19 @@ class WishlistViewController: UIViewController {
             updateSnapshot(with: currentItems + items)
         } catch {
             print("Error loading wishlist: \(error)")
+        }
+    }
+    
+    func didSwipeToRefresh() -> UIAction {
+        print(#function)
+        return UIAction { [self] _ in
+            Task {
+                collectionView.refreshControl?.beginRefreshing()
+                updateSnapshot(with: [])
+                lastDocument = nil
+                await loadWishlist()
+                collectionView.refreshControl?.endRefreshing()
+            }
         }
     }
     
