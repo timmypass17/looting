@@ -36,10 +36,15 @@ class WishlistViewController: UIViewController {
     }()
     
     let service = IsThereAnyDealService()
+    var wishlistTask: Task<Void, Never>? = nil
+    var detailTask: Task<Void, Never>? = nil
     var imageTasks: [IndexPath: Task<Void, Never>] = [:]
+    var priceTask: Task<Void, Never>? = nil
     
     var lastDocument: QueryDocumentSnapshot?
     var user: User?
+    
+    var isNotificationBellOn = false
     
     override func viewDidLoad() {
         print("WishlistViewController viewDidLoad()")
@@ -47,7 +52,7 @@ class WishlistViewController: UIViewController {
         collectionView.delegate = self
 
         navigationItem.title = "Wishlist"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bell"), primaryAction: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bell"), primaryAction: didTapNotificationButton())
         
         button.addAction(didTapGoogleSignIn(), for: .touchUpInside)
         
@@ -82,13 +87,84 @@ class WishlistViewController: UIViewController {
                 self.user = user
                 button.isHidden = true
                 
-                Task {
+                wishlistTask?.cancel()
+                wishlistTask = Task {
                     await loadWishlist()
+                    wishlistTask = nil
                 }
 
             } else {
                 button.isHidden = false
                 clearDatasource()
+            }
+        }
+
+        updateUI()
+    }
+    
+    // All UI pain here
+    func updateUI() {
+        updateBellButton()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        Task {
+            await showNotificationPermissionAlert()
+        }
+        
+        UNUserNotificationCenter.current().getNotificationSettings { [self] settings in
+            switch settings.authorizationStatus {
+            case .authorized:
+                isNotificationBellOn = true
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "bell")
+            default:
+                isNotificationBellOn = false
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "bell.slash")
+            }
+        }
+    }
+    
+    func showNotificationPermissionAlert() async {
+        do {
+            try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
+            UIApplication.shared.registerForRemoteNotifications()   // required, doesn't matter if user said yes or no just call it
+            updateUI()
+        } catch {
+            print("Error requesting notifcations: \(error)")
+        }
+    }
+    
+    func didTapNotificationButton() -> UIAction {
+        return UIAction { [self] _ in
+            let title: String
+            let message: String
+            
+            if isNotificationBellOn {
+                title = "Disable Notifications for Game Sales"
+                message = "Open the Settings app, tap on Notifications, and choose our app to turn off notifications."
+            } else {
+                title = "Enable Notifications for Game Sales"
+                message = "Open the Settings app, tap on Notifications, and choose our app to enable notifications for your wishlist games. Get notified every Friday at 19:00 UTC for weekly games on sale in your wishlist."
+            }
+            
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+    }
+    
+    func updateBellButton() {
+        UNUserNotificationCenter.current().getNotificationSettings { [self] settings in
+            switch settings.authorizationStatus {
+            case .authorized:
+                print("Authorized")
+                isNotificationBellOn = true
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "bell")
+            default:
+                print("Not authorized")
+                isNotificationBellOn = false
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "bell.slash")
             }
         }
     }
@@ -128,13 +204,14 @@ class WishlistViewController: UIViewController {
     }
     
     func didSwipeToRefresh() -> UIAction {
-        print(#function)
         return UIAction { [self] _ in
-            Task {
+            wishlistTask?.cancel()
+            wishlistTask = Task {
                 collectionView.refreshControl?.beginRefreshing()
                 updateSnapshot(with: [])
                 lastDocument = nil
                 await loadWishlist()
+                wishlistTask = nil
                 collectionView.refreshControl?.endRefreshing()
             }
         }
@@ -272,12 +349,19 @@ class WishlistViewController: UIViewController {
     }
     
     private func showDetailView(game item: Item) {
-        Task {
-            let game = try await service.getGame(id: item.wishlistItem!.gameID)
-            let dealItem = DealItem(id: item.wishlistItem!.gameID, title: item.wishlistItem!.title)
-            let detailViewController = GameDetailViewController(game: game, dealItem: dealItem)
-            detailViewController.delegate = self
-            navigationController?.pushViewController(detailViewController, animated: true)
+        detailTask?.cancel()
+        detailTask = Task {
+            do {
+                let game = try await service.getGame(id: item.wishlistItem!.gameID)
+                let dealItem = DealItem(id: item.wishlistItem!.gameID, title: item.wishlistItem!.title)
+                let detailViewController = GameDetailViewController(game: game, dealItem: dealItem)
+                detailViewController.delegate = self
+                navigationController?.pushViewController(detailViewController, animated: true)
+                detailTask = nil
+            } catch {
+                print("Error fetching game: \(error)")
+                detailTask = nil
+            }
         }
     }
 }
@@ -306,9 +390,11 @@ extension WishlistViewController: UICollectionViewDelegate {
         if (indexPath.row == collectionView.numberOfItems(inSection: 0) - 1 ) {   //it's your last cell
             // Pagination
             print("Load more data \(indexPath.row)")
-            Task {
+            wishlistTask?.cancel()
+            wishlistTask = Task {
                 if let lastDocument {
                     await loadWishlist(after: lastDocument)
+                    wishlistTask = nil
                 }
             }
         }
@@ -324,7 +410,8 @@ extension WishlistViewController: GameDetailViewControllerDelegate {
               !gameInWishlist 
         else { return }
         
-        Task {
+        priceTask?.cancel()
+        priceTask = Task {
             guard let currentPrice = try? await service.getPrices(gameIDs: [game.id]).first,
                   let cheapestDeal = currentPrice.deals.min(by: { $0.price.amount < $1.price.amount })
             else { return }
@@ -343,6 +430,7 @@ extension WishlistViewController: GameDetailViewControllerDelegate {
             let currentItems = dataSource.snapshot().itemIdentifiers
             updateSnapshot(with: [item] + currentItems)
             print("didWishlistGame: \(game.title)")
+            priceTask = nil
         }
     }
     

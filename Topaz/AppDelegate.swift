@@ -33,17 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //  - call after FirebaseApp.configure()
         Messaging.messaging().delegate = self
         
+        // Required for FCM https://firebase.google.com/docs/cloud-messaging/ios/first-message
         UNUserNotificationCenter.current().delegate = self
-
-        Task {
-            do {
-                try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
-            } catch {
-                print("Error requesting notifcations: \(error)")
-            }
-        }
-
-        application.registerForRemoteNotifications()
         
         return true
     }
@@ -83,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    
+
 }
 
 extension AppDelegate: MessagingDelegate {
