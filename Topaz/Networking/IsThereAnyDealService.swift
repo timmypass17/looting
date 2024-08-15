@@ -71,3 +71,11 @@ extension IsThereAnyDealService {
         case trendingAsc = "trending"
     }
 }
+
+struct GamerPowerService {
+    func getGiveaways(platform: String? = nil, type: SearchScope = .all, sortBy: GiveawaySortOption = .popularity) async throws -> [Giveaway] {
+        let request = GiveawayAPIRequest(platform: platform, type: type, sortBy: sortBy)
+        let giveaways: [Giveaway] = try await sendRequest(request)
+        return giveaways
+    }
+}

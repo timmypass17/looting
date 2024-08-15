@@ -1856,3 +1856,44 @@ let priceOverviewJSON =
     "bundles": []
 }
 """.data(using: .utf8)!
+
+let giveawaysJSON =
+"""
+[
+    {
+        "id": 2629,
+        "title": "ConflictCraft 2 (IndieGala) Giveaway",
+        "worth": "$9.99",
+        "thumbnail": "https://www.gamerpower.com/offers/1/65315b4eae7d3.jpg",
+        "image": "https://www.gamerpower.com/offers/1b/65315b4eae7d3.jpg",
+        "description": "Download ConflictCraft 2 - Game of the Year Edition for free on IndieGala! Conflict Craft 2 is a indie strategy game with 53 levels to complete.",
+        "instructions": "1. Login into your free IndieGala account.me.",
+        "open_giveaway_url": "https://www.gamerpower.com/open/conflictcraft-2-indiegala-giveaway",
+        "published_date": "2024-08-09 09:19:48",
+        "type": "Game",
+        "platforms": "PC, DRM-Free",
+        "end_date": "N/A",
+        "users": 3600,
+        "status": "Active",
+        "gamerpower_url": "https://www.gamerpower.com/conflictcraft-2-indiegala-giveaway",
+        "open_giveaway": "https://www.gamerpower.com/open/conflictcraft-2-indiegala-giveaway"
+    },
+    {
+        "id": 2910,
+        "title": "Apex Legends: Conduit Free Unlock Bundle Giveaway",
+        "worth": "N/A",
+        "thumbnail": "https://www.gamerpower.com/offers/1/66b4e1107df1d.jpg",
+        "image": "https://www.gamerpower.com/offers/1b/66b4e1107df1d.jpg",
+        "description": ".",
+        "open_giveaway_url": "https://www.gamerpower.com/open/apex-legends-conduit-free-unlock-bundle-giveaway",
+        "published_date": "2024-08-08 11:15:28",
+        "type": "DLC",
+        "platforms": "PC, Epic Games Store",
+        "end_date": "2024-08-15 23:59:00",
+        "users": 1170,
+        "status": "Active",
+        "gamerpower_url": "https://www.gamerpower.com/apex-legends-conduit-free-unlock-bundle-giveaway",
+        "open_giveaway": "https://www.gamerpower.com/open/apex-legends-conduit-free-unlock-bundle-giveaway"
+    }
+]
+""".data(using: .utf8)!

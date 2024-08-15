@@ -46,7 +46,7 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Stores"
+        navigationItem.title = "Game Deals"
         navigationController?.navigationBar.prefersLargeTitles = true
         collectionView.delegate = self
 

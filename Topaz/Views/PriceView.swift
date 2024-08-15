@@ -86,6 +86,13 @@ class PriceView: UIView {
             priceLabel.textColor = .white
         }
     }
+    
+    func update(giveaway: Giveaway) {
+        priceLabel.text = "Free"
+        secondaryPriceLabel.attributedText = giveaway.worth.strikethrough
+        secondaryPriceLabel.textColor = .secondaryLabel
+        secondaryPriceLabel.isHidden = giveaway.worth == "N/A"
+    }
 }
 
 extension Double {

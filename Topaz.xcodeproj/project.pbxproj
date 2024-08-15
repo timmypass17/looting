@@ -18,7 +18,6 @@
 		320205D52C23AD0A00725DC5 /* WishlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205D42C23AD0A00725DC5 /* WishlistViewController.swift */; };
 		320205E72C23BD9A00725DC5 /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E62C23BD9A00725DC5 /* Shop.swift */; };
 		320205E92C23BDFC00725DC5 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E82C23BDFC00725DC5 /* TestData.swift */; };
-		320205F02C23C1A500725DC5 /* CheapSharkAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205DF2C23BCE500725DC5 /* CheapSharkAPITests.swift */; };
 		320205F12C23C1F900725DC5 /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E62C23BD9A00725DC5 /* Shop.swift */; };
 		320205F62C23C43100725DC5 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F52C23C43100725DC5 /* APIRequest.swift */; };
 		320205F82C23C48600725DC5 /* ShopsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205F72C23C48600725DC5 /* ShopsAPIRequest.swift */; };
@@ -31,11 +30,18 @@
 		320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
 		320206042C24D98400725DC5 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206002C24C16700725DC5 /* Deal.swift */; };
 		321C5D242C5D891C006919C0 /* HCSStarRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 321C5D222C5D891C006919C0 /* HCSStarRatingView.m */; };
+		321C5D262C6BFAB8006919C0 /* GamerPowerAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321C5D252C6BFAB8006919C0 /* GamerPowerAPITests.swift */; };
+		321C5D282C6BFADA006919C0 /* Giveaway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321C5D272C6BFADA006919C0 /* Giveaway.swift */; };
 		32324E4E2C476844009D3E74 /* GoogleSignInHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32324E4D2C476844009D3E74 /* GoogleSignInHeaderView.swift */; };
 		3248352B2C3C874E00130324 /* PriceOverviewAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */; };
 		3248352D2C3C877A00130324 /* PriceOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352C2C3C877A00130324 /* PriceOverview.swift */; };
 		3248352E2C3C8A3D00130324 /* PriceOverviewAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */; };
 		3248352F2C3C8A4500130324 /* PriceOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248352C2C3C877A00130324 /* PriceOverview.swift */; };
+		324D93502C6C13DE00FC919F /* GiveawayAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D934F2C6C13DE00FC919F /* GiveawayAPIRequest.swift */; };
+		324D93512C6C17D500FC919F /* Giveaway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321C5D272C6BFADA006919C0 /* Giveaway.swift */; };
+		324D93522C6C180400FC919F /* GiveawayAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D934F2C6C13DE00FC919F /* GiveawayAPIRequest.swift */; };
+		324D93542C6C244D00FC919F /* GiveawayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D93532C6C244D00FC919F /* GiveawayCollectionViewCell.swift */; };
+		324D93562C6D39F900FC919F /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D93552C6D39F900FC919F /* TagView.swift */; };
 		32961DFB2C24DE9E00B2BB9C /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
 		32961E072C2A1E5A00B2BB9C /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */; };
 		32961E092C2A1E8B00B2BB9C /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E082C2A1E8B00B2BB9C /* LineView.swift */; };
@@ -121,7 +127,6 @@
 		320205D22C23ACFB00725DC5 /* GiveawayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiveawayViewController.swift; sourceTree = "<group>"; };
 		320205D42C23AD0A00725DC5 /* WishlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistViewController.swift; sourceTree = "<group>"; };
 		320205DD2C23BCE500725DC5 /* TopazTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopazTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		320205DF2C23BCE500725DC5 /* CheapSharkAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheapSharkAPITests.swift; sourceTree = "<group>"; };
 		320205E62C23BD9A00725DC5 /* Shop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; };
 		320205E82C23BDFC00725DC5 /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		320205F52C23C43100725DC5 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
@@ -133,9 +138,14 @@
 		321C5D212C5D891C006919C0 /* Topaz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Topaz-Bridging-Header.h"; sourceTree = "<group>"; };
 		321C5D222C5D891C006919C0 /* HCSStarRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCSStarRatingView.m; sourceTree = "<group>"; };
 		321C5D232C5D891C006919C0 /* HCSStarRatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCSStarRatingView.h; sourceTree = "<group>"; };
+		321C5D252C6BFAB8006919C0 /* GamerPowerAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamerPowerAPITests.swift; sourceTree = "<group>"; };
+		321C5D272C6BFADA006919C0 /* Giveaway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Giveaway.swift; sourceTree = "<group>"; };
 		32324E4D2C476844009D3E74 /* GoogleSignInHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInHeaderView.swift; sourceTree = "<group>"; };
 		3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceOverviewAPIRequest.swift; sourceTree = "<group>"; };
 		3248352C2C3C877A00130324 /* PriceOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceOverview.swift; sourceTree = "<group>"; };
+		324D934F2C6C13DE00FC919F /* GiveawayAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiveawayAPIRequest.swift; sourceTree = "<group>"; };
+		324D93532C6C244D00FC919F /* GiveawayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiveawayCollectionViewCell.swift; sourceTree = "<group>"; };
+		324D93552C6D39F900FC919F /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		32961E082C2A1E8B00B2BB9C /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		32961E0A2C2A2ED200B2BB9C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -269,6 +279,7 @@
 				32A66CC22C372CCE00919F2F /* GameDetail.swift */,
 				3248352C2C3C877A00130324 /* PriceOverview.swift */,
 				32B66CFD2C585F8F00A33612 /* WishlistItem.swift */,
+				321C5D272C6BFADA006919C0 /* Giveaway.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -276,10 +287,10 @@
 		320205DE2C23BCE500725DC5 /* TopazTests */ = {
 			isa = PBXGroup;
 			children = (
-				320205DF2C23BCE500725DC5 /* CheapSharkAPITests.swift */,
 				320205E82C23BDFC00725DC5 /* TestData.swift */,
 				32961E0E2C2B398800B2BB9C /* IsThereAnyDealAPITests.swift */,
 				32A66CC62C37362200919F2F /* SteamWebAPITests.swift */,
+				321C5D252C6BFAB8006919C0 /* GamerPowerAPITests.swift */,
 			);
 			path = TopazTests;
 			sourceTree = "<group>";
@@ -299,6 +310,7 @@
 				32A66CC02C3724CD00919F2F /* PopularAPIRequest.swift */,
 				32A66CC42C372E6700919F2F /* GameDetailAPIRequest.swift */,
 				3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */,
+				324D934F2C6C13DE00FC919F /* GiveawayAPIRequest.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -314,6 +326,7 @@
 				32D3D4BC2C47486A0036E964 /* StoreCollectionViewCell.swift */,
 				32D3D4B42C47486A0036E964 /* VoucherTableViewCell.swift */,
 				32D3D4D12C4751B00036E964 /* SignOutTableViewCell.swift */,
+				324D93532C6C244D00FC919F /* GiveawayCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -337,6 +350,7 @@
 				32961E212C2D0FC100B2BB9C /* DiscountView.swift */,
 				32961E252C2DE7CF00B2BB9C /* DiscountPriceView.swift */,
 				321C5D212C5D891C006919C0 /* Topaz-Bridging-Header.h */,
+				324D93552C6D39F900FC919F /* TagView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -510,16 +524,20 @@
 				320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */,
 				320205B22C23A45800725DC5 /* AppDelegate.swift in Sources */,
 				3248352D2C3C877A00130324 /* PriceOverview.swift in Sources */,
+				324D93562C6D39F900FC919F /* TagView.swift in Sources */,
+				324D93542C6C244D00FC919F /* GiveawayCollectionViewCell.swift in Sources */,
 				320205FF2C24BB1700725DC5 /* Item.swift in Sources */,
 				320205D52C23AD0A00725DC5 /* WishlistViewController.swift in Sources */,
 				32D3D4CB2C47486B0036E964 /* StoreCollectionViewCell.swift in Sources */,
 				320205F82C23C48600725DC5 /* ShopsAPIRequest.swift in Sources */,
+				324D93502C6C13DE00FC919F /* GiveawayAPIRequest.swift in Sources */,
 				320205CF2C23AC8400725DC5 /* SettingsViewController.swift in Sources */,
 				32961E132C2B6C1600B2BB9C /* SearchItem.swift in Sources */,
 				320205F62C23C43100725DC5 /* APIRequest.swift in Sources */,
 				320205B42C23A45800725DC5 /* SceneDelegate.swift in Sources */,
 				32961E0B2C2A2ED200B2BB9C /* Settings.swift in Sources */,
 				320206012C24C16700725DC5 /* Deal.swift in Sources */,
+				321C5D282C6BFADA006919C0 /* Giveaway.swift in Sources */,
 				32D3D4C42C47486B0036E964 /* VoucherTableViewCell.swift in Sources */,
 				32D3D4BE2C47486B0036E964 /* SignInTableViewCell.swift in Sources */,
 				32961E262C2DE7CF00B2BB9C /* DiscountPriceView.swift in Sources */,
@@ -538,7 +556,8 @@
 				320205FC2C23C85500725DC5 /* ShopsAPIRequest.swift in Sources */,
 				32961E2D2C32368500B2BB9C /* Price.swift in Sources */,
 				320205F12C23C1F900725DC5 /* Shop.swift in Sources */,
-				320205F02C23C1A500725DC5 /* CheapSharkAPITests.swift in Sources */,
+				324D93512C6C17D500FC919F /* Giveaway.swift in Sources */,
+				324D93522C6C180400FC919F /* GiveawayAPIRequest.swift in Sources */,
 				320205E92C23BDFC00725DC5 /* TestData.swift in Sources */,
 				32961DFB2C24DE9E00B2BB9C /* DealsAPIRequest.swift in Sources */,
 				32A66CC72C37362200919F2F /* SteamWebAPITests.swift in Sources */,
@@ -555,6 +574,7 @@
 				3248352F2C3C8A4500130324 /* PriceOverview.swift in Sources */,
 				32961E172C2B6F5300B2BB9C /* SearchAPIRequest.swift in Sources */,
 				32A66CCC2C37373D00919F2F /* GameDetailAPIRequest.swift in Sources */,
+				321C5D262C6BFAB8006919C0 /* GamerPowerAPITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
