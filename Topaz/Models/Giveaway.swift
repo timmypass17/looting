@@ -16,7 +16,7 @@ struct Giveaway: Decodable, Hashable {
     var type: GiveawayType
     var platforms: String
     var publishedDate: String
-    var endDate: String
+    var endDate: Date?
     var users: Int
     var giveawayUrl: String
     
@@ -32,6 +32,31 @@ struct Giveaway: Decodable, Hashable {
         case endDate = "end_date"
         case users
         case giveawayUrl = "open_giveaway"
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.title = try container.decode(String.self, forKey: .title)
+        self.description = try container.decode(String.self, forKey: .description)
+        self.worth = try container.decode(String.self, forKey: .worth)
+        self.instructions = try container.decodeIfPresent(String.self, forKey: .instructions)
+        self.thumbnail = try container.decode(String.self, forKey: .thumbnail)
+        self.type = try container.decode(GiveawayType.self, forKey: .type)
+        self.platforms = try container.decode(String.self, forKey: .platforms)
+        self.publishedDate = try container.decode(String.self, forKey: .publishedDate)
+        let endDateString = try container.decode(String.self, forKey: .endDate)
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+
+        // Convert the string to a Date object
+        if let date = dateFormatter.date(from: endDateString) {
+            self.endDate = date
+        }
+        
+        self.users = try container.decode(Int.self, forKey: .users)
+        self.giveawayUrl = try container.decode(String.self, forKey: .giveawayUrl)
     }
 }
 

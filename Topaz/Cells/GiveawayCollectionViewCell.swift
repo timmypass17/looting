@@ -71,11 +71,19 @@ class GiveawayCollectionViewCell: UICollectionViewCell {
         stackView.axis = .horizontal
         return stackView
     }()
-        
+    
+    let endTagView: TagView = {
+        let tagView = TagView()
+        tagView.tagLabel.font = .systemFont(ofSize: 11, weight: .semibold)
+        tagView.translatesAutoresizingMaskIntoConstraints = false
+        return tagView
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(vstack)
-        
+        addSubview(endTagView)
+                
         hstack.addArrangedSubview(tagView)
         hstack.addArrangedSubview(UIView())
         hstack.addArrangedSubview(originalPriceLabel)
@@ -98,6 +106,11 @@ class GiveawayCollectionViewCell: UICollectionViewCell {
             vstack.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             vstack.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor)
         ])
+        
+        NSLayoutConstraint.activate([
+            endTagView.topAnchor.constraint(equalTo: vstack.topAnchor, constant: 4),
+            endTagView.leadingAnchor.constraint(equalTo: vstack.leadingAnchor, constant: 4)
+        ])
     }
     
     required init?(coder: NSCoder) {
@@ -107,10 +120,10 @@ class GiveawayCollectionViewCell: UICollectionViewCell {
     func update(with giveaway: Giveaway) async {
         titleLabel.text = giveaway.title
         descriptionLabel.text = giveaway.description
-        
         originalPriceLabel.attributedText = giveaway.worth.strikethrough
         originalPriceLabel.isHidden = giveaway.worth == "N/A"
-        tagView.update(with: giveaway.type)
+        tagView.update(type: giveaway.type)
+        endTagView.update(endDate: giveaway.endDate, dateType: .normal)
         
         let imageRequest = ImageAPIRequest(url: URL(string: giveaway.thumbnail)!)
         if let image = try? await sendRequest(imageRequest) {

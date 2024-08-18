@@ -69,11 +69,18 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    let endTagView: TagView = {
+        let tagView = TagView()
+        tagView.tagLabel.font = .preferredFont(forTextStyle: .caption1)
+        tagView.translatesAutoresizingMaskIntoConstraints = false
+        return tagView
+    }()
+
     var imageTask: Task<Void, Never>?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+                
         let ratingContainer = UIStackView()
         ratingContainer.axis = .horizontal
         ratingContainer.spacing = 8
@@ -88,12 +95,18 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         stackView.addArrangedSubview(discountPriceView)
         
         addSubview(stackView)
+        addSubview(endTagView)
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            endTagView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 4),
+            endTagView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 4)
         ])
     }
     
@@ -122,6 +135,7 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         imageTask?.cancel()
         imageView.image = nil
         
+        // TODO: move task outside
         imageTask = Task {
             if let assets = game.assets {
                 let imageRequest = ImageAPIRequest(url: URL(string: assets.boxart)!)
@@ -131,6 +145,11 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
                 
                 imageTask = nil
             }
+        }
+        
+        endTagView.update(endDate: dealItem.deal?.endDate, dateType: .short)
+        if game.title.lowercased() == "cyberpunk 2077" {
+            print("\(game.title) is showing deal: \(endTagView.tagLabel.text)")
         }
     }
     

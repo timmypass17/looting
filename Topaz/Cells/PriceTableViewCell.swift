@@ -122,8 +122,8 @@ class PriceTableViewCell: UITableViewCell {
         regularLabel.attributedText = deal.regular.amount.discountString()
         priceLabel.text = deal.price.amount.priceString()
         
-        if let expirationDateString = deal.expiry,
-           let formattedDateString = formatISODateString(expirationDateString) {
+        if let endDate = deal.endDate,
+           let formattedDateString = formatISODate(endDate) {
             expireLabel.text = formattedDateString
             expireLabel.isHidden = false
             expireImageView.isHidden = false
@@ -156,7 +156,7 @@ class PriceTableViewCell: UITableViewCell {
             priceLabel.textColor = .label
         }
         
-        if deal.expiry == nil && deal.storeLow?.amount == nil {
+        if deal.endDate == nil && deal.storeLow?.amount == nil {
             if container.arrangedSubviews.contains(dateHStack) {
                 container.removeArrangedSubview(dateHStack) // does not remove stack's children (either remove children explicity, or hide them)
                 expireLabel.isHidden = true
@@ -171,16 +171,16 @@ class PriceTableViewCell: UITableViewCell {
         }
     }
     
-    func formatISODateString(_ dateString: String) -> String? {
-        // Create ISO8601DateFormatter to parse the input ISO 8601 date string
-        let isoDateFormatter = ISO8601DateFormatter()
-        isoDateFormatter.formatOptions = [.withInternetDateTime]
-        
-        // Parse the ISO 8601 date string to a Date object
-        guard let date = isoDateFormatter.date(from: dateString) else {
-            return nil
-        }
-        
+    func formatISODate(_ date: Date) -> String? {
+//        // Create ISO8601DateFormatter to parse the input ISO 8601 date string
+//        let isoDateFormatter = ISO8601DateFormatter()
+//        isoDateFormatter.formatOptions = [.withInternetDateTime]
+//        
+//        // Parse the ISO 8601 date string to a Date object
+//        guard let date = isoDateFormatter.date(from: dateString) else {
+//            return nil
+//        }
+//        
         // Create a DateFormatter for the desired output format
         let customDateFormatter = DateFormatter()
         customDateFormatter.dateFormat = "MMMM d @ h:mma"

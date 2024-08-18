@@ -74,6 +74,17 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    let endTagView: TagView = {
+        let tagView = TagView()
+        tagView.tagLabel.font = .preferredFont(forTextStyle: .subheadline)
+        NSLayoutConstraint.activate([
+            tagView.imageView.heightAnchor.constraint(equalToConstant: 30),
+            tagView.imageView.widthAnchor.constraint(equalToConstant: 30)
+        ])
+        tagView.translatesAutoresizingMaskIntoConstraints = false
+        return tagView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -95,6 +106,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         stackView.addArrangedSubview(imageView)
         
         addSubview(stackView)
+        addSubview(endTagView)
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor),
@@ -106,6 +118,11 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             discountView.topAnchor.constraint(equalTo: priceView.topAnchor),
             discountView.bottomAnchor.constraint(equalTo: priceView.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            endTagView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 4),
+            endTagView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 4)
         ])
     }
     
@@ -129,5 +146,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
                 imageView.image = image
             }
         }
+        
+        endTagView.update(endDate: dealItem.deal?.endDate, dateType: .normal)
     }
 }

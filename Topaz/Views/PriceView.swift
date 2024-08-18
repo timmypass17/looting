@@ -12,14 +12,12 @@ class PriceView: UIView {
     let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-//        stackView.alignment = .trailing   // this causes view to stretch for some reason
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
     let secondaryPriceLabel: UILabel = {
         let label = UILabel()
-//        label.textColor = .secondaryLabel
         label.font = .preferredFont(forTextStyle: .caption1)
         label.textAlignment = .right    // Fixed!
         label.setContentCompressionResistancePriority(.required, for: .horizontal)   // never compress text to ...
@@ -28,10 +26,9 @@ class PriceView: UIView {
     
     let priceLabel: UILabel = {
         let label = UILabel()
-//        label.textColor = .accent
         label.font = .systemFont(ofSize: 16, weight: .bold)
         label.textAlignment = .right    // Fixed!
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)   // never compress text to ...
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
     }()
     
@@ -56,11 +53,11 @@ class PriceView: UIView {
     }
     
     func update(current: Double?, regular: Double) {
-        let isFree = regular == 0
-        if isFree {
+        let isAlwaysFree = regular == 0
+        if isAlwaysFree {
             secondaryPriceLabel.isHidden = true
             priceLabel.text = "Free"
-            priceLabel.textColor = .white
+            priceLabel.textColor = .label
             priceLabel.isHidden = false
             return
         }
@@ -68,22 +65,28 @@ class PriceView: UIView {
         guard let current else {
             secondaryPriceLabel.isHidden = true
             priceLabel.text = regular.priceString()
-            priceLabel.textColor = .white
+            priceLabel.textColor = .label
             return
         }
         
         let isOnSale = current < regular
         if isOnSale {
-            secondaryPriceLabel.attributedText = regular.discountString()
-            secondaryPriceLabel.isHidden = false
-            secondaryPriceLabel.textColor = .secondaryLabel
+            let isNowFree = current == 0
+            if isNowFree {
+                priceLabel.text = "Free"
+                priceLabel.textColor = .label
+            } else {
+                priceLabel.text = current.priceString()
+                priceLabel.textColor = .accent
+            }
             
-            priceLabel.text = current.priceString()
-            priceLabel.textColor = .accent
+            secondaryPriceLabel.attributedText = regular.discountString()
+            secondaryPriceLabel.textColor = .secondaryLabel
+            secondaryPriceLabel.isHidden = false
         } else {
             secondaryPriceLabel.isHidden = true
             priceLabel.text = current.priceString()
-            priceLabel.textColor = .white
+            priceLabel.textColor = .label
         }
     }
     

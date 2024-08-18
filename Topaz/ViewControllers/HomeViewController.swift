@@ -11,7 +11,7 @@ import UIKit
 // TODO: Game deals aren't using lowest deal
 class HomeViewController: UIViewController {
 
-    var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+//    var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
     
     var searchController: UISearchController!
     private var resultsViewController: ResultsViewController!
@@ -39,6 +39,7 @@ class HomeViewController: UIViewController {
     var sections = [Section]()
     let service = IsThereAnyDealService()
     
+    var loadGameTasks: Task <Void, Never>? = nil
     var searchTask: Task<Void, Never>? = nil
     var imageTasks: [IndexPath: Task<Void, Never>] = [:]
     
@@ -63,13 +64,21 @@ class HomeViewController: UIViewController {
         
         resultsViewController.loadViewIfNeeded()    // make sure viewDidLoad() is called so datasource is initalized
         
+//        collectionView.refreshControl = UIRefreshControl()
+//        collectionView.refreshControl?.addAction(didSwipeToRefresh(), for: .valueChanged)
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), primaryAction: nil, menu: nil)
 
         setupCollectionView()
         
-        Task {
-            try await fetchAndLoadGames()
+        loadGameTasks = Task {
+            do {
+                try await fetchAndLoadGames()
+            } catch {
+                print("Error loading game tasks")
+            }
         }
+        
     }
 
     private func setupCollectionView() {
@@ -96,17 +105,6 @@ class HomeViewController: UIViewController {
         collectionView.collectionViewLayout = createLayout()
 
         configureDataSource() // provides cell
-
-        // MARK: Snapshot Definition
-        snapshot.appendSections([
-            .featured,
-            .medium("Most Popular"),
-            .medium("Most Waitlisted"),
-            .standard("Steam"),
-            .standard("GOG"),
-            .shops
-        ])
-        sections = snapshot.sectionIdentifiers
     }
 
     func createLayout() -> UICollectionViewLayout {
@@ -508,7 +506,20 @@ class HomeViewController: UIViewController {
                 try Task.checkCancellation()
                 return (Section.shops, await self.getShops())
             }
+            
+            var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
 
+            snapshot.appendSections([
+                .featured,
+                .medium("Most Popular"),
+                .medium("Most Waitlisted"),
+                .standard("Steam"),
+                .standard("GOG"),
+                .shops
+            ])
+            
+            sections = snapshot.sectionIdentifiers
+            
             // Process items as we get them
             for try await (section, items) in group {
                 try Task.checkCancellation()
@@ -551,6 +562,30 @@ class HomeViewController: UIViewController {
         }
         navigationController?.pushViewController(detailViewController, animated: true)
     }
+    
+//    func didSwipeToRefresh() -> UIAction {
+//        return UIAction { [self] _ in
+//            loadGameTasks?.cancel()
+//            loadGameTasks = Task {
+//                do {
+//                    // When working with UICollectionViewDiffableDataSource, you update snapshot and apply changes to datasource
+//                    collectionView.refreshControl?.beginRefreshing()
+//                    await clearData()
+//                    try await fetchAndLoadGames()
+//                    collectionView.refreshControl?.endRefreshing()
+//
+//                } catch {
+//                    print("Error loading game tasks")
+//                }
+//                loadGameTasks = nil
+//            }
+//        }
+//    }
+    
+//    func clearData() async {
+//        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+//        await dataSource.apply(snapshot)
+//    }
 }
 
 extension HomeViewController: UISearchBarDelegate {

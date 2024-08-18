@@ -211,8 +211,8 @@ class WishlistViewController: UIViewController {
                 updateSnapshot(with: [])
                 lastDocument = nil
                 await loadWishlist()
-                wishlistTask = nil
                 collectionView.refreshControl?.endRefreshing()
+                wishlistTask = nil
             }
         }
     }

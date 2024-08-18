@@ -9,13 +9,27 @@ import UIKit
 
 class TagView: UIView {
 
-    let label: UILabel = {
+    let tagLabel: UILabel = {
         let label = UILabel()
-        label.text = "Game"
-        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = .preferredFont(forTextStyle: .caption1)
-        label.font = .systemFont(ofSize: 11, weight: .semibold)
         return label
+    }()
+    
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "clock")
+        imageView.contentMode = .scaleAspectFit
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalToConstant:15),
+            imageView.widthAnchor.constraint(equalToConstant: 15)
+        ])
+        return imageView
+    }()
+    
+    let container: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     override init(frame: CGRect) {
@@ -23,14 +37,14 @@ class TagView: UIView {
         layer.cornerRadius = 4
         layer.masksToBounds = true
         
-        addSubview(label)
+        container.addArrangedSubview(tagLabel)
+        addSubview(container)
         
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
-
+            container.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+            container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
         ])
         
     }
@@ -39,24 +53,87 @@ class TagView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(with type: GiveawayType) {
+    func update(type: GiveawayType) {
+        tagLabel.font = .systemFont(ofSize: 11, weight: .semibold)
         switch type {
         case .game:
-            label.text = "Game"
+            tagLabel.text = "Game"
             backgroundColor = .systemGreen.withAlphaComponent(0.25)
-            label.textColor = .systemGreen
+            tagLabel.textColor = .systemGreen
         case .dlc:
-            label.text = "Loot"
+            tagLabel.text = "Loot"
             backgroundColor = .systemBlue.withAlphaComponent(0.25)
-            label.textColor = .systemBlue
+            tagLabel.textColor = .systemBlue
         case .earlyAccess:
-            label.text = "Early Access"
+            tagLabel.text = "Early Access"
             backgroundColor = .systemPurple.withAlphaComponent(0.25)
-            label.textColor = .systemPurple
+            tagLabel.textColor = .systemPurple
         case .other:
-            label.text = "Other"
+            tagLabel.text = "Other"
             backgroundColor = .systemGray.withAlphaComponent(0.25)
-            label.textColor = .systemGray
+            tagLabel.textColor = .systemGray
+        }
+    }
+    
+    func update(endDate: Date?, dateType: DateType) {
+        guard let endDate,
+              .now < endDate
+        else {
+            isHidden = true
+            return
+        }
+        
+        isHidden = false
+        let dateDiffParts = Calendar.current.dateComponents([.day, .hour, .minute], from: .now, to: endDate)
+        if let daysLeft = dateDiffParts.day, daysLeft > 0 {
+            tagLabel.text = "\(daysLeft) \(dateType.daysString())"
+        } else if let hoursLeft = dateDiffParts.hour, hoursLeft > 0 {
+            tagLabel.text = "\(hoursLeft) \(dateType.hoursString())"
+        } else if let minutesLeft = dateDiffParts.minute, minutesLeft > 0 {
+            tagLabel.text = "\(minutesLeft) \(dateType.minutesString())"
+        }
+        
+        backgroundColor = .black.withAlphaComponent(0.75)
+        tagLabel.textColor = .white
+        
+        container.insertArrangedSubview(imageView, at: 0)   // doesn nothing if already inserted
+        container.setCustomSpacing(4, after: imageView)
+    }
+    
+    enum DateType {
+        case normal, short, abbrev
+        
+        func daysString() -> String {
+            switch self {
+            case .normal:
+                return "days"
+            case .short:
+                return "days"
+            case .abbrev:
+                return "d"
+            }
+        }
+        
+        func hoursString() -> String {
+            switch self {
+            case .normal:
+                return "hours"
+            case .short:
+                return "hrs"
+            case .abbrev:
+                return "h"
+            }
+        }
+        
+        func minutesString() -> String {
+            switch self {
+            case .normal:
+                return "mins"
+            case .short:
+                return "mins"
+            case .abbrev:
+                return "mins"
+            }
         }
     }
 }

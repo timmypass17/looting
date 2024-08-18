@@ -34,10 +34,10 @@ struct Deal: Codable, Hashable {
     var drm: [DRM] // Digital Rights Management (e.g. Steam)
     var platforms: [Platform]
     var timestamp: String
-    var expiry: String?
+    var endDate: Date?
     var url: String? // url to shop
     
-    enum CodingKeys: CodingKey {
+    enum CodingKeys: String, CodingKey {
         case shop
         case price
         case regular
@@ -48,7 +48,7 @@ struct Deal: Codable, Hashable {
         case drm
         case platforms
         case timestamp
-        case expiry
+        case endDate = "expiry"
         case url
     }
     
@@ -64,7 +64,15 @@ struct Deal: Codable, Hashable {
         self.drm = (try? container.decodeIfPresent([DRM].self, forKey: .drm)) ?? []
         self.platforms = (try? container.decodeIfPresent([Platform].self, forKey: .platforms)) ?? []
         self.timestamp = try container.decode(String.self, forKey: .timestamp)
-        self.expiry = try container.decodeIfPresent(String.self, forKey: .expiry)
+        let endDateString = try container.decodeIfPresent(String.self, forKey: .endDate)
+        
+        // Create a DateFormatter instance
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        if let endDateString, let endDate = dateFormatter.date(from: endDateString) {
+            self.endDate = endDate
+        }
+        
         self.url = try container.decodeIfPresent(String.self, forKey: .url)
     }
 }
