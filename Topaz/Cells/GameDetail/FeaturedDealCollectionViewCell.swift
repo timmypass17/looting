@@ -41,10 +41,13 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true    // for crop
         imageView.backgroundColor = .placeholderText
+        imageView.tintColor = .secondaryLabel
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalToConstant: 230)
+        ])
         return imageView
     }()
     
@@ -71,11 +74,18 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     let priceContainer: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
+        stackView.spacing = 10
         return stackView
     }()
     
-    let endTagView: TagView = {
-        let tagView = TagView()
+    let priceVStack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        return stackView
+    }()
+    
+    let endTagView: TimeRemainingTag = {
+        let tagView = TimeRemainingTag()
         tagView.tagLabel.font = .preferredFont(forTextStyle: .subheadline)
         NSLayoutConstraint.activate([
             tagView.imageView.heightAnchor.constraint(equalToConstant: 30),
@@ -91,16 +101,15 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         vstack.addArrangedSubview(titleLabel)
         vstack.addArrangedSubview(subTitleLabel)
         
+        priceContainer.addArrangedSubview(discountView)
+        priceContainer.addArrangedSubview(priceView)
+                
         hstack.addArrangedSubview(vstack)
         hstack.addArrangedSubview(UIView())
-        
-        hstack.addArrangedSubview(discountView)
-        hstack.setCustomSpacing(10, after: discountView)
-        hstack.addArrangedSubview(priceView)
+        hstack.addArrangedSubview(priceContainer)
                 
         stackView.addArrangedSubview(headlineLabel)
         stackView.addArrangedSubview(hstack)
-
         stackView.setCustomSpacing(10, after: hstack)
 
         stackView.addArrangedSubview(imageView)
@@ -143,8 +152,15 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         if let assets = game.assets {
             let imageRequest = ImageAPIRequest(url: URL(string: assets.banner600)!)
             if let image = try? await sendRequest(imageRequest) {
+                imageView.contentMode = .scaleAspectFill
                 imageView.image = image
+            } else {
+                imageView.contentMode = .scaleAspectFit
+                imageView.image = UIImage(systemName: "photo")
             }
+        } else {
+            imageView.contentMode = .scaleAspectFit
+            imageView.image = UIImage(systemName: "photo")
         }
         
         endTagView.update(endDate: dealItem.deal?.endDate, dateType: .normal)

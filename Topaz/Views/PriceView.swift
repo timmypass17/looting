@@ -5,6 +5,8 @@
 //  Created by Timmy Nguyen on 6/26/24.
 //
 
+// TODO: Make discounted text (crossed out) semi bold
+//  - Change tags to use opaque version
 import UIKit
 
 class PriceView: UIView {

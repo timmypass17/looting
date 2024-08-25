@@ -13,10 +13,11 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
 
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .placeholderText
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
+        imageView.tintColor = .secondaryLabel
+
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: 200)
         ])
@@ -69,8 +70,8 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    let endTagView: TagView = {
-        let tagView = TagView()
+    let endTagView: TimeRemainingTag = {
+        let tagView = TimeRemainingTag()
         tagView.tagLabel.font = .preferredFont(forTextStyle: .caption1)
         tagView.translatesAutoresizingMaskIntoConstraints = false
         return tagView
@@ -114,7 +115,7 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(game: Game, dealItem: DealItem) {
+    func update(game: Game, dealItem: DealItem) async {
         titleLabel.text = game.title.lowercased().capitalized
         tagsLabel.text = game.tags.prefix(2).joined(separator: ", ")
         if let rating = game.rating {
@@ -135,19 +136,23 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         imageTask?.cancel()
         imageView.image = nil
         
-        // TODO: move task outside
-        imageTask = Task {
-            if let assets = game.assets {
-                let imageRequest = ImageAPIRequest(url: URL(string: assets.boxart)!)
-                if let image = try? await sendRequest(imageRequest) {
-                    imageView.image = image
-                }
-                
-                imageTask = nil
+        if let assets = game.assets {
+            let imageRequest = ImageAPIRequest(url: URL(string: assets.boxart)!)
+            if let image = try? await sendRequest(imageRequest) {
+                imageView.contentMode = .scaleAspectFill
+                imageView.image = image
+            } else {
+                imageView.contentMode = .scaleAspectFit
+                imageView.image = UIImage(systemName: "photo")
             }
+            
+        } else {
+            imageView.contentMode = .scaleAspectFit
+            imageView.image = UIImage(systemName: "photo")
         }
         
         endTagView.update(endDate: dealItem.deal?.endDate, dateType: .short)
+//        
         if game.title.lowercased() == "cyberpunk 2077" {
             print("\(game.title) is showing deal: \(endTagView.tagLabel.text)")
         }

@@ -7,74 +7,31 @@
 
 import UIKit
 
-class TagView: UIView {
-
-    let tagLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "clock")
-        imageView.contentMode = .scaleAspectFit
-        NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalToConstant:15),
-            imageView.widthAnchor.constraint(equalToConstant: 15)
-        ])
-        return imageView
-    }()
-    
-    let container: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        layer.cornerRadius = 4
-        layer.masksToBounds = true
-        
-        container.addArrangedSubview(tagLabel)
-        addSubview(container)
-        
-        NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
-            container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
-        ])
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+class GiveawayTypeTag: TagView {
     func update(type: GiveawayType) {
-        tagLabel.font = .systemFont(ofSize: 11, weight: .semibold)
+        tagLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         switch type {
         case .game:
             tagLabel.text = "Game"
-            backgroundColor = .systemGreen.withAlphaComponent(0.25)
-            tagLabel.textColor = .systemGreen
+            backgroundColor = .accent.withAlphaComponent(0.25)
+            tagLabel.textColor = .accent
         case .dlc:
             tagLabel.text = "Loot"
-            backgroundColor = .systemBlue.withAlphaComponent(0.25)
-            tagLabel.textColor = .systemBlue
-        case .earlyAccess:
-            tagLabel.text = "Early Access"
             backgroundColor = .systemPurple.withAlphaComponent(0.25)
             tagLabel.textColor = .systemPurple
+        case .earlyAccess:
+            tagLabel.text = "Early Access"
+            backgroundColor = .red.withAlphaComponent(0.25)
+            tagLabel.textColor = .red
         case .other:
             tagLabel.text = "Other"
             backgroundColor = .systemGray.withAlphaComponent(0.25)
             tagLabel.textColor = .systemGray
         }
     }
-    
+}
+
+class TimeRemainingTag: TagView {
     func update(endDate: Date?, dateType: DateType) {
         guard let endDate,
               .now < endDate
@@ -94,7 +51,7 @@ class TagView: UIView {
         }
         
         backgroundColor = .black.withAlphaComponent(0.75)
-        tagLabel.textColor = .white
+//        tagLabel.textColor = .white
         
         container.insertArrangedSubview(imageView, at: 0)   // doesn nothing if already inserted
         container.setCustomSpacing(4, after: imageView)
@@ -135,5 +92,53 @@ class TagView: UIView {
                 return "mins"
             }
         }
+    }
+}
+
+class TagView: UIView {
+
+    let tagLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "clock")
+        imageView.tintColor = .label
+        imageView.contentMode = .scaleAspectFit
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalToConstant:15),
+            imageView.widthAnchor.constraint(equalToConstant: 15)
+        ])
+        return imageView
+    }()
+    
+    let container: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        layer.cornerRadius = 4
+        layer.masksToBounds = true
+        
+        container.addArrangedSubview(tagLabel)
+        addSubview(container)
+        
+        NSLayoutConstraint.activate([
+            container.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+            container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+        ])
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

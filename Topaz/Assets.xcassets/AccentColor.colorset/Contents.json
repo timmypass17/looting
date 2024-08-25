@@ -2,7 +2,7 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "universal",
+        "platform" : "watchos",
         "reference" : "systemOrangeColor"
       },
       "idiom" : "universal"

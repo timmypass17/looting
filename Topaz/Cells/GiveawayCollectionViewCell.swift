@@ -51,7 +51,7 @@ class GiveawayCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    let tagView = TagView()
+    let tagView = GiveawayTypeTag()
     
     let originalPriceLabel: UILabel = {
         let label = UILabel()
@@ -72,8 +72,8 @@ class GiveawayCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    let endTagView: TagView = {
-        let tagView = TagView()
+    let endTagView: TimeRemainingTag = {
+        let tagView = TimeRemainingTag()
         tagView.tagLabel.font = .systemFont(ofSize: 11, weight: .semibold)
         tagView.translatesAutoresizingMaskIntoConstraints = false
         return tagView

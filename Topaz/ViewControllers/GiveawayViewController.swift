@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class GiveawayViewController: UIViewController {
 
@@ -36,7 +37,7 @@ class GiveawayViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Giveaway"
+        navigationItem.title = "Live Giveaways"
         navigationController?.navigationBar.prefersLargeTitles = true
         
         navigationItem.searchController = searchController
@@ -48,7 +49,7 @@ class GiveawayViewController: UIViewController {
         searchController.searchBar.placeholder = "Filter by title"
         
         collectionView.keyboardDismissMode = .onDrag
-
+        collectionView.delegate = self
         
         view.addSubview(collectionView)
 
@@ -88,8 +89,6 @@ class GiveawayViewController: UIViewController {
                 )
         )
 
-//        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
-
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1/2),
@@ -100,8 +99,6 @@ class GiveawayViewController: UIViewController {
         )
 
         let section = NSCollectionLayoutSection(group: group)
-
-//        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 20, trailing: 0)
 
         let layout = UICollectionViewCompositionalLayout(section: section)
         
@@ -143,6 +140,17 @@ extension GiveawayViewController: UISearchResultsUpdating {
         }
         
         updateSnapshot(with: filteredItems)
+    }
+}
+
+extension GiveawayViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
+        let config = SFSafariViewController.Configuration()
+        config.entersReaderIfAvailable = true
+
+        let vc = SFSafariViewController(url: URL(string: item.giveawayUrl)!, configuration: config)
+        present(vc, animated: true)
     }
 }
 

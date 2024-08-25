@@ -11,15 +11,15 @@ class StoreCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "StoreCollectionViewCell"
     
-    let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.cornerRadius = 6
-        imageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        imageView.backgroundColor = .placeholderText
-        return imageView
-    }()
-    
+//    let imageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.layer.cornerRadius = 6
+//        imageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        imageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+//        imageView.backgroundColor = .placeholderText
+//        return imageView
+//    }()
+//    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
@@ -54,7 +54,7 @@ class StoreCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        stackView.addArrangedSubview(imageView)
+//        stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(dealCountLabel)
         

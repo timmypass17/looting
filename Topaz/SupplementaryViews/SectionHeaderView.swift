@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SectionHeaderViewDelegate: AnyObject {
+    func sectionHeaderView(_ sender: SectionHeaderView, didTapSeeAllButton: Bool)
+}
+
 class SectionHeaderView: UICollectionReusableView {
     
     static let reuseIdentifier = "SectionHeaderView"
@@ -16,7 +20,7 @@ class SectionHeaderView: UICollectionReusableView {
         stackView.axis = .horizontal
         stackView.distribution = .fill
         stackView.alignment = .center
-        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -32,17 +36,18 @@ class SectionHeaderView: UICollectionReusableView {
         let button = UIButton()
         button.setTitle("See All", for: .normal)
         button.setTitleColor(.accent, for: .normal)
-//        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         button.setContentHuggingPriority(.required, for: .horizontal)
-        
         return button
     }()
     
+    weak var delegate: SectionHeaderViewDelegate?
+    var section: Int?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+                
         addSubview(stackView)
+        
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
@@ -52,6 +57,8 @@ class SectionHeaderView: UICollectionReusableView {
         
         stackView.addArrangedSubview(label)
         stackView.addArrangedSubview(seeAllButton)
+        
+        seeAllButton.addAction(didTapSeeAllButton(), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -60,5 +67,11 @@ class SectionHeaderView: UICollectionReusableView {
     
     func setTitle(_ title: String) {
         label.text = title
+    }
+    
+    func didTapSeeAllButton() -> UIAction {
+        return UIAction { _ in
+            self.delegate?.sectionHeaderView(self, didTapSeeAllButton: true)
+        }
     }
 }

@@ -10,8 +10,12 @@ import UIKit
 // TODO: Add discount percent to banner (ex. -%50) with white text black bg or steam but orange
 // TODO: Game deals aren't using lowest deal
 class HomeViewController: UIViewController {
-
-//    var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+    
+    var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout()) // dummy
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
     
     var searchController: UISearchController!
     private var resultsViewController: ResultsViewController!
@@ -28,12 +32,6 @@ class HomeViewController: UIViewController {
         static let topLine = "topLine"
         static let bottomLine = "bottomLine"
     }
-
-    var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout()) // dummy
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
 
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     var sections = [Section]()
@@ -58,16 +56,14 @@ class HomeViewController: UIViewController {
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Search Games By Title"
         searchController.showsSearchResultsController = true // Always show the search result controller even when search is empty
+//        searchController.hidesNavigationBarDuringPresentation = false
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
         
         resultsViewController.loadViewIfNeeded()    // make sure viewDidLoad() is called so datasource is initalized
-        
-//        collectionView.refreshControl = UIRefreshControl()
-//        collectionView.refreshControl?.addAction(didSwipeToRefresh(), for: .valueChanged)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), primaryAction: nil, menu: nil)
+
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), primaryAction: nil, menu: nil)
 
         setupCollectionView()
         
@@ -148,8 +144,13 @@ class HomeViewController: UIViewController {
             switch section {
             case .featured:
                 // MARK: Promoted Section Layout
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let item = NSCollectionLayoutItem(
+                    layoutSize:
+                        NSCollectionLayoutSize(
+                            widthDimension: .fractionalWidth(1),
+                            heightDimension: .fractionalHeight(1)
+                        )
+                )
                 item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4)
 
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.92), heightDimension: .absolute(300))
@@ -178,7 +179,7 @@ class HomeViewController: UIViewController {
                 let group = NSCollectionLayoutGroup.horizontal(
                     layoutSize: NSCollectionLayoutSize(
                         widthDimension: .fractionalWidth(1/3),
-                        heightDimension: .absolute(300)), // 300
+                        heightDimension: .absolute(300)),
                     repeatingSubitem: item,
                     count: 1
                 )
@@ -235,11 +236,11 @@ class HomeViewController: UIViewController {
                 let group = NSCollectionLayoutGroup.vertical(
                     layoutSize: NSCollectionLayoutSize(
                         widthDimension: .fractionalWidth(0.92),
-                        heightDimension: .absolute(200)),
+                        heightDimension: .absolute(60 * 4)), // 200 (200 / 4)
                     repeatingSubitem: item,
                     count: 4
                 )
-
+                
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .groupPagingCentered
                 section.boundarySupplementaryItems = [headerItem, bottomLineItem]
@@ -301,7 +302,10 @@ class HomeViewController: UIViewController {
                 return cell
             case .medium:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DealMediumCollectionViewCell.reuseIdentifier, for: indexPath) as! DealMediumCollectionViewCell
-                cell.update(game: itemIdentifier.game!, dealItem: itemIdentifier.dealItem!)
+                self.imageTasks[indexPath]?.cancel()
+                self.imageTasks[indexPath] = Task {
+                    await cell.update(game: itemIdentifier.game!, dealItem: itemIdentifier.dealItem!)
+                }
                 return cell
             case .standard:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier, for: indexPath) as! DealSmallCollectionViewCell
@@ -326,7 +330,10 @@ class HomeViewController: UIViewController {
             switch kind {
             case SupplementaryViewKind.header:
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: SupplementaryViewKind.header, withReuseIdentifier: SectionHeaderView.reuseIdentifier, for: indexPath) as! SectionHeaderView
-
+                
+                headerView.delegate = self
+                headerView.section = indexPath.section
+                
                 let section = self.sections[indexPath.section]
                 let sectionName: String
                 switch section {
@@ -399,7 +406,7 @@ class HomeViewController: UIViewController {
     
     func getMostWaitlisted() async -> [Item] {
         do {
-            let waitlist: [Stat] = try await self.service.getMostWaitlist()
+            let waitlist: [Stat] = try await service.getMostWaitlist()
             let games = await self.getGames(gameIDs: waitlist.map { $0.id })
             return games
         } catch {
@@ -410,7 +417,7 @@ class HomeViewController: UIViewController {
     
     func getMostPopular() async -> [Item] {
         do {
-            let popular: [Stat] = try await self.service.getPopular()
+            let popular: [Stat] = try await service.getPopular()
             let games = await self.getGames(gameIDs: popular.map { $0.id })
             return games
         } catch {
@@ -562,30 +569,6 @@ class HomeViewController: UIViewController {
         }
         navigationController?.pushViewController(detailViewController, animated: true)
     }
-    
-//    func didSwipeToRefresh() -> UIAction {
-//        return UIAction { [self] _ in
-//            loadGameTasks?.cancel()
-//            loadGameTasks = Task {
-//                do {
-//                    // When working with UICollectionViewDiffableDataSource, you update snapshot and apply changes to datasource
-//                    collectionView.refreshControl?.beginRefreshing()
-//                    await clearData()
-//                    try await fetchAndLoadGames()
-//                    collectionView.refreshControl?.endRefreshing()
-//
-//                } catch {
-//                    print("Error loading game tasks")
-//                }
-//                loadGameTasks = nil
-//            }
-//        }
-//    }
-    
-//    func clearData() async {
-//        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-//        await dataSource.apply(snapshot)
-//    }
 }
 
 extension HomeViewController: UISearchBarDelegate {
@@ -625,6 +608,44 @@ extension HomeViewController: ResultsViewControllerDelegate {
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
-        showDetailView(game: item)
+        switch item {
+        case .game(_, _):
+            showDetailView(game: item)
+        case .shop(let shop):
+            let detailListViewController = DetailListViewController()
+            detailListViewController.title = shop.title
+            detailListViewController.section = sections[indexPath.section]
+            detailListViewController.shopID = shop.id
+            navigationController?.pushViewController(detailListViewController, animated: true)
+        }
+    }
+}
+
+extension HomeViewController: SectionHeaderViewDelegate {
+    func sectionHeaderView(_ sender: SectionHeaderView, didTapSeeAllButton: Bool) {
+        guard let title = sender.label.text,
+              let sectionIndex = sender.section
+        else { return }
+        
+        let section = self.sections[sectionIndex]
+        switch section {
+        case .featured:
+            break
+        case .medium(let name):
+            let detailListViewController = DetailListViewController()
+            detailListViewController.title = name
+            detailListViewController.section = section
+            navigationController?.pushViewController(detailListViewController, animated: true)
+        case .standard(let name):
+            let detailListViewController = DetailListViewController()
+            detailListViewController.title = name
+            detailListViewController.section = section
+            navigationController?.pushViewController(detailListViewController, animated: true)
+        case .shops:
+            let shopsViewController = ShopsViewController()
+            navigationController?.pushViewController(shopsViewController, animated: true)
+            break
+        }
+
     }
 }

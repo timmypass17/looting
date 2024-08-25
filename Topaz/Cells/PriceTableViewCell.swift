@@ -31,7 +31,7 @@ class PriceTableViewCell: UITableViewCell {
     
     var expireImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "clock"))
-        
+        imageView.tintColor = .label
         imageView.contentMode = .scaleAspectFit
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.tintColor = .secondaryLabel
@@ -39,7 +39,7 @@ class PriceTableViewCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 15),  // Set the desired width
-            imageView.heightAnchor.constraint(equalToConstant: 15) // Set the desired height
+            imageView.heightAnchor.constraint(equalToConstant: 15)  // Set the desired height
         ])
         return imageView
     }()

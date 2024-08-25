@@ -42,6 +42,9 @@
 		324D93522C6C180400FC919F /* GiveawayAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D934F2C6C13DE00FC919F /* GiveawayAPIRequest.swift */; };
 		324D93542C6C244D00FC919F /* GiveawayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D93532C6C244D00FC919F /* GiveawayCollectionViewCell.swift */; };
 		324D93562C6D39F900FC919F /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D93552C6D39F900FC919F /* TagView.swift */; };
+		324D93582C752F1600FC919F /* DetailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D93572C752F1600FC919F /* DetailListViewController.swift */; };
+		324D935A2C768F2F00FC919F /* ShopsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D93592C768F2F00FC919F /* ShopsViewController.swift */; };
+		324D935C2C76B19B00FC919F /* GameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D935B2C76B19B00FC919F /* GameCollectionViewCell.swift */; };
 		32961DFB2C24DE9E00B2BB9C /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
 		32961E072C2A1E5A00B2BB9C /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */; };
 		32961E092C2A1E8B00B2BB9C /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E082C2A1E8B00B2BB9C /* LineView.swift */; };
@@ -146,6 +149,9 @@
 		324D934F2C6C13DE00FC919F /* GiveawayAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiveawayAPIRequest.swift; sourceTree = "<group>"; };
 		324D93532C6C244D00FC919F /* GiveawayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiveawayCollectionViewCell.swift; sourceTree = "<group>"; };
 		324D93552C6D39F900FC919F /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
+		324D93572C752F1600FC919F /* DetailListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailListViewController.swift; sourceTree = "<group>"; };
+		324D93592C768F2F00FC919F /* ShopsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopsViewController.swift; sourceTree = "<group>"; };
+		324D935B2C76B19B00FC919F /* GameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCollectionViewCell.swift; sourceTree = "<group>"; };
 		32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		32961E082C2A1E8B00B2BB9C /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		32961E0A2C2A2ED200B2BB9C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -262,6 +268,8 @@
 				320205D42C23AD0A00725DC5 /* WishlistViewController.swift */,
 				32961E272C2E2A7C00B2BB9C /* ResultsViewController.swift */,
 				32A66CCD2C373F5200919F2F /* GameDetailViewController.swift */,
+				324D93572C752F1600FC919F /* DetailListViewController.swift */,
+				324D93592C768F2F00FC919F /* ShopsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -327,6 +335,7 @@
 				32D3D4B42C47486A0036E964 /* VoucherTableViewCell.swift */,
 				32D3D4D12C4751B00036E964 /* SignOutTableViewCell.swift */,
 				324D93532C6C244D00FC919F /* GiveawayCollectionViewCell.swift */,
+				324D935B2C76B19B00FC919F /* GameCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -517,9 +526,11 @@
 				32D3D4C82C47486B0036E964 /* PriceTableViewCell.swift in Sources */,
 				32A66CCE2C373F5200919F2F /* GameDetailViewController.swift in Sources */,
 				321C5D242C5D891C006919C0 /* HCSStarRatingView.m in Sources */,
+				324D93582C752F1600FC919F /* DetailListViewController.swift in Sources */,
 				32324E4E2C476844009D3E74 /* GoogleSignInHeaderView.swift in Sources */,
 				32A66CBD2C360E4400919F2F /* Stat.swift in Sources */,
 				32A66CC52C372E6700919F2F /* GameDetailAPIRequest.swift in Sources */,
+				324D935A2C768F2F00FC919F /* ShopsViewController.swift in Sources */,
 				32D3D4C32C47486B0036E964 /* BannerTableViewCell.swift in Sources */,
 				320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */,
 				320205B22C23A45800725DC5 /* AppDelegate.swift in Sources */,
@@ -540,6 +551,7 @@
 				321C5D282C6BFADA006919C0 /* Giveaway.swift in Sources */,
 				32D3D4C42C47486B0036E964 /* VoucherTableViewCell.swift in Sources */,
 				32D3D4BE2C47486B0036E964 /* SignInTableViewCell.swift in Sources */,
+				324D935C2C76B19B00FC919F /* GameCollectionViewCell.swift in Sources */,
 				32961E262C2DE7CF00B2BB9C /* DiscountPriceView.swift in Sources */,
 				32D3D4CA2C47486B0036E964 /* DescriptionTableViewCell.swift in Sources */,
 				32961E192C2B76D900B2BB9C /* Game.swift in Sources */,

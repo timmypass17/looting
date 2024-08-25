@@ -25,9 +25,11 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true    // for crop
         imageView.backgroundColor = .placeholderText
+        imageView.tintColor = .secondaryLabel
+        
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: 200/4 * (400/187)),
-            imageView.heightAnchor.constraint(equalToConstant: 200/4)
+            imageView.widthAnchor.constraint(equalToConstant: 60 * (400/187)),
+            imageView.heightAnchor.constraint(equalToConstant: 60)
         ])
         
         return imageView
@@ -50,8 +52,10 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    let endTagView: TagView = {
-        let tagView = TagView()
+    let endTagView: TimeRemainingTag = {
+        let tagView = TimeRemainingTag()
+        tagView.tagLabel.textColor = .secondaryLabel
+        tagView.imageView.tintColor = .secondaryLabel
         tagView.tagLabel.font = .preferredFont(forTextStyle: .caption1)
         NSLayoutConstraint.activate([
             tagView.imageView.heightAnchor.constraint(equalToConstant: 20),
@@ -77,9 +81,33 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         return UIView()
     }()
     
+//    let priceView = PriceView()
+    
+    let discountView: DiscountView = {
+        let discountView = DiscountView()
+        discountView.discountLabel.font = .systemFont(ofSize: 12, weight: .bold)
+        
+        discountView.leadingConstraint.constant = 4
+        discountView.trailingConstraint.constant = -4
+        discountView.layoutIfNeeded()
+        return discountView
+    }()
+    
+    let priceContainer: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        return stackView
+    }()
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        priceContainer.addArrangedSubview(discountView)
+        priceContainer.addArrangedSubview(priceView)
+        
+        hstack.addArrangedSubview(discountView)
         hstack.addArrangedSubview(endTagView)
         hstack.addArrangedSubview(spacer)
         
@@ -105,6 +133,7 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
             lineView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
             lineView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             lineView.trailingAnchor.constraint(equalTo: priceView.trailingAnchor)
+//            lineView.trailingAnchor.constraint(equalTo: priceContainer.trailingAnchor)
         ])
 
     }
@@ -116,15 +145,23 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
     func update(title: String, imageURL: String?, deal: Deal?, hideBottomLine: Bool = false) async {
         titleLabel.text = title
         priceView.update(current: deal?.price.amount, regular: deal!.regular.amount)
+        discountView.update(cut: deal!.cut)
+//        discountPriceView.update(regular: deal!.regular.amount, amount: deal!.price.amount, cut: deal!.cut)
         lineView.isHidden = hideBottomLine
         
         if let imageURL {
             let imageRequest = ImageAPIRequest(url: URL(string: imageURL)!)
             if let image = try? await sendRequest(imageRequest) {
+                imageView.contentMode = .scaleAspectFill
                 imageView.image = image
+            } else {
+                imageView.contentMode = .scaleAspectFit
+                imageView.image = UIImage(systemName: "photo")
+                
             }
         } else {
-            imageView.image = nil
+            imageView.contentMode = .scaleAspectFit
+            imageView.image = UIImage(systemName: "photo")
         }
         
         if let endDate = deal?.endDate {
@@ -132,7 +169,7 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
             hstack.addArrangedSubview(endTagView)
             hstack.addArrangedSubview(spacer)
             vstack.addArrangedSubview(hstack)
-            endTagView.update(endDate: endDate, dateType: .short)
+            endTagView.update(endDate: endDate, dateType: .normal)
         } else {
             hstack.removeArrangedSubview(endTagView)
             hstack.removeArrangedSubview(spacer)
@@ -143,7 +180,7 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
             hstack.removeFromSuperview()
         }
     }
-    
+
 }
 
 // TODO: deal isnt shown to lowest deal (ex. Sin of a Solar...)
