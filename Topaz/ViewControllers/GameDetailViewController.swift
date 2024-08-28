@@ -45,11 +45,13 @@ class GameDetailViewController: UIViewController {
     weak var delegate: GameDetailViewControllerDelegate?
     
     enum Section: Int, CaseIterable {
-        case banner
-        case description
-        case price
-        case historic
-        case allPrices
+        case cover
+        case info
+//        case trailer
+        case screenshots
+        case bestDeal
+        case historicalLow
+        case otherDeals
         
         var index: Int {
             return self.rawValue
@@ -83,6 +85,9 @@ class GameDetailViewController: UIViewController {
         tableView.register(PriceTableViewCell.self, forCellReuseIdentifier: PriceTableViewCell.reuseIdentifier)
         tableView.register(ShowMoreTableViewCell.self, forCellReuseIdentifier: ShowMoreTableViewCell.reuseIdentifier)
         tableView.register(VoucherTableViewCell.self, forCellReuseIdentifier: VoucherTableViewCell.reuseIdentifier)
+        tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: RightDetailTableViewCell.reuseIdentifier)
+        tableView.register(ScreenshotsTableViewCell.self, forCellReuseIdentifier: ScreenshotsTableViewCell.reuseIdentifier)
+
         
         view.addSubview(tableView)
         
@@ -154,8 +159,8 @@ class GameDetailViewController: UIViewController {
             gameDetail = try await steamService.getGameDetail(gameID: "\(steamID)")
             tableView.reloadData()
             
-            if let imageUrl = gameDetail?.background_raw {
-                let backgroundView = BackgroundView()
+            if let imageUrl = gameDetail?.backgroundURL {
+                let backgroundView = GameBackgroundView()
                 await backgroundView.setImage(url: URL(string: imageUrl)!)
                 tableView.backgroundView = backgroundView
             }
@@ -184,7 +189,7 @@ class GameDetailViewController: UIViewController {
                 // Filter out best deal from list of deals
                 deals = deals.filter { $0 != bestDeal }
                 
-                tableView.reloadSections(IndexSet(arrayLiteral: Section.price.rawValue, Section.allPrices.rawValue), with: .automatic)
+                tableView.reloadSections(IndexSet(arrayLiteral: Section.bestDeal.rawValue, Section.otherDeals.rawValue), with: .automatic)
             }
             
         } catch {
@@ -197,7 +202,7 @@ class GameDetailViewController: UIViewController {
         do {
             let priceOverview = try await isThereAnyDealService.getPriceOverview(gameIDs: [game.id])
             historicDeal = priceOverview.prices.first?.lowest
-            tableView.reloadSections(IndexSet(arrayLiteral: Section.historic.rawValue), with: .automatic)
+            tableView.reloadSections(IndexSet(arrayLiteral: Section.historicalLow.rawValue), with: .automatic)
         } catch {
             print("Error fetching prices: \(error)")
         }
@@ -262,16 +267,18 @@ extension GameDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let section = Section(rawValue: section) else { return 0 }
         switch section {
-        case .banner:
+        case .cover:
             return 1
-        case .description:
+        case .info:
+            return 7
+        case .screenshots:
             return 1
-        case .price:
+        case .bestDeal:
             let voucher = bestDeal?.voucher != nil ? 1 : 0
             return 1 + voucher
-        case .historic:
+        case .historicalLow:
             return 1
-        case .allPrices:
+        case .otherDeals:
             let showMoreButton = deals.count > 3 ? 1 : 0
             return (showAllDeals ? deals.count : min(deals.count, 3)) + showMoreButton
         }
@@ -280,18 +287,43 @@ extension GameDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let game, let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
         switch section {
-        case .banner:
+        case .cover:
             let cell = tableView.dequeueReusableCell(withIdentifier: BannerTableViewCell.reuseIdentifier, for: indexPath) as! BannerTableViewCell
             guard let imageUrl = game.assets?.banner600 else { return UITableViewCell() }
             Task {
                 await cell.setImage(url: URL(string: imageUrl)!)
             }
             return cell
-        case .description:
-            let cell = tableView.dequeueReusableCell(withIdentifier: DescriptionTableViewCell.reuseIdentifier, for: indexPath) as! DescriptionTableViewCell
-            cell.setDescription(text: gameDetail?.short_description ?? "No description.")
+        case .info:
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: DescriptionTableViewCell.reuseIdentifier, for: indexPath) as! DescriptionTableViewCell
+                cell.setDescription(text: gameDetail?.description ?? "No description.")
+                return cell
+            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: RightDetailTableViewCell.reuseIdentifier, for: indexPath) as! RightDetailTableViewCell
+            if indexPath.row == 1 {
+                cell.update(title: "Review",
+                            description: "\(game.steamReviewText ?? "") (\(gameDetail?.recommendations.total.formatted() ?? "0"))")
+            } else if indexPath.row == 2 {
+                cell.update(title: "Rating", description: "\(game.steamReview?.score ?? 0)")
+            } else if indexPath.row == 3 {
+                cell.update(title: "Release Date", description: gameDetail?.releaseDate.date ?? "")
+            } else if indexPath.row == 4 {
+                cell.update(title: "Genres", description: gameDetail?.genres.map { $0.description }.joined(separator: ", ") ?? "")
+            } else if indexPath.row == 5 {
+                cell.update(title: "Developer", description: gameDetail?.developers.first ?? "")
+            } else if indexPath.row == 6 {
+                cell.update(title: "Publisher", description: gameDetail?.publishers.first ?? "")
+            }
             return cell
-        case .price:
+        case .screenshots:
+            let cell = tableView.dequeueReusableCell(withIdentifier: ScreenshotsTableViewCell.reuseIdentifier, for: indexPath) as! ScreenshotsTableViewCell
+            Task {
+                await cell.update(screenshots: gameDetail?.screenshots ?? [])
+                
+            }
+            return cell
+        case .bestDeal:
             if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: VoucherTableViewCell.reuseIdentifier, for: indexPath) as! VoucherTableViewCell
                 if let voucher = bestDeal?.voucher {
@@ -305,14 +337,14 @@ extension GameDetailViewController: UITableViewDataSource {
                 cell.update(with: bestDeal)
             }
             return cell
-        case .historic:
+        case .historicalLow:
             let cell = tableView.dequeueReusableCell(withIdentifier: PriceTableViewCell.reuseIdentifier, for: indexPath) as! PriceTableViewCell
             if let historicDeal {
                 cell.update(with: historicDeal)
             }
 
             return cell
-        case .allPrices:
+        case .otherDeals:
             if !showAllDeals && indexPath.row == min(deals.count, 3) {
                 let cell = tableView.dequeueReusableCell(withIdentifier: ShowMoreTableViewCell.reuseIdentifier, for: indexPath) as! ShowMoreTableViewCell
                 cell.titleLabel.text = "Show More"
@@ -342,15 +374,17 @@ extension GameDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard let section = Section(rawValue: section) else { return nil }
         switch section {
-        case .banner:
+        case .cover:
             return nil
-        case .description:
-            return "Synopsis"
-        case .price:
+        case .info:
+            return game?.title
+        case .screenshots:
+            return "Screenshots"
+        case .bestDeal:
             return "Current Best Deal"
-        case .historic:
+        case .historicalLow:
             return "Historical Low"
-        case .allPrices:
+        case .otherDeals:
             return "Other Deals"
         }
     }
@@ -358,11 +392,11 @@ extension GameDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? ShowMoreTableViewCell {
             showAllDeals.toggle()
-            tableView.reloadSections(IndexSet(integer: Section.allPrices.rawValue), with: .automatic)
+            tableView.reloadSections(IndexSet(integer: Section.otherDeals.rawValue), with: .automatic)
         } else if let cell = tableView.cellForRow(at: indexPath) as? PriceTableViewCell {
-            guard indexPath.section != Section.historic.index else { return }
+            guard indexPath.section != Section.historicalLow.index else { return }
             var url: URL? = nil
-            if indexPath.section == Section.price.rawValue {
+            if indexPath.section == Section.bestDeal.rawValue {
                 guard let urlString = bestDeal?.url else { return }
                 url = URL(string: urlString)
             } else {
@@ -376,13 +410,13 @@ extension GameDetailViewController: UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        guard ![Section.description.index, Section.historic.index].contains(indexPath.section) else { return nil }
-        return indexPath
-    }
-    
-    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        guard ![Section.description.index, Section.historic.index].contains(indexPath.section) else { return false }
-        return true
-    }
+//    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+//        guard ![Section.info.index, Section.historicalLow.index].contains(indexPath.section) else { return nil }
+//        return indexPath
+//    }
+//    
+//    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+//        guard ![Section.info.index, Section.historicalLow.index].contains(indexPath.section) else { return false }
+//        return true
+//    }
 }

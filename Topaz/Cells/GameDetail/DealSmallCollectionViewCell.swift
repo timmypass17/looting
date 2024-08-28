@@ -76,21 +76,14 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         hstack.axis = .horizontal
         return hstack
     }()
-    
-    let spacer: UIView = {
-        return UIView()
-    }()
-    
-//    let priceView = PriceView()
-    
-    let discountView: DiscountView = {
-        let discountView = DiscountView()
-        discountView.discountLabel.font = .systemFont(ofSize: 12, weight: .bold)
         
-        discountView.leadingConstraint.constant = 4
-        discountView.trailingConstraint.constant = -4
-        discountView.layoutIfNeeded()
-        return discountView
+    let cutView: CutView = {
+        let view = CutView()
+        view.label.font = .systemFont(ofSize: 12, weight: .bold)
+        view.leadingConstraint.constant = 4
+        view.trailingConstraint.constant = -4
+        view.layoutIfNeeded()
+        return view
     }()
     
     let priceContainer: UIStackView = {
@@ -100,16 +93,17 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    let spacer = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        priceContainer.addArrangedSubview(discountView)
+        priceContainer.addArrangedSubview(cutView)
         priceContainer.addArrangedSubview(priceView)
         
-        hstack.addArrangedSubview(discountView)
+        hstack.addArrangedSubview(cutView)
         hstack.addArrangedSubview(endTagView)
-        hstack.addArrangedSubview(spacer)
+        hstack.addArrangedSubview(UIView())
         
         vstack.addArrangedSubview(titleLabel)
         vstack.addArrangedSubview(hstack)
@@ -145,8 +139,7 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
     func update(title: String, imageURL: String?, deal: Deal?, hideBottomLine: Bool = false) async {
         titleLabel.text = title
         priceView.update(current: deal?.price.amount, regular: deal!.regular.amount)
-        discountView.update(cut: deal!.cut)
-//        discountPriceView.update(regular: deal!.regular.amount, amount: deal!.price.amount, cut: deal!.cut)
+        cutView.update(cut: deal!.cut)
         lineView.isHidden = hideBottomLine
         
         if let imageURL {

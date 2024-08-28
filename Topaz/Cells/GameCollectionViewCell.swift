@@ -65,7 +65,7 @@ class GameCollectionViewCell: UICollectionViewCell {
 
     let priceView = PriceView()
     
-    let discountView = DiscountView()
+    let cutView = CutView()
     
     
     override init(frame: CGRect) {
@@ -81,8 +81,8 @@ class GameCollectionViewCell: UICollectionViewCell {
 //        hstack.addArrangedSubview(tagsLabel)
         
         priceHStack.addArrangedSubview(UIView())
-        priceHStack.addArrangedSubview(discountView)
-        priceHStack.setCustomSpacing(10, after: discountView)
+        priceHStack.addArrangedSubview(cutView)
+        priceHStack.setCustomSpacing(10, after: cutView)
         priceHStack.addArrangedSubview(priceView)
         
         vstack.addArrangedSubview(titleLabel)
@@ -118,6 +118,6 @@ class GameCollectionViewCell: UICollectionViewCell {
         }
         
         priceView.update(current: dealItem.deal?.price.amount, regular: dealItem.deal!.regular.amount)
-        discountView.update(cut: dealItem.deal!.cut)
+        cutView.update(cut: dealItem.deal!.cut)
     }
 }

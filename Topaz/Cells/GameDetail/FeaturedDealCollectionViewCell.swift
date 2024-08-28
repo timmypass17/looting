@@ -37,7 +37,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     
     let priceView = PriceView()
     
-    let discountView = DiscountView()
+    let cutView = CutView()
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -101,7 +101,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         vstack.addArrangedSubview(titleLabel)
         vstack.addArrangedSubview(subTitleLabel)
         
-        priceContainer.addArrangedSubview(discountView)
+        priceContainer.addArrangedSubview(cutView)
         priceContainer.addArrangedSubview(priceView)
                 
         hstack.addArrangedSubview(vstack)
@@ -125,8 +125,8 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            discountView.topAnchor.constraint(equalTo: priceView.topAnchor),
-            discountView.bottomAnchor.constraint(equalTo: priceView.bottomAnchor)
+            cutView.topAnchor.constraint(equalTo: priceView.topAnchor),
+            cutView.bottomAnchor.constraint(equalTo: priceView.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -144,7 +144,7 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         titleLabel.text = game.title
         subTitleLabel.text = game.tags.prefix(2).map { $0 }.joined(separator: ", ")
         
-        discountView.update(cut: dealItem.deal!.cut)
+        cutView.update(cut: dealItem.deal!.cut)
         priceView.update(current: dealItem.deal!.price.amount, regular: dealItem.deal!.regular.amount)
         
         imageView.image = nil

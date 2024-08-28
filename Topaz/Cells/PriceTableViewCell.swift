@@ -15,7 +15,16 @@ class PriceTableViewCell: UITableViewCell {
         return label
     }()
     
-    let cutLabel = CutView()
+//    let cutLabel = CutView()
+    let cutView: CutView = {
+        let view = CutView()
+        view.label.font = .systemFont(ofSize: 16, weight: .bold)
+        
+        view.leadingConstraint.constant = 4
+        view.trailingConstraint.constant = -4
+        view.layoutIfNeeded()
+        return view
+    }()
         
     let regularLabel: UILabel = {
         let label = UILabel()
@@ -87,7 +96,7 @@ class PriceTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         storeHStack.addArrangedSubview(storeLabel)
-        storeHStack.addArrangedSubview(cutLabel)
+        storeHStack.addArrangedSubview(cutView)
         storeHStack.addArrangedSubview(regularLabel)
         storeHStack.addArrangedSubview(priceLabel)
         
@@ -118,7 +127,7 @@ class PriceTableViewCell: UITableViewCell {
     
     func update(with deal: Deal) {
         storeLabel.text = deal.shop.name
-        cutLabel.update(cut: deal.cut)
+        cutView.update(cut: deal.cut)
         regularLabel.attributedText = deal.regular.amount.discountString()
         priceLabel.text = deal.price.amount.priceString()
         

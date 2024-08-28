@@ -56,10 +56,14 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let discountPriceView: DiscountPriceView = {
-        let view = DiscountPriceView()
-        view.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        return view
+    let cutView = CutView()
+    let priceView = PriceView()
+    
+    let priceContainer: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        return stackView
     }()
     
     let stackView: UIStackView = {
@@ -87,13 +91,17 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         ratingContainer.spacing = 8
         ratingContainer.addArrangedSubview(ratingView)
         ratingContainer.addArrangedSubview(ratingLabel)
+        
+        priceContainer.addArrangedSubview(cutView)
+        priceContainer.addArrangedSubview(UIView())
+        priceContainer.addArrangedSubview(priceView)
                 
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(ratingContainer)
         stackView.addArrangedSubview(tagsLabel)
         stackView.addArrangedSubview(UIView())
-        stackView.addArrangedSubview(discountPriceView)
+        stackView.addArrangedSubview(priceContainer)
         
         addSubview(stackView)
         addSubview(endTagView)
@@ -130,8 +138,9 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         } else {
             tagsLabel.text = "No tags"
         }
-        
-        discountPriceView.update(regular: dealItem.deal!.regular.amount, amount: dealItem.deal!.price.amount, cut: dealItem.deal!.cut)
+            
+        cutView.update(cut: dealItem.deal!.cut)
+        priceView.update(current: dealItem.deal!.price.amount, regular: dealItem.deal!.regular.amount)
         
         imageTask?.cancel()
         imageView.image = nil
@@ -164,3 +173,9 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
     }
 }
+
+//extension UIView {
+//    func spacer() -> UIView {
+//        return UIView()
+//    }
+//}

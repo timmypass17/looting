@@ -67,7 +67,7 @@ class ResultsViewController: UIViewController {
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: .absolute(50)
+                heightDimension: .absolute(60)
             ),
             repeatingSubitem: item,
             count: 1

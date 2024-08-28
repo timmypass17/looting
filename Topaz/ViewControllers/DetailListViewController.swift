@@ -369,7 +369,9 @@ extension DetailListViewController: UICollectionViewDelegate {
     
     private func showDetailView(game item: Item) {
         let detailViewController = GameDetailViewController(game: item.game!, dealItem: item.dealItem!)
-//        detailViewController.delegate = self
+        if let wishlistViewController = (tabBarController?.viewControllers?[2] as? UINavigationController)?.viewControllers[0] as? WishlistViewController {
+            detailViewController.delegate = wishlistViewController
+        }
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

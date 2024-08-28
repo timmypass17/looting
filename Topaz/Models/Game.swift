@@ -38,6 +38,46 @@ struct Game: Decodable, Hashable  {
         return nil
     }
     
+    var steamReview: Review? {
+        return reviews.first { $0.source == "Steam" }
+    }
+    
+    var steamReviewText: String? {
+        guard let steamReview,
+              let score = steamReview.score
+        else { return nil }
+        
+        if score < 20 {
+            if steamReview.count < 50 {
+                return "Negative"
+            } else if steamReview.count < 500 {
+                return "Very Negative"
+            } else {
+                return "Overwhelmingly Negative"
+            }
+        } else if score < 40 {
+            return "Mostly Negative"
+        } else if score < 70 {
+            return "Mixed"
+        } else if score < 80 {
+            return "Mostly Postive"
+        } else if score < 95 {
+            if steamReview.count < 50 {
+                return "Postive"
+            } else  {
+                return "Very Postive"
+            }
+        } else {
+            if steamReview.count < 50 {
+                return "Postive"
+            } else if score < 500 {
+                return "Very Postive"
+            } else {
+                return "Overwhelmingly Positive"
+            }
+        }
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)

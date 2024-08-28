@@ -7,9 +7,9 @@
 
 import UIKit
 
-class DiscountView: UIView {
+class CutView: UIView {
 
-    let discountLabel: UILabel = {
+    let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(.required, for: .horizontal)
@@ -29,15 +29,15 @@ class DiscountView: UIView {
         layer.cornerRadius = 4
         layer.masksToBounds = true
         
-        addSubview(discountLabel)
+        addSubview(label)
         
         // store constraints to update them later
-        leadingConstraint = discountLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8)
-        trailingConstraint = discountLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+        leadingConstraint = label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8)
+        trailingConstraint = label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
 
         NSLayoutConstraint.activate([
-            discountLabel.topAnchor.constraint(equalTo: topAnchor),
-            discountLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            label.topAnchor.constraint(equalTo: topAnchor),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor),
             leadingConstraint,
             trailingConstraint,
         ])
@@ -51,7 +51,7 @@ class DiscountView: UIView {
         if cut == 0 {
             isHidden = true
         } else {
-            discountLabel.text = "-\(cut)%"
+            label.text = "-\(cut)%"
             isHidden = false
         }
     }

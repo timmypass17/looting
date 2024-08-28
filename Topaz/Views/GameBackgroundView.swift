@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BackgroundView: UIView {
+class GameBackgroundView: UIView {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()

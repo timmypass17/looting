@@ -2,7 +2,7 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "watchos",
+        "platform" : "XR",
         "reference" : "systemOrangeColor"
       },
       "idiom" : "universal"
@@ -11,5 +11,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
   }
 }
