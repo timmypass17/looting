@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol ScreenshotsTableViewCellDelegate: AnyObject {
+    func screenshotsTableViewCell(_ sender: ScreenshotsTableViewCell, didTapMovie movie: Movie)
+}
+
 class ScreenshotsTableViewCell: UITableViewCell {
     static let reuseIdentifier = "ScreenshotsTableViewCell"
         
@@ -33,6 +37,8 @@ class ScreenshotsTableViewCell: UITableViewCell {
         pageControl.pageIndicatorTintColor = .secondaryLabel
         return pageControl
     }()
+    
+    weak var delegate: ScreenshotsTableViewCellDelegate?
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -73,13 +79,25 @@ class ScreenshotsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(screenshots: [Screenshot]) async {
-        pageControl.numberOfPages = screenshots.count
+    func update(movies: [Movie], screenshots: [Screenshot]) async {
+        
+        pageControl.numberOfPages = movies.count + screenshots.count
 
         // Creates a task group, allowing you to add multiple tasks that can run concurrently.
-        var screenshotViews: [ScreenshotView] = []
-        for screenshot in screenshots {
-            let view = ScreenshotView()
+        var screenshotViews: [MediaView] = []
+        
+        for i in 0..<movies.count + screenshots.count {
+            let view: MediaView
+            
+            if i < movies.count {
+                view = MovieView()
+                let tap = MovieTapGestureRecognizer(target: self, action: #selector(didTapMovie(_:)))
+                tap.movie = movies[i]
+                view.addGestureRecognizer(tap)
+            } else {
+                view = MediaView()
+            }
+            
             view.imageView.heightAnchor.constraint(equalToConstant: (337 / 600) * self.frame.size.width).isActive = true
             view.imageView.widthAnchor.constraint(equalToConstant: self.frame.size.width).isActive = true
             screenshotViews.append(view)
@@ -87,14 +105,28 @@ class ScreenshotsTableViewCell: UITableViewCell {
         }
         
         await withThrowingTaskGroup(of: Void.self) { group in
-            for screenshot in screenshots {
-                let view = screenshotViews[screenshot.id]
+            for (index, movie) in movies.enumerated() {
+                let view = screenshotViews[index] as! MovieView
+                group.addTask {
+                    try Task.checkCancellation()
+                    await view.update(title: movie.name, imageURL: movie.thumbnailURL)
+                }
+            }
+            
+            for (index, screenshot) in screenshots.enumerated() {
+                let index = movies.count + index
+                let view = screenshotViews[index]
                 group.addTask {
                     try Task.checkCancellation()
                     await view.update(imageURL: screenshot.thumbnailURL)
                 }
             }
         }
+    }
+    
+    @objc func didTapMovie(_ sender: MovieTapGestureRecognizer) {
+        guard let movie = sender.movie else { return }
+        delegate?.screenshotsTableViewCell(self, didTapMovie: movie)
     }
     
     func didTapPageControl() -> UIAction {
@@ -129,4 +161,8 @@ extension ScreenshotsTableViewCell: UIScrollViewDelegate {
         let offsetX = CGFloat(newPage) * pageWidth
         targetContentOffset.pointee = CGPoint(x: offsetX, y: targetContentOffset.pointee.y)
     }
+}
+
+class MovieTapGestureRecognizer: UITapGestureRecognizer {
+    var movie: Movie?
 }

@@ -62,10 +62,12 @@ struct Screenshot: Decodable {
 }
 
 struct Movie: Decodable {
+    var name: String
     var thumbnailURL: String
     var mp4: MP4
     
     enum CodingKeys: String, CodingKey {
+        case name
         case thumbnailURL = "thumbnail"
         case mp4
     }

@@ -9,6 +9,8 @@ import UIKit
 import SafariServices
 import FirebaseAuth
 import FirebaseFirestore
+import AVFoundation
+import AVKit
 
 protocol GameDetailViewControllerDelegate: AnyObject {
     func gameDetailViewController(_ viewController: GameDetailViewController, didWishlistGame game: Game, price: Double?)
@@ -47,7 +49,6 @@ class GameDetailViewController: UIViewController {
     enum Section: Int, CaseIterable {
         case cover
         case info
-//        case trailer
         case screenshots
         case bestDeal
         case historicalLow
@@ -318,8 +319,9 @@ extension GameDetailViewController: UITableViewDataSource {
             return cell
         case .screenshots:
             let cell = tableView.dequeueReusableCell(withIdentifier: ScreenshotsTableViewCell.reuseIdentifier, for: indexPath) as! ScreenshotsTableViewCell
+            cell.delegate = self
             Task {
-                await cell.update(screenshots: gameDetail?.screenshots ?? [])
+                await cell.update(movies: gameDetail?.movies ?? [], screenshots: gameDetail?.screenshots ?? [])
                 
             }
             return cell
@@ -409,14 +411,33 @@ extension GameDetailViewController: UITableViewDelegate {
             }
         }
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // Fixes bug where movie section is squished when fetching movies cause slow
+        let movieIndexPath = IndexPath(row: 0, section: 2)
+        if indexPath == movieIndexPath {
+            let tableViewWidth = tableView.frame.width
+            let layoutMargins = tableView.layoutMargins
+            let horizontalInset = layoutMargins.left + layoutMargins.right
+            let cellWidth = tableViewWidth - horizontalInset
 
-//    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-//        guard ![Section.info.index, Section.historicalLow.index].contains(indexPath.section) else { return nil }
-//        return indexPath
-//    }
-//    
-//    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-//        guard ![Section.info.index, Section.historicalLow.index].contains(indexPath.section) else { return false }
-//        return true
-//    }
+            let height = (337 / 600) * cellWidth
+            return height
+        }
+        
+        return UITableView.automaticDimension
+    }
+    
+}
+
+extension GameDetailViewController: ScreenshotsTableViewCellDelegate {
+    func screenshotsTableViewCell(_ sender: ScreenshotsTableViewCell, didTapMovie movie: Movie) {
+        let videoURL = URL(string: movie.mp4.videoURL)!
+        let player = AVPlayer(url: videoURL)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        self.present(playerViewController, animated: true) {
+            playerViewController.player?.play()
+        }
+    }
 }
