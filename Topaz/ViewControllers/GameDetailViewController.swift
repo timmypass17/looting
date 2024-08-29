@@ -11,6 +11,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import AVFoundation
 import AVKit
+import SwiftUI
 
 protocol GameDetailViewControllerDelegate: AnyObject {
     func gameDetailViewController(_ viewController: GameDetailViewController, didWishlistGame game: Game, price: Double?)
@@ -32,6 +33,7 @@ class GameDetailViewController: UIViewController {
     var bestDeal: Deal?
     var historicDeal: Deal?
     var user: User?
+    var history: [History] = []
     
     var showAllDeals = false // tableview/datsource should manage state. cell should be "view only"
     var favoriteButton: UIBarButtonItem!
@@ -51,8 +53,9 @@ class GameDetailViewController: UIViewController {
         case info
         case screenshots
         case bestDeal
+        case allDeals
+        case history
         case historicalLow
-        case otherDeals
         
         var index: Int {
             return self.rawValue
@@ -88,7 +91,7 @@ class GameDetailViewController: UIViewController {
         tableView.register(VoucherTableViewCell.self, forCellReuseIdentifier: VoucherTableViewCell.reuseIdentifier)
         tableView.register(RightDetailTableViewCell.self, forCellReuseIdentifier: RightDetailTableViewCell.reuseIdentifier)
         tableView.register(ScreenshotsTableViewCell.self, forCellReuseIdentifier: ScreenshotsTableViewCell.reuseIdentifier)
-
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: HistoryView.reuseIdentifier)
         
         view.addSubview(tableView)
         
@@ -115,6 +118,10 @@ class GameDetailViewController: UIViewController {
         
         Task {
             await loadPriceOverview()
+        }
+        
+        Task {
+            await loadHistory()
         }
     }
     
@@ -190,11 +197,21 @@ class GameDetailViewController: UIViewController {
                 // Filter out best deal from list of deals
                 deals = deals.filter { $0 != bestDeal }
                 
-                tableView.reloadSections(IndexSet(arrayLiteral: Section.bestDeal.rawValue, Section.otherDeals.rawValue), with: .automatic)
+                tableView.reloadSections(IndexSet(arrayLiteral: Section.bestDeal.rawValue, Section.allDeals.rawValue), with: .automatic)
             }
             
         } catch {
             print("Error fetching prices")
+        }
+    }
+    
+    func loadHistory() async {
+        guard let game else { return }
+        do {
+            history = try await isThereAnyDealService.getHistory(gameID: game.id)
+            tableView.reloadSections(IndexSet(integer: Section.history.rawValue), with: .automatic)
+        } catch {
+            print("Error fetching history: \(error)")
         }
     }
     
@@ -257,6 +274,15 @@ class GameDetailViewController: UIViewController {
             
         }
     }
+    
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let sections: [Section] = [.cover, .info, .historicalLow]
+        if sections.map({ $0.rawValue }).contains(indexPath.section)  {
+            return nil
+        }
+        
+        return indexPath
+    }
 }
 
 extension GameDetailViewController: UITableViewDataSource {
@@ -279,9 +305,11 @@ extension GameDetailViewController: UITableViewDataSource {
             return 1 + voucher
         case .historicalLow:
             return 1
-        case .otherDeals:
+        case .allDeals:
             let showMoreButton = deals.count > 3 ? 1 : 0
             return (showAllDeals ? deals.count : min(deals.count, 3)) + showMoreButton
+        case .history:
+            return 1
         }
     }
     
@@ -290,6 +318,7 @@ extension GameDetailViewController: UITableViewDataSource {
         switch section {
         case .cover:
             let cell = tableView.dequeueReusableCell(withIdentifier: BannerTableViewCell.reuseIdentifier, for: indexPath) as! BannerTableViewCell
+            cell.selectionStyle = .none
             guard let imageUrl = game.assets?.banner600 else { return UITableViewCell() }
             Task {
                 await cell.setImage(url: URL(string: imageUrl)!)
@@ -302,6 +331,7 @@ extension GameDetailViewController: UITableViewDataSource {
                 return cell
             }
             let cell = tableView.dequeueReusableCell(withIdentifier: RightDetailTableViewCell.reuseIdentifier, for: indexPath) as! RightDetailTableViewCell
+            cell.selectionStyle = .none
             if indexPath.row == 1 {
                 cell.update(title: "Review",
                             description: "\(game.steamReviewText ?? "") (\(gameDetail?.recommendations.total.formatted() ?? "0"))")
@@ -341,12 +371,13 @@ extension GameDetailViewController: UITableViewDataSource {
             return cell
         case .historicalLow:
             let cell = tableView.dequeueReusableCell(withIdentifier: PriceTableViewCell.reuseIdentifier, for: indexPath) as! PriceTableViewCell
+            cell.selectionStyle = .none
             if let historicDeal {
                 cell.update(with: historicDeal)
             }
 
             return cell
-        case .otherDeals:
+        case .allDeals:
             if !showAllDeals && indexPath.row == min(deals.count, 3) {
                 let cell = tableView.dequeueReusableCell(withIdentifier: ShowMoreTableViewCell.reuseIdentifier, for: indexPath) as! ShowMoreTableViewCell
                 cell.titleLabel.text = "Show More"
@@ -365,6 +396,14 @@ extension GameDetailViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: PriceTableViewCell.reuseIdentifier, for: indexPath) as! PriceTableViewCell
             let deal = deals[indexPath.row]
             cell.update(with: deal)
+            return cell
+        case .history:
+            let cell = tableView.dequeueReusableCell(withIdentifier: HistoryView.reuseIdentifier, for: indexPath)
+            cell.contentConfiguration = UIHostingConfiguration {
+                HistoryView(history: history)
+                    .padding(.vertical)
+                    .frame(height: 200)
+            }
             return cell
         }
     }
@@ -386,15 +425,17 @@ extension GameDetailViewController: UITableViewDelegate {
             return "Current Best Deal"
         case .historicalLow:
             return "Historical Low"
-        case .otherDeals:
-            return "Other Deals"
+        case .allDeals:
+            return "All Deals"
+        case .history:
+            return "Steam Price History"
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? ShowMoreTableViewCell {
             showAllDeals.toggle()
-            tableView.reloadSections(IndexSet(integer: Section.otherDeals.rawValue), with: .automatic)
+            tableView.reloadSections(IndexSet(integer: Section.allDeals.rawValue), with: .automatic)
         } else if let cell = tableView.cellForRow(at: indexPath) as? PriceTableViewCell {
             guard indexPath.section != Section.historicalLow.index else { return }
             var url: URL? = nil

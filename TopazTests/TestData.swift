@@ -1897,3 +1897,69 @@ let giveawaysJSON =
     }
 ]
 """.data(using: .utf8)!
+
+let steamHistory =
+"""
+[
+    {
+        "timestamp": "2024-08-27T19:18:21+02:00",
+        "shop": {
+            "id": 61,
+            "name": "Steam"
+        },
+        "deal": {
+            "price": {
+                "amount": 34.49,
+                "amountInt": 3449,
+                "currency": "USD"
+            },
+            "regular": {
+                "amount": 49.99,
+                "amountInt": 4999,
+                "currency": "USD"
+            },
+            "cut": 31
+        }
+    },
+    {
+        "timestamp": "2024-07-11T20:51:36+02:00",
+        "shop": {
+            "id": 61,
+            "name": "Steam"
+        },
+        "deal": {
+            "price": {
+                "amount": 49.99,
+                "amountInt": 4999,
+                "currency": "USD"
+            },
+            "regular": {
+                "amount": 49.99,
+                "amountInt": 4999,
+                "currency": "USD"
+            },
+            "cut": 0
+        }
+    },
+    {
+        "timestamp": "2024-06-13T18:03:04+02:00",
+        "shop": {
+            "id": 61,
+            "name": "Steam"
+        },
+        "deal": {
+            "price": {
+                "amount": 34.49,
+                "amountInt": 3449,
+                "currency": "USD"
+            },
+            "regular": {
+                "amount": 49.99,
+                "amountInt": 4999,
+                "currency": "USD"
+            },
+            "cut": 31
+        }
+    }
+]
+""".data(using: .utf8)!

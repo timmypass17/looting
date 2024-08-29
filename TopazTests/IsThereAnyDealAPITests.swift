@@ -126,6 +126,24 @@ final class IsThereAnyDealAPITests: XCTestCase {
         }
     }
     
+    func testFetchingHistory() async {
+        do {
+            let history: [History] = try await service.getHistory(gameID: kingdomHeartsID)
+            XCTAssertTrue(history.count > 0)
+        } catch {
+            XCTFail("Failed to fetch history: \(error)")
+        }
+    }
+    
+    func testDecodingHistory() {
+        do {
+            let decoder = JSONDecoder()
+            let history: [History] = try decoder.decode([History].self, from: steamHistory)
+            XCTAssertTrue(history.count > 0)
+        } catch {
+            XCTFail("Failed to decode history: \(error)")
+        }
+    }
     
     
 }

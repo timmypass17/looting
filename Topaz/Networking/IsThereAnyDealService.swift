@@ -55,6 +55,12 @@ struct IsThereAnyDealService {
         let priceOverview: PriceOverview = try await sendRequest(request)
         return priceOverview
     }
+    
+    func getHistory(gameID: String) async throws -> [History] {
+        let request = HistoryAPIRequest(gameID: gameID)
+        let history = try await sendRequest(request)
+        return history
+    }
 }
 
 struct SteamWebService {

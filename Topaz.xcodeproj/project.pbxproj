@@ -83,6 +83,12 @@
 		32ADB9472C7D5DC600351C27 /* RightDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB9462C7D5DC600351C27 /* RightDetailTableViewCell.swift */; };
 		32ADB9492C7F8A8900351C27 /* ScreenshotsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB9482C7F8A8900351C27 /* ScreenshotsTableViewCell.swift */; };
 		32ADB94B2C7F8F9300351C27 /* ScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB94A2C7F8F9300351C27 /* ScreenshotView.swift */; };
+		32ADB94D2C8102E400351C27 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB94C2C8102E400351C27 /* History.swift */; };
+		32ADB94E2C81040700351C27 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB94C2C8102E400351C27 /* History.swift */; };
+		32ADB9502C8105AE00351C27 /* HistoryAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB94F2C8105AE00351C27 /* HistoryAPIRequest.swift */; };
+		32ADB9512C81077600351C27 /* HistoryAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB94F2C8105AE00351C27 /* HistoryAPIRequest.swift */; };
+		32ADB9532C8108B800351C27 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB9522C8108B800351C27 /* HistoryView.swift */; };
+		32ADB9542C81099E00351C27 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E82C23BDFC00725DC5 /* TestData.swift */; };
 		32B66CFE2C585F8F00A33612 /* WishlistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B66CFD2C585F8F00A33612 /* WishlistItem.swift */; };
 		32D3D46D2C44B6DC0036E964 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D46C2C44B6DC0036E964 /* FirebaseAnalytics */; };
 		32D3D46F2C44B6DC0036E964 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D46E2C44B6DC0036E964 /* FirebaseAnalyticsSwift */; };
@@ -180,6 +186,9 @@
 		32ADB9462C7D5DC600351C27 /* RightDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightDetailTableViewCell.swift; sourceTree = "<group>"; };
 		32ADB9482C7F8A8900351C27 /* ScreenshotsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotsTableViewCell.swift; sourceTree = "<group>"; };
 		32ADB94A2C7F8F9300351C27 /* ScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotView.swift; sourceTree = "<group>"; };
+		32ADB94C2C8102E400351C27 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		32ADB94F2C8105AE00351C27 /* HistoryAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryAPIRequest.swift; sourceTree = "<group>"; };
+		32ADB9522C8108B800351C27 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		32B66CFD2C585F8F00A33612 /* WishlistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistItem.swift; sourceTree = "<group>"; };
 		32D3D48C2C44C5E60036E964 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		32D3D4AE2C47486A0036E964 /* SignInTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInTableViewCell.swift; sourceTree = "<group>"; };
@@ -295,6 +304,7 @@
 				32B66CFD2C585F8F00A33612 /* WishlistItem.swift */,
 				321C5D272C6BFADA006919C0 /* Giveaway.swift */,
 				32ADB9432C7D5BBC00351C27 /* SearchScope.swift */,
+				32ADB94C2C8102E400351C27 /* History.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -326,6 +336,7 @@
 				32A66CC42C372E6700919F2F /* GameDetailAPIRequest.swift */,
 				3248352A2C3C874E00130324 /* PriceOverviewAPIRequest.swift */,
 				324D934F2C6C13DE00FC919F /* GiveawayAPIRequest.swift */,
+				32ADB94F2C8105AE00351C27 /* HistoryAPIRequest.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -372,6 +383,7 @@
 				32961E1F2C2D01C600B2BB9C /* PriceView.swift */,
 				324D93552C6D39F900FC919F /* TagView.swift */,
 				32ADB94A2C7F8F9300351C27 /* ScreenshotView.swift */,
+				32ADB9522C8108B800351C27 /* HistoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -511,6 +523,7 @@
 				320205B62C23A45800725DC5 /* HomeViewController.swift in Sources */,
 				32961E092C2A1E8B00B2BB9C /* LineView.swift in Sources */,
 				32ADB9442C7D5BBC00351C27 /* SearchScope.swift in Sources */,
+				32ADB94D2C8102E400351C27 /* History.swift in Sources */,
 				32A66CBF2C360EE700919F2F /* WaitlistAPIRequest.swift in Sources */,
 				32D3D4C22C47486B0036E964 /* ShowMoreTableViewCell.swift in Sources */,
 				32961E2A2C32224500B2BB9C /* Price.swift in Sources */,
@@ -518,6 +531,7 @@
 				32ADB9472C7D5DC600351C27 /* RightDetailTableViewCell.swift in Sources */,
 				32D3D4D22C4751B00036E964 /* SignOutTableViewCell.swift in Sources */,
 				32961E2C2C32325500B2BB9C /* PricesAPIRequest.swift in Sources */,
+				32ADB9532C8108B800351C27 /* HistoryView.swift in Sources */,
 				32D3D4C92C47486B0036E964 /* DealMediumCollectionViewCell.swift in Sources */,
 				32961E202C2D01C600B2BB9C /* PriceView.swift in Sources */,
 				32961E282C2E2A7C00B2BB9C /* ResultsViewController.swift in Sources */,
@@ -540,10 +554,12 @@
 				32A66CC52C372E6700919F2F /* GameDetailAPIRequest.swift in Sources */,
 				324D935A2C768F2F00FC919F /* ShopsViewController.swift in Sources */,
 				32D3D4C32C47486B0036E964 /* BannerTableViewCell.swift in Sources */,
+				32ADB9502C8105AE00351C27 /* HistoryAPIRequest.swift in Sources */,
 				320206032C24CDD600725DC5 /* DealsAPIRequest.swift in Sources */,
 				320205B22C23A45800725DC5 /* AppDelegate.swift in Sources */,
 				3248352D2C3C877A00130324 /* PriceOverview.swift in Sources */,
 				324D93562C6D39F900FC919F /* TagView.swift in Sources */,
+				32ADB9542C81099E00351C27 /* TestData.swift in Sources */,
 				32ADB94B2C7F8F9300351C27 /* ScreenshotView.swift in Sources */,
 				324D93542C6C244D00FC919F /* GiveawayCollectionViewCell.swift in Sources */,
 				320205FF2C24BB1700725DC5 /* Item.swift in Sources */,
@@ -589,6 +605,8 @@
 				32961E142C2B6CF200B2BB9C /* SearchItem.swift in Sources */,
 				32961E1C2C2B843B00B2BB9C /* Game.swift in Sources */,
 				32961E2E2C3237EC00B2BB9C /* PricesAPIRequest.swift in Sources */,
+				32ADB94E2C81040700351C27 /* History.swift in Sources */,
+				32ADB9512C81077600351C27 /* HistoryAPIRequest.swift in Sources */,
 				320205FB2C23C78500725DC5 /* IsThereAnyDealService.swift in Sources */,
 				320206042C24D98400725DC5 /* Deal.swift in Sources */,
 				32961E1D2C2B849400B2BB9C /* GameAPIRequest.swift in Sources */,
