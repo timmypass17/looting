@@ -205,14 +205,15 @@ class DetailListViewController: UIViewController {
     }
     
     private func loadGames() async {
+        
         if section == .medium("Most Popular") {
             await loadMostPopular(offset: offset)
         } else if section == .medium("Most Waitlisted") {
             await loadMostWaitlisted(offset: offset)
-        } else if section == .standard("Steam") {
+        } else if section == .small("Steam") {
             let steamID = 61
             await loadGamesByShop(shopID: steamID, offset: offset)
-        } else if section == .standard("GOG") {
+        } else if section == .small("GOG") {
             let gogID = 35
             await loadGamesByShop(shopID: gogID, offset: offset)
         } else if section == .shops {

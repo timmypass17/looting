@@ -19,9 +19,8 @@ class SettingsViewController: UIViewController {
     }()
     
     enum Item {
-        case signIn
         case settings(Model)
-        case signOut
+        case signInOut
         
         var settings: Model? {
             if case .settings(let model) = self {
@@ -52,30 +51,35 @@ class SettingsViewController: UIViewController {
     }
     
     var sections: [Section] = [
-        Section(title: "User", data: [Item.settings(Model(image: UIImage(systemName: "person")!, text: "N/A", secondary: "", backgroundColor: .accent))]),
-        Section(title: "Help & Support",
-                data: [Item.settings(Model(image: UIImage(systemName: "mail.fill")!, text: "Contact Us", backgroundColor: .systemGreen)),
-                       Item.settings(Model(image: UIImage(systemName: "ladybug.fill")!, text: "Bug Report", backgroundColor: .systemRed))]),
-        Section(title: "Privacy",
-                data: [Item.settings(Model(image: UIImage(systemName: "hand.raised.fill")!, text: "Privacy Policy", backgroundColor: .systemGray))]),
-        Section(data: [Item.signOut])
+        Section(
+            title: "General",
+            data: [
+                Item.settings(Model(image: UIImage(systemName: "bell.fill")!, text: "Weekly Sale Notification", secondary: "", backgroundColor: .accent)),
+                Item.settings(Model(image: UIImage(systemName: "clock.fill")!, text: "Show Expiration", secondary: "", backgroundColor: .accent)),
+            ]
+        ),
+        Section(
+            title: "Help & Support",
+            data: [
+                Item.settings(Model(image: UIImage(systemName: "mail.fill")!, text: "Contact Us", backgroundColor: .systemGreen)),
+                Item.settings(Model(image: UIImage(systemName: "ladybug.fill")!, text: "Bug Report", backgroundColor: .systemRed))
+            ]
+        ),
+        Section(
+            title: "Privacy",
+            data: [
+                Item.settings(Model(image: UIImage(systemName: "hand.raised.fill")!, text: "Privacy Policy", backgroundColor: .systemGray))
+            ]
+        ),
+        Section(
+            data: [
+                Item.signInOut
+            ]
+        )
     ]
     
 
-    var signoutIndexPath: IndexPath {
-        for (sectionIndex, section) in sections.enumerated() {
-            if let rowIndex = section.data.firstIndex(where: { item in
-                if case .signOut = item {
-                    return true
-                }
-                return false
-            }) {
-                return IndexPath(row: rowIndex, section: sectionIndex)
-            }
-        }
-        
-        fatalError("signOut item not found in sections")
-    }
+    var signInOutIndexPath = IndexPath(row: 0, section: 3)
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,10 +90,6 @@ class SettingsViewController: UIViewController {
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.reuseIdentifier)
         tableView.register(SignInTableViewCell.self, forCellReuseIdentifier: SignInTableViewCell.reuseIdentifier)
         tableView.register(SignOutTableViewCell.self, forCellReuseIdentifier: SignOutTableViewCell.reuseIdentifier)
-
-        let headerView = GoogleSignInHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 48))
-        headerView.delegate = self
-        tableView.tableHeaderView = headerView
         
         view.addSubview(tableView)
         
@@ -100,12 +100,9 @@ class SettingsViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
+        // Gets called whenever user logs in or out
         Auth.auth().addStateDidChangeListener { [self] auth, user in
-            if let user {
-                print("Got user: \(user.displayName)")
-            } else {
-                print("User not logged in")
-            }
+            tableView.reloadSections(IndexSet(integer: signInOutIndexPath.section), with: .automatic)
         }
     }
 }
@@ -122,13 +119,16 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath == signoutIndexPath {
+        if indexPath == signInOutIndexPath {
             // Sign Out
             let cell = tableView.dequeueReusableCell(withIdentifier: SignOutTableViewCell.reuseIdentifier, for: indexPath) as! SignOutTableViewCell
-            if Auth.auth().currentUser != nil{
-                cell.label.isEnabled = true
+            let isLoggedIn = Auth.auth().currentUser != nil
+            if isLoggedIn {
+                cell.label.text = "Sign Out"
+                cell.label.textColor = .red
             } else {
-                cell.label.isEnabled = false
+                cell.label.text = "Sign In with Google"
+                cell.label.textColor = .link
             }
             return cell
         }
@@ -143,52 +143,23 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         return sections[section].title
     }
     
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let isLoggedIn = Auth.auth().currentUser != nil
-        if !isLoggedIn && indexPath == signoutIndexPath {
-            return nil
-        }
-        
-        return indexPath
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if indexPath == signoutIndexPath {
-            do {
-                try Auth.auth().signOut()
-                print("User signed out")
-            } catch{
-                print("Error signing out: \(error)")
-            }
-            tableView.reloadSections(IndexSet(integer: signoutIndexPath.section), with: .automatic)
-        }
-    }
-    
-    
-}
-
-extension SettingsViewController: GoogleSignInHeaderViewDelegate {
-    func googleSignInHeaderViewDelegate(_ sender: GoogleSignInHeaderView, didTapSignIn: Bool) {
-        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-        
-        // Create Google Sign In configuration object.
-        let config = GIDConfiguration(clientID: clientID)
-        GIDSignIn.sharedInstance.configuration = config
-        
-        // Start the google sign in flow!
-        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [unowned self] result, error in
-            guard error == nil,
-                  let user = result?.user,
-                  let idToken = user.idToken?.tokenString
-            else { return }
-
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
-
-            Auth.auth().signIn(with: credential) { result, error in
-              // At this point, our user is signed in
-                print("Signed in: \(result)")
+        if indexPath == signInOutIndexPath {
+            let isLoggedIn = Auth.auth().currentUser != nil
+            if isLoggedIn {
+                do {
+                    try Auth.auth().signOut()
+                    print("User signed out")
+                } catch{
+                    print("Error signing out: \(error)")
+                }
+                tableView.reloadSections(IndexSet(integer: signInOutIndexPath.section), with: .automatic)
+            } else {
+                Task {
+                    await showGoogleSignIn(self)
+                }
             }
         }
     }

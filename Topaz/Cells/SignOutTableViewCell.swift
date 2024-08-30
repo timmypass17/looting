@@ -13,8 +13,6 @@ class SignOutTableViewCell: UITableViewCell {
 
     let label: UILabel = {
         let label = UILabel()
-        label.text = "Sign Out"
-        label.textColor = .red
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         return label

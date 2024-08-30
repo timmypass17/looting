@@ -21,9 +21,9 @@ class HomeViewController: UIViewController {
     private var resultsViewController: ResultsViewController!
 
     enum Section: Hashable {
-        case featured
+        case large
         case medium(String)
-        case standard(String)
+        case small(String)
         case shops
     }
 
@@ -142,7 +142,7 @@ class HomeViewController: UIViewController {
 
             let section = self.sections[sectionIndex]
             switch section {
-            case .featured:
+            case .large:
                 // MARK: Promoted Section Layout
                 let item = NSCollectionLayoutItem(
                     layoutSize:
@@ -222,7 +222,7 @@ class HomeViewController: UIViewController {
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: itemLeadingAndTrailingInset, bottom: 20, trailing: itemLeadingAndTrailingInset)
                 
                 return section
-            case .standard:
+            case .small:
                 // MARK: Standard Section Layout
                 let item = NSCollectionLayoutItem(
                     layoutSize:
@@ -291,7 +291,7 @@ class HomeViewController: UIViewController {
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             let section = self.sections[indexPath.section]
             switch section {
-            case .featured:
+            case .large:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeaturedDealCollectionViewCell.reuseIdentifier, for: indexPath) as! FeaturedDealCollectionViewCell
                 self.imageTasks[indexPath]?.cancel()
                 self.imageTasks[indexPath] = Task {
@@ -307,7 +307,7 @@ class HomeViewController: UIViewController {
                     await cell.update(game: itemIdentifier.game!, dealItem: itemIdentifier.dealItem!)
                 }
                 return cell
-            case .standard:
+            case .small:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier, for: indexPath) as! DealSmallCollectionViewCell
                 self.imageTasks[indexPath]?.cancel()
                 self.imageTasks[indexPath] = Task {
@@ -337,11 +337,11 @@ class HomeViewController: UIViewController {
                 let section = self.sections[indexPath.section]
                 let sectionName: String
                 switch section {
-                case .featured:
+                case .large:
                     return nil
                 case .medium(let name):
                     sectionName = name
-                case .standard(let name):
+                case .small(let name):
                     sectionName = name
                 case .shops:
                     sectionName = "Deals by Shop"
@@ -484,7 +484,7 @@ class HomeViewController: UIViewController {
                 try Task.checkCancellation()
                 let featuredGames = await self.getGames()
                 
-                return (Section.featured, featuredGames)
+                return (Section.large, featuredGames)
             }
             
             group.addTask {
@@ -500,13 +500,13 @@ class HomeViewController: UIViewController {
             group.addTask {
                 try Task.checkCancellation()
                 let steamID = 61
-                return (Section.standard("Steam"), await self.getGames(shops: [steamID]))
+                return (Section.small("Steam"), await self.getGames(shops: [steamID]))
             }
             
             group.addTask {
                 try Task.checkCancellation()
                 let gogID = 35
-                return (Section.standard("GOG"), await self.getGames(shops: [gogID]))
+                return (Section.small("GOG"), await self.getGames(shops: [gogID]))
             }
             
             group.addTask {
@@ -517,11 +517,11 @@ class HomeViewController: UIViewController {
             var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
 
             snapshot.appendSections([
-                .featured,
+                .large,
                 .medium("Most Popular"),
                 .medium("Most Waitlisted"),
-                .standard("Steam"),
-                .standard("GOG"),
+                .small("Steam"),
+                .small("GOG"),
                 .shops
             ])
             
@@ -535,7 +535,7 @@ class HomeViewController: UIViewController {
                 
                 await dataSource.apply(snapshot, animatingDifferences: true)
                 
-                if section == .featured {
+                if section == .large {
                     resultsViewController.originalResults = items
                     var resultSnapshot = NSDiffableDataSourceSnapshot<ResultsViewController.Section, Item>()
         
@@ -629,14 +629,14 @@ extension HomeViewController: SectionHeaderViewDelegate {
         
         let section = self.sections[sectionIndex]
         switch section {
-        case .featured:
+        case .large:
             break
         case .medium(let name):
             let detailListViewController = DetailListViewController()
             detailListViewController.title = name
             detailListViewController.section = section
             navigationController?.pushViewController(detailListViewController, animated: true)
-        case .standard(let name):
+        case .small(let name):
             let detailListViewController = DetailListViewController()
             detailListViewController.title = name
             detailListViewController.section = section

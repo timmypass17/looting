@@ -80,6 +80,8 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
     let cutView: CutView = {
         let view = CutView()
         view.label.font = .systemFont(ofSize: 12, weight: .bold)
+        view.topConstraint.constant = 4
+        view.bottomConstraint.constant = -4
         view.leadingConstraint.constant = 4
         view.trailingConstraint.constant = -4
         view.layoutIfNeeded()
@@ -100,13 +102,8 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         
         priceContainer.addArrangedSubview(cutView)
         priceContainer.addArrangedSubview(priceView)
-        
-        hstack.addArrangedSubview(cutView)
-        hstack.addArrangedSubview(endTagView)
-        hstack.addArrangedSubview(UIView())
-        
+
         vstack.addArrangedSubview(titleLabel)
-        vstack.addArrangedSubview(hstack)
         
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(vstack)
@@ -127,7 +124,6 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
             lineView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
             lineView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             lineView.trailingAnchor.constraint(equalTo: priceView.trailingAnchor)
-//            lineView.trailingAnchor.constraint(equalTo: priceContainer.trailingAnchor)
         ])
 
     }
@@ -141,7 +137,33 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         priceView.update(current: deal?.price.amount, regular: deal!.regular.amount)
         cutView.update(cut: deal!.cut)
         lineView.isHidden = hideBottomLine
+        endTagView.update(endDate: deal?.endDate, dateType: .normal)
         
+        Task {
+            await setImage(imageURL: imageURL)
+        }
+        
+        if let cut = deal?.cut, cut > 0 {
+            hstack.addArrangedSubview(cutView)
+            hstack.addArrangedSubview(endTagView)
+            hstack.addArrangedSubview(spacer)
+            vstack.addArrangedSubview(hstack)
+        } else {
+            // Have to removeArrangedSubview and removeFromSuperview
+            // https://developer.apple.com/documentation/uikit/uistackview/1616235-removearrangedsubview
+            hstack.removeArrangedSubview(cutView)
+            hstack.removeArrangedSubview(endTagView)
+            hstack.removeArrangedSubview(spacer)
+            vstack.removeArrangedSubview(hstack)
+
+            cutView.removeFromSuperview()
+            endTagView.removeFromSuperview()
+            spacer.removeFromSuperview()
+            hstack.removeFromSuperview()
+        }
+    }
+    
+    func setImage(imageURL: String?) async {
         if let imageURL {
             let imageRequest = ImageAPIRequest(url: URL(string: imageURL)!)
             if let image = try? await sendRequest(imageRequest) {
@@ -156,24 +178,5 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
             imageView.contentMode = .scaleAspectFit
             imageView.image = UIImage(systemName: "photo")
         }
-        
-        if let endDate = deal?.endDate {
-            // does not add duplicates
-            hstack.addArrangedSubview(endTagView)
-            hstack.addArrangedSubview(spacer)
-            vstack.addArrangedSubview(hstack)
-            endTagView.update(endDate: endDate, dateType: .normal)
-        } else {
-            hstack.removeArrangedSubview(endTagView)
-            hstack.removeArrangedSubview(spacer)
-            vstack.removeArrangedSubview(hstack)
-            
-            endTagView.removeFromSuperview()
-            spacer.removeFromSuperview()
-            hstack.removeFromSuperview()
-        }
     }
-
 }
-
-// TODO: deal isnt shown to lowest deal (ex. Sin of a Solar...)

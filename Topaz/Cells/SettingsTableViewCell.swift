@@ -92,5 +92,4 @@ class SettingsTableViewCell: UITableViewCell {
         secondaryLabel.text = item.settings!.secondary
         accessoryType = .disclosureIndicator
     }
-    
 }

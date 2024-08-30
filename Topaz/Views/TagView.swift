@@ -33,8 +33,7 @@ class GiveawayTypeTag: TagView {
 
 class TimeRemainingTag: TagView {
     func update(endDate: Date?, dateType: DateType) {
-        guard let endDate,
-              .now < endDate
+        guard let endDate, .now < endDate
         else {
             isHidden = true
             return
@@ -51,7 +50,6 @@ class TimeRemainingTag: TagView {
         }
         
         backgroundColor = .black.withAlphaComponent(0.75)
-//        tagLabel.textColor = .white
         
         container.insertArrangedSubview(imageView, at: 0)   // doesn nothing if already inserted
         container.setCustomSpacing(4, after: imageView)

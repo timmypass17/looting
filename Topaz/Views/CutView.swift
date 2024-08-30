@@ -20,6 +20,8 @@ class CutView: UIView {
         return label
     }()
     
+    var topConstraint: NSLayoutConstraint!
+    var bottomConstraint: NSLayoutConstraint!
     var leadingConstraint: NSLayoutConstraint!
     var trailingConstraint: NSLayoutConstraint!
 
@@ -32,12 +34,15 @@ class CutView: UIView {
         addSubview(label)
         
         // store constraints to update them later
+        
+        topConstraint = label.topAnchor.constraint(equalTo: topAnchor, constant: 4)
+        bottomConstraint = label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4)
         leadingConstraint = label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8)
         trailingConstraint = label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
 
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: topAnchor),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor),
+            topConstraint,
+            bottomConstraint,
             leadingConstraint,
             trailingConstraint,
         ])

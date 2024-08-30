@@ -277,25 +277,8 @@ class WishlistViewController: UIViewController {
     
     func didTapGoogleSignIn() -> UIAction {
         return UIAction { _ in
-            guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-            
-            // Create Google Sign In configuration object.
-            let config = GIDConfiguration(clientID: clientID)
-            GIDSignIn.sharedInstance.configuration = config
-            
-            // Start the google sign in flow!
-            GIDSignIn.sharedInstance.signIn(withPresenting: self) { [unowned self] result, error in
-                guard error == nil,
-                      let user = result?.user,
-                      let idToken = user.idToken?.tokenString
-                else { return }
-    
-                let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
-
-                Auth.auth().signIn(with: credential) { result, error in
-                  // At this point, our user is signed in
-                    print("Signed in: \(result)")
-                }
+            Task {
+                await showGoogleSignIn(self)
             }
         }
     }
@@ -442,5 +425,24 @@ extension WishlistViewController: GameDetailViewControllerDelegate {
         currentItems = currentItems.filter { $0.wishlistItem!.gameID != game.id }
         updateSnapshot(with: currentItems)
         print("didWishlistGame: \(game.title)")
+    }
+}
+
+func showGoogleSignIn(_ viewControlller: UIViewController) async {
+    guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+    
+    let config = GIDConfiguration(clientID: clientID)
+    GIDSignIn.sharedInstance.configuration = config
+    
+    // Start the google sign in flow!
+    do {
+        let result: GIDSignInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: viewControlller)
+        let user: GIDGoogleUser = result.user
+        guard let idToken = user.idToken?.tokenString else { return }
+        
+        let credential: AuthCredential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
+        try await Auth.auth().signIn(with: credential)
+    } catch {
+        print("Error google signing: \(error)")
     }
 }
