@@ -99,7 +99,10 @@ class SettingsViewController: UIViewController {
         tableView.register(SignOutTableViewCell.self, forCellReuseIdentifier: SignOutTableViewCell.reuseIdentifier)
         tableView.register(SettingsSelectionTableViewCell.self, forCellReuseIdentifier: SettingsSelectionTableViewCell.selectionReuseIdentifier)
         tableView.register(SettingsToggleTableViewCell.self, forCellReuseIdentifier: SettingsToggleTableViewCell.toggleReuseIdentifier)
-
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: menu)
+        navigationItem.rightBarButtonItem?.tintColor = .label
+        
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
@@ -113,6 +116,16 @@ class SettingsViewController: UIViewController {
         Auth.auth().addStateDidChangeListener { [self] auth, user in
             tableView.reloadSections(IndexSet(integer: signInOutIndexPath.section), with: .automatic)
         }
+    }
+    
+    var menu: UIMenu {
+        var menuItems: [UIAction] = [
+                UIAction(title: "Delete Account", image: UIImage(systemName: "trash")) { [self] _ in
+                    didTapDeleteAccountButton()
+                }
+            ]
+        
+        return UIMenu(title: "", image: nil, identifier: nil, options: [], children: menuItems)
     }
 }
 
@@ -217,6 +230,40 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         return indexPath
+    }
+    
+    func didTapDeleteAccountButton() {
+        let title = "Delete Account?"
+        let message = "Are you sure you want to delete your account? This action is permanent and will remove all your wishlist items. You may need to re-login to proceed with this security-sensitive operation. This cannot be undone."
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [self] _ in
+            Task {
+                await deleteUser()
+            }
+        })
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func deleteUser() async {
+        print(#function)
+        // Note: Doesn't delete user's data. Deleting document does not delete subcollection.
+        guard let user = Auth.auth().currentUser else { return }
+
+        do {
+            try await user.delete()
+            print("Deleted user successfully")
+        }
+        catch {
+            // Deleting account requires user to sign in recently, re-authenticate the user to perform security sensitive actions
+            print("Error deleting account: \(error)")
+            let result: AuthDataResult? = await showGoogleSignIn(self)
+            if result != nil {
+                await deleteUser()
+            }
+        }
     }
 }
 

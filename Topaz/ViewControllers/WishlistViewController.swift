@@ -443,8 +443,8 @@ extension WishlistViewController: GameDetailViewControllerDelegate {
     }
 }
 
-func showGoogleSignIn(_ viewControlller: UIViewController) async {
-    guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+func showGoogleSignIn(_ viewControlller: UIViewController) async -> AuthDataResult? {
+    guard let clientID = FirebaseApp.app()?.options.clientID else { return nil }
     
     let config = GIDConfiguration(clientID: clientID)
     GIDSignIn.sharedInstance.configuration = config
@@ -453,11 +453,13 @@ func showGoogleSignIn(_ viewControlller: UIViewController) async {
     do {
         let result: GIDSignInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: viewControlller)
         let user: GIDGoogleUser = result.user
-        guard let idToken = user.idToken?.tokenString else { return }
+        guard let idToken = user.idToken?.tokenString else { return nil }
         
         let credential: AuthCredential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
-        try await Auth.auth().signIn(with: credential)
+        let res = try await Auth.auth().signIn(with: credential)
+        return res
     } catch {
         print("Error google signing: \(error)")
+        return nil
     }
 }
