@@ -101,6 +101,20 @@ class HomeViewController: UIViewController {
         collectionView.collectionViewLayout = createLayout()
 
         configureDataSource() // provides cell
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUI(_:)), name: .showExpirationUpdated, object: nil)
+    }
+    
+    @objc func updateUI(_ notification: NSNotification) {
+        var currentSnapshot = dataSource.snapshot()
+        let visibleIndexPaths = collectionView.indexPathsForVisibleItems
+
+        let visibleItems: [Item] = visibleIndexPaths.compactMap { indexPath in
+            return dataSource.itemIdentifier(for: indexPath)
+        }
+        currentSnapshot.reloadItems(visibleItems)
+        
+        dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
 
     func createLayout() -> UICollectionViewLayout {

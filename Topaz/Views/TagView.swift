@@ -33,7 +33,9 @@ class GiveawayTypeTag: TagView {
 
 class TimeRemainingTag: TagView {
     func update(endDate: Date?, dateType: DateType) {
-        guard let endDate, .now < endDate
+        guard let endDate,
+              .now < endDate,
+              Settings.shared.showExpiration
         else {
             isHidden = true
             return

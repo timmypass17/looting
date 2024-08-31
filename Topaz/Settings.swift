@@ -42,4 +42,17 @@ struct Settings {
             archiveJSON(value: newValue, key: "deviceToken")
         }
     }
+    
+    var showExpiration: Bool {
+        get {
+            return unarchiveJSON(key: "showExpiration") ?? true
+        }
+        set {
+            archiveJSON(value: newValue, key: "showExpiration")
+        }
+    }
+}
+
+extension Notification.Name {
+    static let showExpirationUpdated = Notification.Name("showExpirationUpdated")
 }

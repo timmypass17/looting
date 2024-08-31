@@ -89,6 +89,8 @@
 		32ADB9512C81077600351C27 /* HistoryAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB94F2C8105AE00351C27 /* HistoryAPIRequest.swift */; };
 		32ADB9532C8108B800351C27 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB9522C8108B800351C27 /* HistoryView.swift */; };
 		32ADB9542C81099E00351C27 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E82C23BDFC00725DC5 /* TestData.swift */; };
+		32ADB9562C83835B00351C27 /* NotificationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB9552C83835B00351C27 /* NotificationTableViewController.swift */; };
+		32ADB9582C838B3D00351C27 /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB9572C838B3D00351C27 /* PrivacyViewController.swift */; };
 		32B66CFE2C585F8F00A33612 /* WishlistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B66CFD2C585F8F00A33612 /* WishlistItem.swift */; };
 		32D3D46D2C44B6DC0036E964 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D46C2C44B6DC0036E964 /* FirebaseAnalytics */; };
 		32D3D46F2C44B6DC0036E964 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D46E2C44B6DC0036E964 /* FirebaseAnalyticsSwift */; };
@@ -189,6 +191,8 @@
 		32ADB94C2C8102E400351C27 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		32ADB94F2C8105AE00351C27 /* HistoryAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryAPIRequest.swift; sourceTree = "<group>"; };
 		32ADB9522C8108B800351C27 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		32ADB9552C83835B00351C27 /* NotificationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewController.swift; sourceTree = "<group>"; };
+		32ADB9572C838B3D00351C27 /* PrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
 		32B66CFD2C585F8F00A33612 /* WishlistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistItem.swift; sourceTree = "<group>"; };
 		32D3D48C2C44C5E60036E964 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		32D3D4AE2C47486A0036E964 /* SignInTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInTableViewCell.swift; sourceTree = "<group>"; };
@@ -285,6 +289,8 @@
 				32A66CCD2C373F5200919F2F /* GameDetailViewController.swift */,
 				324D93572C752F1600FC919F /* DetailListViewController.swift */,
 				324D93592C768F2F00FC919F /* ShopsViewController.swift */,
+				32ADB9552C83835B00351C27 /* NotificationTableViewController.swift */,
+				32ADB9572C838B3D00351C27 /* PrivacyViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -525,6 +531,7 @@
 				32ADB9442C7D5BBC00351C27 /* SearchScope.swift in Sources */,
 				32ADB94D2C8102E400351C27 /* History.swift in Sources */,
 				32A66CBF2C360EE700919F2F /* WaitlistAPIRequest.swift in Sources */,
+				32ADB9562C83835B00351C27 /* NotificationTableViewController.swift in Sources */,
 				32D3D4C22C47486B0036E964 /* ShowMoreTableViewCell.swift in Sources */,
 				32961E2A2C32224500B2BB9C /* Price.swift in Sources */,
 				320205FA2C23C61500725DC5 /* IsThereAnyDealService.swift in Sources */,
@@ -544,6 +551,7 @@
 				32A66CC32C372CCE00919F2F /* GameDetail.swift in Sources */,
 				32961E162C2B6D9F00B2BB9C /* SearchAPIRequest.swift in Sources */,
 				3248352B2C3C874E00130324 /* PriceOverviewAPIRequest.swift in Sources */,
+				32ADB9582C838B3D00351C27 /* PrivacyViewController.swift in Sources */,
 				320205D32C23ACFB00725DC5 /* GiveawayViewController.swift in Sources */,
 				32D3D4C82C47486B0036E964 /* PriceTableViewCell.swift in Sources */,
 				32A66CCE2C373F5200919F2F /* GameDetailViewController.swift in Sources */,

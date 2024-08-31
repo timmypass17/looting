@@ -38,15 +38,7 @@ class SettingsTableViewCell: UITableViewCell {
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
-    
-    var secondaryLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .secondaryLabel
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-        return label
-    }()
-    
+
     var container: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -61,7 +53,6 @@ class SettingsTableViewCell: UITableViewCell {
         iconContainer.addSubview(iconImageView)
         container.addArrangedSubview(iconContainer)
         container.addArrangedSubview(label)
-        container.addArrangedSubview(secondaryLabel)
         
         contentView.addSubview(container)
                 
@@ -85,11 +76,68 @@ class SettingsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(with item: SettingsViewController.Item) {
+    func update(item: SettingsViewController.Item) {
         iconImageView.image = item.settings!.image
         iconContainer.backgroundColor = item.settings!.backgroundColor
         label.text = item.settings!.text
-        secondaryLabel.text = item.settings!.secondary
-        accessoryType = .disclosureIndicator
     }
 }
+
+class SettingsSelectionTableViewCell: SettingsTableViewCell {
+    static let selectionReuseIdentifier = "SettingsSelectionTableViewCell"
+
+    var secondaryLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        accessoryType = .disclosureIndicator
+        container.addArrangedSubview(secondaryLabel)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func update(item: SettingsViewController.Item) {
+        super.update(item: item)
+        secondaryLabel.text = item.settings!.secondary
+    }
+}
+
+class SettingsToggleTableViewCell: SettingsTableViewCell {
+    static let toggleReuseIdentifier = "SettingsToggleTableViewCell"
+
+    var toggleView = UISwitch()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+
+        toggleView.addAction(toggleValueChanged(), for: .valueChanged)
+
+        container.addArrangedSubview(toggleView)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func update(item: SettingsViewController.Item) {
+        super.update(item: item)
+        toggleView.isOn = Settings.shared.showExpiration
+    }
+    
+    func toggleValueChanged() -> UIAction {
+        return UIAction { [self] _ in
+            Settings.shared.showExpiration = toggleView.isOn
+            NotificationCenter.default.post(name: .showExpirationUpdated, object: nil)
+        }
+    }
+}
+

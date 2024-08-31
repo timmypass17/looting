@@ -165,6 +165,7 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         if game.title.lowercased() == "cyberpunk 2077" {
             print("\(game.title) is showing deal: \(endTagView.tagLabel.text)")
         }
+        
     }
     
     override func prepareForReuse() {
