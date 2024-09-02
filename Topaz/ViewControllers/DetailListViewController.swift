@@ -20,7 +20,7 @@ class DetailListViewController: UIViewController {
         control.insertSegment(with: UIImage(systemName: "rectangle.grid.1x2"), at: 0, animated: true)
         control.insertSegment(with: UIImage(systemName: "rectangle.grid.3x2"), at: 1, animated: true)
         control.translatesAutoresizingMaskIntoConstraints = false
-        control.backgroundColor = .black
+//        control.backgroundColor = .black
         return control
     }()
     

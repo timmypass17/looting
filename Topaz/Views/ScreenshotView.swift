@@ -57,9 +57,7 @@ class MovieView: MediaView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        imageView.alpha = 0.7 // dim imageview. Could've used black overlay using UIView and opacity
-        
+                
         addSubview(playView)
         addSubview(titleView)
         
@@ -70,7 +68,8 @@ class MovieView: MediaView {
         
         NSLayoutConstraint.activate([
             titleView.topAnchor.constraint(equalTo: imageView.topAnchor),
-            titleView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor)
+            titleView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            titleView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor)
         ])
     }
     
@@ -123,6 +122,7 @@ class MovieTitleView: UIView {
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .italicSystemFont(ofSize: 12)
+        label.textColor = .white
         return label
     }()
     

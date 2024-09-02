@@ -39,17 +39,19 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
     
     let cutView = CutView()
     
-    let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.cornerRadius = 8
-        imageView.layer.masksToBounds = true    // for crop
-        imageView.backgroundColor = .placeholderText
-        imageView.tintColor = .secondaryLabel
-        NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalToConstant: 230)
-        ])
-        return imageView
-    }()
+    let coverView = LargeCoverView()
+//    let imageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.layer.cornerRadius = 8
+//        imageView.layer.masksToBounds = true    // for crop
+//        imageView.backgroundColor = .secondarySystemBackground
+//        imageView.tintColor = .placeholderText
+//        NSLayoutConstraint.activate([
+//            imageView.heightAnchor.constraint(equalToConstant: 230)
+//        ])
+//    
+//        return imageView
+//    }()
     
     let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -112,7 +114,8 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         stackView.addArrangedSubview(hstack)
         stackView.setCustomSpacing(10, after: hstack)
 
-        stackView.addArrangedSubview(imageView)
+//        stackView.addArrangedSubview(imageView)
+        stackView.addArrangedSubview(coverView)
         
         addSubview(stackView)
         addSubview(endTagView)
@@ -129,9 +132,14 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
             cutView.bottomAnchor.constraint(equalTo: priceView.bottomAnchor)
         ])
         
+//        NSLayoutConstraint.activate([
+//            endTagView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 4),
+//            endTagView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 4)
+//        ])
+        
         NSLayoutConstraint.activate([
-            endTagView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 4),
-            endTagView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 4)
+            endTagView.topAnchor.constraint(equalTo: coverView.topAnchor, constant: 4),
+            endTagView.leadingAnchor.constraint(equalTo: coverView.leadingAnchor, constant: 4)
         ])
     }
     
@@ -147,22 +155,25 @@ class FeaturedDealCollectionViewCell: UICollectionViewCell {
         cutView.update(cut: dealItem.deal!.cut)
         priceView.update(current: dealItem.deal!.price.amount, regular: dealItem.deal!.regular.amount)
         
-        imageView.image = nil
-
-        if let assets = game.assets {
-            let imageRequest = ImageAPIRequest(url: URL(string: assets.banner600)!)
-            if let image = try? await sendRequest(imageRequest) {
-                imageView.contentMode = .scaleAspectFill
-                imageView.image = image
-            } else {
-                imageView.contentMode = .scaleAspectFit
-                imageView.image = UIImage(systemName: "photo")
-            }
-        } else {
-            imageView.contentMode = .scaleAspectFit
-            imageView.image = UIImage(systemName: "photo")
-        }
+        await coverView.update(imageURL: game.assets?.banner600)
+//        imageView.image = nil
+//
+//        if let assets = game.assets {
+//            let imageRequest = ImageAPIRequest(url: URL(string: assets.banner600)!)
+//            if let image = try? await sendRequest(imageRequest) {
+//                imageView.contentMode = .scaleAspectFill
+//                imageView.image = image
+//            } else {
+//                imageView.contentMode = .scaleAspectFit
+//                imageView.image = UIImage(systemName: "gamecontroller")
+//            }
+//        } else {
+//            imageView.contentMode = .scaleAspectFit
+//            imageView.image = UIImage(systemName: "gamecontroller")
+//        }
         
         endTagView.update(endDate: dealItem.deal?.endDate, dateType: .normal)
     }
 }
+
+

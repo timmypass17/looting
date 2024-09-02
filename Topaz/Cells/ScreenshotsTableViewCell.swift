@@ -17,7 +17,6 @@ class ScreenshotsTableViewCell: UITableViewCell {
     let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-//        stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -33,8 +32,9 @@ class ScreenshotsTableViewCell: UITableViewCell {
         let pageControl = UIPageControl()
         pageControl.currentPage = 0
         pageControl.translatesAutoresizingMaskIntoConstraints = false
-        pageControl.currentPageIndicatorTintColor = .label
-        pageControl.pageIndicatorTintColor = .secondaryLabel
+        pageControl.currentPageIndicatorTintColor = .white
+        pageControl.pageIndicatorTintColor = .lightGray
+//        pageControl.backgroundStyle = .prominent
         return pageControl
     }()
     
@@ -71,7 +71,7 @@ class ScreenshotsTableViewCell: UITableViewCell {
             pageControl.widthAnchor.constraint(equalTo: widthAnchor),
             pageControl.heightAnchor.constraint(equalToConstant: 20),
 //            pageControl.bottomAnchor.constraint(equalTo: bottomAnchor)
-            bottomAnchor.constraint(equalToSystemSpacingBelow: pageControl.bottomAnchor, multiplier: 1)
+            bottomAnchor.constraint(equalToSystemSpacingBelow: pageControl.bottomAnchor, multiplier: 1) // TODO: wtf is this
         ])
     }
     
@@ -98,7 +98,7 @@ class ScreenshotsTableViewCell: UITableViewCell {
                 view = MediaView()
             }
             
-            view.imageView.heightAnchor.constraint(equalToConstant: (337 / 600) * self.frame.size.width).isActive = true
+            view.imageView.heightAnchor.constraint(equalToConstant: (338 / 600) * self.frame.size.width).isActive = true
             view.imageView.widthAnchor.constraint(equalToConstant: self.frame.size.width).isActive = true
             screenshotViews.append(view)
             stackView.addArrangedSubview(view)

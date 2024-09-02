@@ -10,20 +10,22 @@ import UIKit
 class DealMediumCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "DealMediumCollectionViewCell"
-
-    let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .placeholderText
-        imageView.layer.cornerRadius = 8
-        imageView.layer.masksToBounds = true
-        imageView.tintColor = .secondaryLabel
-
-        NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalToConstant: 200)
-        ])
-        
-        return imageView
-    }()
+    
+    let coverView = MediumCoverView()
+//
+//    let imageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.backgroundColor = .secondarySystemBackground
+//        imageView.tintColor = .placeholderText
+//        imageView.layer.cornerRadius = 8
+//        imageView.layer.masksToBounds = true
+//
+//        NSLayoutConstraint.activate([
+//            imageView.heightAnchor.constraint(equalToConstant: 200)
+//        ])
+//        
+//        return imageView
+//    }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -35,7 +37,7 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         let ratingView = HCSStarRatingView()
         ratingView.minimumValue = 0
         ratingView.maximumValue = 5
-        ratingView.tintColor = .white
+        ratingView.tintColor = .secondaryLabel
         ratingView.allowsHalfStars = true
         ratingView.backgroundColor = .systemBackground
         ratingView.widthAnchor.constraint(equalToConstant: 75).isActive = true
@@ -81,7 +83,7 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         return tagView
     }()
 
-    var imageTask: Task<Void, Never>?
+//    var imageTask: Task<Void, Never>?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -96,7 +98,7 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         priceContainer.addArrangedSubview(UIView())
         priceContainer.addArrangedSubview(priceView)
                 
-        stackView.addArrangedSubview(imageView)
+        stackView.addArrangedSubview(coverView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(ratingContainer)
         stackView.addArrangedSubview(tagsLabel)
@@ -114,8 +116,8 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            endTagView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 4),
-            endTagView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 4)
+            endTagView.topAnchor.constraint(equalTo: coverView.topAnchor, constant: 4),
+            endTagView.leadingAnchor.constraint(equalTo: coverView.leadingAnchor, constant: 4)
         ])
     }
     
@@ -142,23 +144,24 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         cutView.update(cut: dealItem.deal!.cut)
         priceView.update(current: dealItem.deal!.price.amount, regular: dealItem.deal!.regular.amount)
         
-        imageTask?.cancel()
-        imageView.image = nil
-        
-        if let assets = game.assets {
-            let imageRequest = ImageAPIRequest(url: URL(string: assets.boxart)!)
-            if let image = try? await sendRequest(imageRequest) {
-                imageView.contentMode = .scaleAspectFill
-                imageView.image = image
-            } else {
-                imageView.contentMode = .scaleAspectFit
-                imageView.image = UIImage(systemName: "photo")
-            }
-            
-        } else {
-            imageView.contentMode = .scaleAspectFit
-            imageView.image = UIImage(systemName: "photo")
-        }
+        await coverView.update(imageURL: game.assets?.boxart)
+//        imageTask?.cancel()
+//        imageView.image = nil
+//        
+//        if let assets = game.assets {
+//            let imageRequest = ImageAPIRequest(url: URL(string: assets.boxart)!)
+//            if let image = try? await sendRequest(imageRequest) {
+//                imageView.contentMode = .scaleAspectFill
+//                imageView.image = image
+//            } else {
+//                imageView.contentMode = .scaleAspectFit
+//                imageView.image = UIImage(systemName: "gamecontroller")
+//            }
+//            
+//        } else {
+//            imageView.contentMode = .scaleAspectFit
+//            imageView.image = UIImage(systemName: "gamecontroller")
+//        }
         
         endTagView.update(endDate: dealItem.deal?.endDate, dateType: .short)
 //        
@@ -168,11 +171,6 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        imageTask?.cancel()
-        imageView.image = nil
-    }
 }
 
 //extension UIView {

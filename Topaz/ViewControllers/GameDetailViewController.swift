@@ -166,10 +166,12 @@ class GameDetailViewController: UIViewController {
             gameDetail = try await steamService.getGameDetail(gameID: "\(steamID)")
             tableView.reloadData()
             
-            if let imageUrl = gameDetail?.backgroundURL {
+            if traitCollection.userInterfaceStyle == .dark, let imageUrl = gameDetail?.backgroundURL {
                 let backgroundView = GameBackgroundView()
                 await backgroundView.setImage(url: URL(string: imageUrl)!)
                 tableView.backgroundView = backgroundView
+            } else {
+                tableView.backgroundView = nil
             }
         } catch {
             print("Error fetching game detail: \(error)")
@@ -318,9 +320,8 @@ extension GameDetailViewController: UITableViewDataSource {
         case .cover:
             let cell = tableView.dequeueReusableCell(withIdentifier: BannerTableViewCell.reuseIdentifier, for: indexPath) as! BannerTableViewCell
             cell.selectionStyle = .none
-            guard let imageUrl = game.assets?.banner600 else { return UITableViewCell() }
             Task {
-                await cell.setImage(url: URL(string: imageUrl)!)
+                await cell.update(imageURL: game.assets?.banner600)
             }
             return cell
         case .info:
@@ -454,19 +455,32 @@ extension GameDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // Fixes bug where movie section is squished when fetching movies cause slow
+        let coverIndexPath = IndexPath(row: 0, section: 0)
         let movieIndexPath = IndexPath(row: 0, section: 2)
+        
+        if indexPath == coverIndexPath {
+            let tableViewWidth = tableView.frame.width
+            let layoutMargins = tableView.layoutMargins
+            let horizontalInset = layoutMargins.left + layoutMargins.right
+            let cellWidth = tableViewWidth - horizontalInset
+
+            let height = (344 / 600) * cellWidth
+            return height
+        }
+        
         if indexPath == movieIndexPath {
             let tableViewWidth = tableView.frame.width
             let layoutMargins = tableView.layoutMargins
             let horizontalInset = layoutMargins.left + layoutMargins.right
             let cellWidth = tableViewWidth - horizontalInset
 
-            let height = (337 / 600) * cellWidth
+            let height = (338 / 600) * cellWidth
             return height
         }
         
         return UITableView.automaticDimension
     }
+    
     
 }
 

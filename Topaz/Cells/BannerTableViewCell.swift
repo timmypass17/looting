@@ -11,42 +11,28 @@ class BannerTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "BannerTableViewCell"
     
-    let bannerImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true    // for crop
-        imageView.backgroundColor = .placeholderText
-        
-        let width = UIScreen.main.bounds.size.width
-        NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalToConstant: width * (344/600))
-        ])
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return imageView
-    }()
+    let coverView = BannerCoverView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        coverView.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(bannerImageView)
+        addSubview(coverView)
         
         NSLayoutConstraint.activate([
-            bannerImageView.topAnchor.constraint(equalTo: topAnchor),
-            bannerImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            bannerImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            bannerImageView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            coverView.topAnchor.constraint(equalTo: topAnchor),
+            coverView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            coverView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            coverView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setImage(url: URL) async {
-        let imageRequest = ImageAPIRequest(url: url)
-        if let image = try? await sendRequest(imageRequest) {
-            bannerImageView.image = image
-        }
+    func update(imageURL: String?) async {
+        await coverView.update(imageURL: imageURL)
     }
 }

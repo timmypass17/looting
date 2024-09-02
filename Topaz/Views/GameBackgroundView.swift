@@ -18,7 +18,7 @@ class GameBackgroundView: UIView {
     
     let blackOverlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.80) // Adjust the alpha as needed
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

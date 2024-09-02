@@ -20,20 +20,21 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true    // for crop
-        imageView.backgroundColor = .placeholderText
-        imageView.tintColor = .secondaryLabel
-        
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: 60 * (400/187)),
-            imageView.heightAnchor.constraint(equalToConstant: 60)
-        ])
-        
-        return imageView
-    }()
+    let coverImage = SmallCoverView()
+//    let imageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.contentMode = .scaleAspectFill
+//        imageView.layer.masksToBounds = true    // for crop
+//        imageView.backgroundColor = .secondarySystemBackground
+//        imageView.tintColor = .placeholderText
+//        
+//        NSLayoutConstraint.activate([
+//            imageView.widthAnchor.constraint(equalToConstant: 60 * (400/187)),
+//            imageView.heightAnchor.constraint(equalToConstant: 60)
+//        ])
+//        
+//        return imageView
+//    }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -76,6 +77,7 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
     let hstack: UIStackView = {
         let hstack = UIStackView()
         hstack.axis = .horizontal
+        hstack.spacing = 4
         return hstack
     }()
         
@@ -107,7 +109,7 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
 
         vstack.addArrangedSubview(titleLabel)
         
-        stackView.addArrangedSubview(imageView)
+        stackView.addArrangedSubview(coverImage)
         stackView.addArrangedSubview(vstack)
         stackView.addArrangedSubview(priceView)
         
@@ -123,7 +125,7 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             lineView.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale),
-            lineView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
+            lineView.bottomAnchor.constraint(equalTo: coverImage.bottomAnchor),
             lineView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             lineView.trailingAnchor.constraint(equalTo: priceView.trailingAnchor)
         ])
@@ -166,19 +168,20 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
     }
     
     func setImage(imageURL: String?) async {
-        if let imageURL {
-            let imageRequest = ImageAPIRequest(url: URL(string: imageURL)!)
-            if let image = try? await sendRequest(imageRequest) {
-                imageView.contentMode = .scaleAspectFill
-                imageView.image = image
-            } else {
-                imageView.contentMode = .scaleAspectFit
-                imageView.image = UIImage(systemName: "photo")
-                
-            }
-        } else {
-            imageView.contentMode = .scaleAspectFit
-            imageView.image = UIImage(systemName: "photo")
-        }
+        await coverImage.update(imageURL: imageURL)
+//        if let imageURL {
+//            let imageRequest = ImageAPIRequest(url: URL(string: imageURL)!)
+//            if let image = try? await sendRequest(imageRequest) {
+//                imageView.contentMode = .scaleAspectFill
+//                imageView.image = image
+//            } else {
+//                imageView.contentMode = .scaleAspectFit
+//                imageView.image = UIImage(systemName: "gamecontroller")
+//                
+//            }
+//        } else {
+//            imageView.contentMode = .scaleAspectFit
+//            imageView.image = UIImage(systemName: "gamecontroller")
+//        }
     }
 }
