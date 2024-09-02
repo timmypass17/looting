@@ -186,7 +186,6 @@ class WishlistViewController: UIViewController {
     
     // Generic method to load wishlist data
     private func loadWishlist(after document: DocumentSnapshot? = nil) async {
-        print(#function)
         do {
             guard let user else { return }
             

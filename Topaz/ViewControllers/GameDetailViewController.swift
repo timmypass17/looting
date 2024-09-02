@@ -62,7 +62,6 @@ class GameDetailViewController: UIViewController {
         }
     }
     
-    // TODO: Just use deal
     init(game: Game, dealItem: DealItem?) {
         self.game = game
         self.dealItem = dealItem

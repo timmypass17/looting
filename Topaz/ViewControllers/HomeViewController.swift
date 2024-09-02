@@ -7,8 +7,6 @@
 
 import UIKit
 
-// TODO: Add discount percent to banner (ex. -%50) with white text black bg or steam but orange
-// TODO: Game deals aren't using lowest deal
 class HomeViewController: UIViewController {
     
     var collectionView: UICollectionView = {
