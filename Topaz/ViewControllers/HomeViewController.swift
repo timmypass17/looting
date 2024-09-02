@@ -605,10 +605,10 @@ extension HomeViewController: UISearchResultsUpdating {
             snapshot.appendItems(resultsViewController.originalResults, toSection: .results)
             resultsViewController.dataSource.apply(snapshot)
         } else {
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { [self] _ in
-                handleSearchingGames(title: title)
-            }
+//            timer?.invalidate()
+//            timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { [self] _ in
+//                handleSearchingGames(title: title)
+//            }
         }
     }
 }

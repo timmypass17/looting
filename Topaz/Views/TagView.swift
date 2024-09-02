@@ -13,6 +13,7 @@ class GiveawayTypeTag: TagView {
         switch type {
         case .game:
             tagLabel.text = "Game"
+            
             backgroundColor = .accent.withAlphaComponent(0.25)
             tagLabel.textColor = .accent
         case .dlc:
@@ -32,6 +33,18 @@ class GiveawayTypeTag: TagView {
 }
 
 class TimeRemainingTag: TagView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .black.withAlphaComponent(0.75)
+        tagLabel.textColor = .white
+        imageView.tintColor = .white
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func update(endDate: Date?, dateType: DateType) {
         guard let endDate,
               .now < endDate,
@@ -50,9 +63,7 @@ class TimeRemainingTag: TagView {
         } else if let minutesLeft = dateDiffParts.minute, minutesLeft > 0 {
             tagLabel.text = "\(minutesLeft) \(dateType.minutesString())"
         }
-        
-        backgroundColor = .black.withAlphaComponent(0.75)
-        
+                
         container.insertArrangedSubview(imageView, at: 0)   // doesn nothing if already inserted
         container.setCustomSpacing(4, after: imageView)
     }

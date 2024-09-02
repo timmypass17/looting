@@ -40,12 +40,12 @@ class SettingsViewController: UIViewController {
     }
     
     struct Model {
-        let image: UIImage?
+        let image: UIImage
         var text: String
         var secondary: String?
         let backgroundColor: UIColor?
         
-        init(image: UIImage?, text: String, secondary: String? = nil, backgroundColor: UIColor?) {
+        init(image: UIImage, text: String, secondary: String? = nil, backgroundColor: UIColor?) {
             self.image = image
             self.text = text
             self.secondary = secondary
@@ -69,8 +69,9 @@ class SettingsViewController: UIViewController {
             ]
         ),
         Section(
-            title: "Privacy",
+            title: nil,
             data: [
+                Item.settings(Model(image: UIImage(systemName: "globe")!, text: "Acknowledgements", backgroundColor: .systemBlue)),
                 Item.settings(Model(image: UIImage(systemName: "hand.raised.fill")!, text: "Privacy Policy", backgroundColor: .systemGray))
             ]
         ),
@@ -85,7 +86,8 @@ class SettingsViewController: UIViewController {
     var showExpirationIndexPath = IndexPath(row: 1, section: 0)
     var contactIndexPath = IndexPath(row: 0, section: 1)
     var bugIndexPath = IndexPath(row: 1, section: 1)
-    var privacyIndexPath = IndexPath(row: 0, section: 2)
+    var acknowledgementsIndexPath = IndexPath(row: 0, section: 2)
+    var privacyIndexPath = IndexPath(row: 1, section: 2)
     var signInOutIndexPath = IndexPath(row: 0, section: 3)
         
     override func viewDidLoad() {
@@ -218,6 +220,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                     await showGoogleSignIn(self)
                 }
             }
+        } else if indexPath == acknowledgementsIndexPath {
+            let acknowledgementsViewController = AcknowledgementsViewController()
+            navigationController?.pushViewController(acknowledgementsViewController, animated: true)
         } else if indexPath == privacyIndexPath {
             let privacyViewController = PrivacyViewController()
             navigationController?.pushViewController(privacyViewController, animated: true)
@@ -264,6 +269,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 await deleteUser()
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 0 {
+            return "Get notified every Friday (19:00 UTC) for games on sale in your wishlist."
+        }
+        
+        return nil
     }
 }
 

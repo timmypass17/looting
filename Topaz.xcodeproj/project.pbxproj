@@ -91,6 +91,7 @@
 		32ADB9542C81099E00351C27 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320205E82C23BDFC00725DC5 /* TestData.swift */; };
 		32ADB9562C83835B00351C27 /* NotificationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB9552C83835B00351C27 /* NotificationTableViewController.swift */; };
 		32ADB9582C838B3D00351C27 /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB9572C838B3D00351C27 /* PrivacyViewController.swift */; };
+		32ADB95B2C85596A00351C27 /* AcknowledgementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ADB95A2C85596A00351C27 /* AcknowledgementsViewController.swift */; };
 		32B66CFE2C585F8F00A33612 /* WishlistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B66CFD2C585F8F00A33612 /* WishlistItem.swift */; };
 		32D3D46D2C44B6DC0036E964 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D46C2C44B6DC0036E964 /* FirebaseAnalytics */; };
 		32D3D46F2C44B6DC0036E964 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32D3D46E2C44B6DC0036E964 /* FirebaseAnalyticsSwift */; };
@@ -128,7 +129,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		320205AE2C23A45800725DC5 /* Topaz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topaz.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		320205AE2C23A45800725DC5 /* Looted.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Looted.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		320205B12C23A45800725DC5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		320205B32C23A45800725DC5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		320205B52C23A45800725DC5 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +194,7 @@
 		32ADB9522C8108B800351C27 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		32ADB9552C83835B00351C27 /* NotificationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewController.swift; sourceTree = "<group>"; };
 		32ADB9572C838B3D00351C27 /* PrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
+		32ADB95A2C85596A00351C27 /* AcknowledgementsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsViewController.swift; sourceTree = "<group>"; };
 		32B66CFD2C585F8F00A33612 /* WishlistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistItem.swift; sourceTree = "<group>"; };
 		32D3D48C2C44C5E60036E964 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		32D3D4AE2C47486A0036E964 /* SignInTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInTableViewCell.swift; sourceTree = "<group>"; };
@@ -249,7 +251,7 @@
 		320205AF2C23A45800725DC5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				320205AE2C23A45800725DC5 /* Topaz.app */,
+				320205AE2C23A45800725DC5 /* Looted.app */,
 				320205DD2C23BCE500725DC5 /* TopazTests.xctest */,
 			);
 			name = Products;
@@ -281,6 +283,7 @@
 		320205CA2C23ABB300725DC5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				32ADB9592C85595100351C27 /* Settings */,
 				320205D22C23ACFB00725DC5 /* GiveawayViewController.swift */,
 				320205B52C23A45800725DC5 /* HomeViewController.swift */,
 				320205CE2C23AC8400725DC5 /* SettingsViewController.swift */,
@@ -289,8 +292,6 @@
 				32A66CCD2C373F5200919F2F /* GameDetailViewController.swift */,
 				324D93572C752F1600FC919F /* DetailListViewController.swift */,
 				324D93592C768F2F00FC919F /* ShopsViewController.swift */,
-				32ADB9552C83835B00351C27 /* NotificationTableViewController.swift */,
-				32ADB9572C838B3D00351C27 /* PrivacyViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -403,6 +404,16 @@
 			path = StarRatingView;
 			sourceTree = "<group>";
 		};
+		32ADB9592C85595100351C27 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				32ADB9552C83835B00351C27 /* NotificationTableViewController.swift */,
+				32ADB9572C838B3D00351C27 /* PrivacyViewController.swift */,
+				32ADB95A2C85596A00351C27 /* AcknowledgementsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -431,7 +442,7 @@
 				32D3D48A2C44C4C50036E964 /* GoogleSignInSwift */,
 			);
 			productName = Topaz;
-			productReference = 320205AE2C23A45800725DC5 /* Topaz.app */;
+			productReference = 320205AE2C23A45800725DC5 /* Looted.app */;
 			productType = "com.apple.product-type.application";
 		};
 		320205DC2C23BCE500725DC5 /* TopazTests */ = {
@@ -546,6 +557,7 @@
 				32D3D4C62C47486B0036E964 /* DealSmallCollectionViewCell.swift in Sources */,
 				32961E0D2C2A389D00B2BB9C /* ImageAPIRequest.swift in Sources */,
 				32B66CFE2C585F8F00A33612 /* WishlistItem.swift in Sources */,
+				32ADB95B2C85596A00351C27 /* AcknowledgementsViewController.swift in Sources */,
 				32961E072C2A1E5A00B2BB9C /* SectionHeaderView.swift in Sources */,
 				320205E72C23BD9A00725DC5 /* Shop.swift in Sources */,
 				32A66CC32C372CCE00919F2F /* GameDetail.swift in Sources */,
@@ -789,7 +801,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timmynguyen.Topaz;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Looted;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Topaz/Topaz-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -820,7 +832,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timmynguyen.Topaz;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Looted;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Topaz/Topaz-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

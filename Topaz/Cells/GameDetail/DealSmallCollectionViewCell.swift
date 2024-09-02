@@ -56,6 +56,8 @@ class DealSmallCollectionViewCell: UICollectionViewCell {
         let tagView = TimeRemainingTag()
         tagView.tagLabel.textColor = .secondaryLabel
         tagView.imageView.tintColor = .secondaryLabel
+        tagView.backgroundColor = nil
+        
         tagView.tagLabel.font = .preferredFont(forTextStyle: .caption1)
         NSLayoutConstraint.activate([
             tagView.imageView.heightAnchor.constraint(equalToConstant: 20),

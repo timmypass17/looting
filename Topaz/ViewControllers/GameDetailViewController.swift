@@ -420,7 +420,7 @@ extension GameDetailViewController: UITableViewDelegate {
         case .info:
             return game?.title
         case .screenshots:
-            return "Screenshots"
+            return "Trailer & Screenshots"
         case .bestDeal:
             return "Current Best Deal"
         case .historicalLow:
