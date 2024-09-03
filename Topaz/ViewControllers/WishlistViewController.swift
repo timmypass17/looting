@@ -27,12 +27,10 @@ class WishlistViewController: UIViewController {
         return collectionView
     }()
     
-    let button: GIDSignInButton = {
-        let button = GIDSignInButton(frame: .zero)
-        button.colorScheme = .dark
-        button.style = .wide
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    let loginView: LoginView = {
+        let loginView = LoginView()
+        loginView.translatesAutoresizingMaskIntoConstraints = false
+        return loginView
     }()
     
     let service = IsThereAnyDealService()
@@ -50,14 +48,13 @@ class WishlistViewController: UIViewController {
         print("WishlistViewController viewDidLoad()")
         super.viewDidLoad()
         collectionView.delegate = self
+        loginView.delegate = self
 
         navigationItem.title = "Wishlist"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bell"), primaryAction: didTapNotificationButton())
-        
-        button.addAction(didTapGoogleSignIn(), for: .touchUpInside)
-        
+                
         view.addSubview(collectionView)
-        view.addSubview(button)
+        view.addSubview(loginView)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -65,12 +62,13 @@ class WishlistViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
+
         NSLayoutConstraint.activate([
-            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            loginView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            loginView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            loginView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
-        
         
         collectionView.register(DealSmallCollectionViewCell.self, forCellWithReuseIdentifier: DealSmallCollectionViewCell.reuseIdentifier)
         collectionView.collectionViewLayout = createLayout()
@@ -85,7 +83,8 @@ class WishlistViewController: UIViewController {
         Auth.auth().addStateDidChangeListener { [self] auth, user in
             if let user {
                 self.user = user
-                button.isHidden = true
+//                button.isHidden = true
+                loginView.isHidden = true
                 
                 wishlistTask?.cancel()
                 wishlistTask = Task {
@@ -94,7 +93,9 @@ class WishlistViewController: UIViewController {
                 }
 
             } else {
-                button.isHidden = false
+//                button.isHidden = false
+                loginView.isHidden = false
+                
                 clearDatasource()
             }
         }
@@ -460,5 +461,13 @@ func showGoogleSignIn(_ viewControlller: UIViewController) async -> AuthDataResu
     } catch {
         print("Error google signing: \(error)")
         return nil
+    }
+}
+
+extension WishlistViewController: LoginViewDelegate {
+    func loginView(_ sender: LoginView, didTapGoogleLoginButton: Bool) {
+        Task {
+            await showGoogleSignIn(self)
+        }
     }
 }

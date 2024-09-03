@@ -40,7 +40,10 @@ class DealMediumCollectionViewCell: UICollectionViewCell {
         ratingView.tintColor = .secondaryLabel
         ratingView.allowsHalfStars = true
         ratingView.backgroundColor = .systemBackground
-        ratingView.widthAnchor.constraint(equalToConstant: 75).isActive = true
+        NSLayoutConstraint.activate([
+            ratingView.widthAnchor.constraint(equalToConstant: 75),
+            ratingView.heightAnchor.constraint(equalToConstant: 15)
+        ])
         return ratingView
     }()
     

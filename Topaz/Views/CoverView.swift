@@ -140,7 +140,7 @@ class BannerCoverView: CoverView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .secondarySystemGroupedBackground
         
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: (344 / 600) * self.frame.size.width)

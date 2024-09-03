@@ -334,17 +334,17 @@ extension GameDetailViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             if indexPath.row == 1 {
                 cell.update(title: "Review",
-                            description: "\(game.steamReviewText ?? "") (\(gameDetail?.recommendations.total.formatted() ?? "0"))")
+                            description: "\(game.steamReviewText ?? "NA") (\(gameDetail?.recommendations.total.formatted() ?? "0"))")
             } else if indexPath.row == 2 {
                 cell.update(title: "Rating", description: "\(game.steamReview?.score ?? 0)")
             } else if indexPath.row == 3 {
-                cell.update(title: "Release Date", description: gameDetail?.releaseDate.date ?? "")
+                cell.update(title: "Release Date", description: gameDetail?.releaseDate.date ?? "NA")
             } else if indexPath.row == 4 {
-                cell.update(title: "Genres", description: gameDetail?.genres.map { $0.description }.joined(separator: ", ") ?? "")
+                cell.update(title: "Genres", description: gameDetail?.genres.map { $0.description }.joined(separator: ", ") ?? "NA")
             } else if indexPath.row == 5 {
-                cell.update(title: "Developer", description: gameDetail?.developers.first ?? "")
+                cell.update(title: "Developer", description: gameDetail?.developers.first ?? "NA")
             } else if indexPath.row == 6 {
-                cell.update(title: "Publisher", description: gameDetail?.publishers.first ?? "")
+                cell.update(title: "Publisher", description: gameDetail?.publishers.first ?? "NA")
             }
             return cell
         case .screenshots:
