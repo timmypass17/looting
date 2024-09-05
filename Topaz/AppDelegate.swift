@@ -137,3 +137,7 @@ extension AppDelegate: MessagingDelegate {
 // Send message to topics
 // - users subscribe to a topic (e.g. "elden ring"). "Elden Ring is on sale for %29.99 (-50%)!"
 // - maybe i could let users set notifications for specific games
+
+// FAQ:
+// 1. Isn't it a waste to duplicate game documents (title, price, url). E.g. There could be 50 "Terraria" documents across users. Why not just store the gameID and have 1 single Terraria document with all the game info?
+//  Answer: Firebase bills you per operation so denormalizing data is encouraged (duplicate data). If I want to present a list of games from users wishlist, I can just have 1 single fetch to get 100 documents (good) vs 100 fetches per game/document (bad).

@@ -51,6 +51,15 @@ struct Settings {
             archiveJSON(value: newValue, key: "showExpiration")
         }
     }
+    
+    var nonce: String? {
+        get {
+            return unarchiveJSON(key: "nonce") ?? nil
+        }
+        set {
+            archiveJSON(value: newValue, key: "nonce")
+        }
+    }
 }
 
 extension Notification.Name {

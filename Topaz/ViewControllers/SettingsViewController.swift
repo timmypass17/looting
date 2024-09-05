@@ -10,6 +10,7 @@ import FirebaseAuth
 import GoogleSignIn
 import FirebaseCore
 import MessageUI
+import AuthenticationServices
 
 class SettingsViewController: UIViewController {
     
@@ -24,6 +25,7 @@ class SettingsViewController: UIViewController {
     enum Item {
         case settings(Model)
         case signInOut
+        case deleteAccount
         
         var settings: Model? {
             if case .settings(let model) = self {
@@ -79,6 +81,11 @@ class SettingsViewController: UIViewController {
             data: [
                 Item.signInOut
             ]
+        ),
+        Section(
+            data: [
+                Item.deleteAccount
+            ]
         )
     ]
     
@@ -89,7 +96,11 @@ class SettingsViewController: UIViewController {
     var acknowledgementsIndexPath = IndexPath(row: 0, section: 2)
     var privacyIndexPath = IndexPath(row: 1, section: 2)
     var signInOutIndexPath = IndexPath(row: 0, section: 3)
+    var deleteAccountIndexPath = IndexPath(row: 0, section: 4)
+
         
+    var appleAuthCrendentials: AuthCredential? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Settings"
@@ -101,10 +112,7 @@ class SettingsViewController: UIViewController {
         tableView.register(SignOutTableViewCell.self, forCellReuseIdentifier: SignOutTableViewCell.reuseIdentifier)
         tableView.register(SettingsSelectionTableViewCell.self, forCellReuseIdentifier: SettingsSelectionTableViewCell.selectionReuseIdentifier)
         tableView.register(SettingsToggleTableViewCell.self, forCellReuseIdentifier: SettingsToggleTableViewCell.toggleReuseIdentifier)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: menu)
-        navigationItem.rightBarButtonItem?.tintColor = .label
-        
+                
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
@@ -116,18 +124,75 @@ class SettingsViewController: UIViewController {
         
         // Gets called whenever user logs in or out
         Auth.auth().addStateDidChangeListener { [self] auth, user in
-            tableView.reloadSections(IndexSet(integer: signInOutIndexPath.section), with: .automatic)
+            tableView.reloadSections(IndexSet([signInOutIndexPath, deleteAccountIndexPath].map { $0.section }), with: .automatic)
         }
     }
     
-    var menu: UIMenu {
-        var menuItems: [UIAction] = [
-                UIAction(title: "Delete Account", image: UIImage(systemName: "trash")) { [self] _ in
-                    didTapDeleteAccountButton()
+    
+    func didTapSignInOutButton() {
+        let isLoggedIn = Auth.auth().currentUser != nil
+        if isLoggedIn {
+            let title = "Sign Out?"
+            let message = "Are you sure you want to sign out?"
+            
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { [self] _ in
+                do {
+                    try Auth.auth().signOut()
+                    print("User signed out")
+                } catch{
+                    print("Error signing out: \(error)")
                 }
-            ]
+                tableView.reloadSections(IndexSet(integer: signInOutIndexPath.section), with: .automatic)
+            })
+            alert.addAction(UIAlertAction(title: "Nevermind", style: .default))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            Task {
+                await startSignInWithGoogleFlow(self)
+            }
+        }
+    }
+    
+    func didTapDeleteAccountButton() {
+        let title = "Delete Account?"
+        let message = "Are you sure you want to delete your account? This action is permanent and will remove all your wishlist items. You may need to re-login to proceed with this security-sensitive operation. This cannot be undone."
         
-        return UIMenu(title: "", image: nil, identifier: nil, options: [], children: menuItems)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Delete Account", style: .destructive) { [self] _ in
+            Task {
+                await deleteUser()
+            }
+        })
+        alert.addAction(UIAlertAction(title: "Nevermind", style: .default))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    private func deleteUser() async {
+        // Note: Doesn't delete user's data. Deleting document does not delete subcollection. (Used Firebase Cloud Functions)
+        guard let user = Auth.auth().currentUser else { return }
+
+        do {
+            try await user.delete()
+            print("Deleted user successfully")
+        }
+        catch {
+            // Deleting account requires user to sign in recently, re-authenticate the user to perform security sensitive actions
+            print("Error deleting account: \(error)")
+            if let user = Auth.auth().currentUser {
+                // Figure out which auth provider the user used to log in
+                let providerID = user.providerData[0].providerID
+                if providerID == "google.com" {
+                    let result: AuthDataResult? = await startSignInWithGoogleFlow(self)
+                    await deleteUser()
+                } else if providerID == "apple.com" {
+                    startSignInWithAppleFlow(self)
+                }
+            }
+        }
     }
 }
 
@@ -147,13 +212,21 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             // Sign Out
             let cell = tableView.dequeueReusableCell(withIdentifier: SignOutTableViewCell.reuseIdentifier, for: indexPath) as! SignOutTableViewCell
             let isLoggedIn = Auth.auth().currentUser != nil
-            if isLoggedIn {
-                cell.label.text = "Sign Out"
-                cell.label.textColor = .red
-            } else {
-                cell.label.text = "Sign In with Google"
-                cell.label.textColor = .link
-            }
+            cell.label.text = "Sign Out"
+            cell.label.textColor = .red
+            cell.label.isEnabled = isLoggedIn
+            cell.selectionStyle = isLoggedIn ? .default : .none
+            return cell
+        }
+        
+        if indexPath == deleteAccountIndexPath {
+            // Sign Out
+            let cell = tableView.dequeueReusableCell(withIdentifier: SignOutTableViewCell.reuseIdentifier, for: indexPath) as! SignOutTableViewCell
+            let isLoggedIn = Auth.auth().currentUser != nil
+            cell.label.text = "Delete Account"
+            cell.label.textColor = .red
+            cell.label.isEnabled = isLoggedIn
+            cell.selectionStyle = isLoggedIn ? .default : .none
             return cell
         }
         
@@ -205,87 +278,37 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             mailComposer.setSubject("[BuiltDiff] Bug Report")
             
             present(mailComposer, animated: true)
-        } else if indexPath == signInOutIndexPath {
-            didTapSignInOutButton()
         } else if indexPath == acknowledgementsIndexPath {
             let acknowledgementsViewController = AcknowledgementsViewController()
             navigationController?.pushViewController(acknowledgementsViewController, animated: true)
         } else if indexPath == privacyIndexPath {
             let privacyViewController = PrivacyViewController()
             navigationController?.pushViewController(privacyViewController, animated: true)
+        } else if indexPath == signInOutIndexPath {
+            didTapSignInOutButton()
+        } else if indexPath == deleteAccountIndexPath {
+            didTapDeleteAccountButton()
         }
     }
     
+    // Disable selection (does not remove highlight, use cell.selectionStyle = .none)
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if indexPath == showExpirationIndexPath {
             return nil
         }
         
+        if indexPath == signInOutIndexPath || indexPath == deleteAccountIndexPath {
+            let isLoggedIn = Auth.auth().currentUser != nil
+            if isLoggedIn {
+                return indexPath
+            } else {
+                return nil
+            }
+        }
+        
         return indexPath
     }
-    
-    func didTapDeleteAccountButton() {
-        let title = "Delete Account?"
-        let message = "Are you sure you want to delete your account? This action is permanent and will remove all your wishlist items. You may need to re-login to proceed with this security-sensitive operation. This cannot be undone."
-        
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Delete Account", style: .destructive) { [self] _ in
-            Task {
-                await deleteUser()
-            }
-        })
-        alert.addAction(UIAlertAction(title: "Nevermind", style: .default))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        self.present(alert, animated: true, completion: nil)
-        
-    }
-    
-    func didTapSignInOutButton() {
-        let isLoggedIn = Auth.auth().currentUser != nil
-        if isLoggedIn {
-            let title = "Sign Out?"
-            let message = "Are you sure you want to sign out?"
-            
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { [self] _ in
-                do {
-                    try Auth.auth().signOut()
-                    print("User signed out")
-                } catch{
-                    print("Error signing out: \(error)")
-                }
-                tableView.reloadSections(IndexSet(integer: signInOutIndexPath.section), with: .automatic)
-            })
-            alert.addAction(UIAlertAction(title: "Nevermind", style: .default))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            self.present(alert, animated: true, completion: nil)
-        } else {
-            Task {
-                await showGoogleSignIn(self)
-            }
-        }
-    }
-    
-    
-    func deleteUser() async {
-        print(#function)
-        // Note: Doesn't delete user's data. Deleting document does not delete subcollection.
-        guard let user = Auth.auth().currentUser else { return }
 
-        do {
-            try await user.delete()
-            print("Deleted user successfully")
-        }
-        catch {
-            // Deleting account requires user to sign in recently, re-authenticate the user to perform security sensitive actions
-            print("Error deleting account: \(error)")
-            let result: AuthDataResult? = await showGoogleSignIn(self)
-            if result != nil {
-                await deleteUser()
-            }
-        }
-    }
-    
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0 {
             return "Get notified every Friday (19:00 UTC) for games on sale in your wishlist."
@@ -311,5 +334,50 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in }))
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension SettingsViewController: ASAuthorizationControllerDelegate {
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            guard let nonce = Settings.shared.nonce else {
+                fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                print("Unable to fetch identity token")
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                return
+            }
+            // Initialize a Firebase credential, including the user's full name.
+            let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
+                                                           rawNonce: nonce,
+                                                           fullName: appleIDCredential.fullName)
+            
+            // Sign in with Firebase
+            Task {
+                do {
+                    let result = try await Auth.auth().signIn(with: credential)
+                    await deleteUser()
+                } catch {
+                    print("Error signing with in Apple: \(error)")
+                    appleAuthCrendentials = nil
+                }
+            }
+        }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
+        print("Sign in with Apple errored: \(error)")
+    }
+}
+
+extension SettingsViewController: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
     }
 }

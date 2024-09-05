@@ -10,13 +10,15 @@ import FirebaseCore
 import GoogleSignIn
 import FirebaseAuth
 import FirebaseFirestore
+import CryptoKit
+import AuthenticationServices
 
 class WishlistViewController: UIViewController {
     
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
-
+    
     var db: Firestore = Firestore.firestore()
-
+    
     enum Section: Hashable {
         case wishlist
     }
@@ -29,8 +31,15 @@ class WishlistViewController: UIViewController {
     
     let loginView: LoginView = {
         let loginView = LoginView()
+        loginView.isHidden = true
         loginView.translatesAutoresizingMaskIntoConstraints = false
         return loginView
+    }()
+    
+    let emptyWishlistView: EmptyWishlistView = {
+        let view = EmptyWishlistView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     let service = IsThereAnyDealService()
@@ -49,11 +58,12 @@ class WishlistViewController: UIViewController {
         super.viewDidLoad()
         collectionView.delegate = self
         loginView.delegate = self
-
+        
         navigationItem.title = "Wishlist"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bell"), primaryAction: didTapNotificationButton())
-                
+        
         view.addSubview(collectionView)
+        view.addSubview(emptyWishlistView)
         view.addSubview(loginView)
         
         NSLayoutConstraint.activate([
@@ -62,7 +72,13 @@ class WishlistViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-
+        
+        
+        NSLayoutConstraint.activate([
+            emptyWishlistView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyWishlistView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+        
         NSLayoutConstraint.activate([
             loginView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             loginView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
@@ -83,25 +99,24 @@ class WishlistViewController: UIViewController {
         Auth.auth().addStateDidChangeListener { [self] auth, user in
             if let user {
                 self.user = user
-//                button.isHidden = true
                 loginView.isHidden = true
                 
                 wishlistTask?.cancel()
                 wishlistTask = Task {
                     await loadWishlist()
+                    emptyWishlistView.isHidden = dataSource.snapshot().numberOfItems > 0 // TODO: updateUI()
                     wishlistTask = nil
                 }
-
-            } else {
-//                button.isHidden = false
-                loginView.isHidden = false
                 
+            } else {
+                loginView.isHidden = false
+                emptyWishlistView.isHidden = true
                 clearDatasource()
             }
         }
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI(_:)), name: .showExpirationUpdated, object: nil)
-
+        
         updateUI()
     }
     
@@ -113,7 +128,7 @@ class WishlistViewController: UIViewController {
     @objc func updateUI(_ notification: NSNotification) {
         var currentSnapshot = dataSource.snapshot()
         let visibleIndexPaths = collectionView.indexPathsForVisibleItems
-
+        
         let visibleItems: [Item] = visibleIndexPaths.compactMap { indexPath in
             return dataSource.itemIdentifier(for: indexPath)
         }
@@ -121,7 +136,7 @@ class WishlistViewController: UIViewController {
         
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
-
+    
     
     override func viewDidAppear(_ animated: Bool) {
         Task {
@@ -202,7 +217,7 @@ class WishlistViewController: UIViewController {
                 query = query
                     .start(afterDocument: lastDocument)
             }
-
+            
             let querySnapshot = try await query.getDocuments()
             lastDocument = querySnapshot.documents.last
             
@@ -253,9 +268,9 @@ class WishlistViewController: UIViewController {
                     heightDimension: .fractionalHeight(1)
                 )
         )
-
+        
         item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
-
+        
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
@@ -264,11 +279,11 @@ class WishlistViewController: UIViewController {
             repeatingSubitem: item,
             count: 1
         )
-
+        
         let section = NSCollectionLayoutSection(group: group)
-
+        
         section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 20, trailing: 0)
-
+        
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         return layout
@@ -293,7 +308,7 @@ class WishlistViewController: UIViewController {
     func didTapGoogleSignIn() -> UIAction {
         return UIAction { _ in
             Task {
-                await showGoogleSignIn(self)
+                await startSignInWithGoogleFlow(self)
             }
         }
     }
@@ -405,7 +420,7 @@ extension WishlistViewController: GameDetailViewControllerDelegate {
         // datasource not init until user opens wishlist view. Should preload wishlist
         let gameInWishlist = dataSource.snapshot().itemIdentifiers.contains { $0.wishlistItem!.gameID == game.id }
         guard let user,
-              !gameInWishlist 
+              !gameInWishlist
         else { return }
         
         priceTask?.cancel()
@@ -428,6 +443,7 @@ extension WishlistViewController: GameDetailViewControllerDelegate {
             let currentItems = dataSource.snapshot().itemIdentifiers
             updateSnapshot(with: [item] + currentItems)
             print("didWishlistGame: \(game.title)")
+            emptyWishlistView.isHidden = dataSource.snapshot().numberOfItems > 0
             priceTask = nil
         }
     }
@@ -439,11 +455,12 @@ extension WishlistViewController: GameDetailViewControllerDelegate {
         var currentItems = dataSource.snapshot().itemIdentifiers
         currentItems = currentItems.filter { $0.wishlistItem!.gameID != game.id }
         updateSnapshot(with: currentItems)
+        emptyWishlistView.isHidden = dataSource.snapshot().numberOfItems > 0
         print("didWishlistGame: \(game.title)")
     }
 }
 
-func showGoogleSignIn(_ viewControlller: UIViewController) async -> AuthDataResult? {
+func startSignInWithGoogleFlow(_ viewControlller: UIViewController) async -> AuthDataResult? {
     guard let clientID = FirebaseApp.app()?.options.clientID else { return nil }
     
     let config = GIDConfiguration(clientID: clientID)
@@ -464,10 +481,108 @@ func showGoogleSignIn(_ viewControlller: UIViewController) async -> AuthDataResu
     }
 }
 
+@available(iOS 13, *)
+func startSignInWithAppleFlow(_ viewController: UIViewController & ASAuthorizationControllerDelegate & ASAuthorizationControllerPresentationContextProviding) {
+    print(#function)
+    let nonce = randomNonceString()
+    Settings.shared.nonce = nonce
+    let appleIDProvider = ASAuthorizationAppleIDProvider()
+    let request = appleIDProvider.createRequest()
+    request.requestedScopes = [.fullName, .email]
+    request.nonce = sha256(nonce)
+    
+    let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+    authorizationController.delegate = viewController
+    authorizationController.presentationContextProvider = viewController
+    authorizationController.performRequests()
+}
+
+func randomNonceString(length: Int = 32) -> String {
+    precondition(length > 0)
+    var randomBytes = [UInt8](repeating: 0, count: length)
+    let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
+    if errorCode != errSecSuccess {
+        fatalError(
+            "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+        )
+    }
+    
+    let charset: [Character] =
+    Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+    
+    let nonce = randomBytes.map { byte in
+        // Pick a random character from the set, wrapping around if needed.
+        charset[Int(byte) % charset.count]
+    }
+    
+    return String(nonce)
+}
+
+@available(iOS 13, *)
+private func sha256(_ input: String) -> String {
+    // Takes a string of abritary length and outputs a value that is 256 bits long. Impossible to convert hash back to original form. Popular algorithm for storing passwords. When using a hash function like SHA256, the only way to verify two passwords are the same is to compute the hash for both passwords and see if the hashes match
+    let inputData = Data(input.utf8)
+    let hashedData = SHA256.hash(data: inputData)
+    let hashString = hashedData.compactMap {
+        String(format: "%02x", $0)
+    }.joined()
+    
+    return hashString
+}
+
+
 extension WishlistViewController: LoginViewDelegate {
     func loginView(_ sender: LoginView, didTapGoogleLoginButton: Bool) {
         Task {
-            await showGoogleSignIn(self)
+            await startSignInWithGoogleFlow(self)
         }
+    }
+    
+    func loginView(_ sender: LoginView, didTapAppleLoginButton: Bool) {
+        startSignInWithAppleFlow(self)
+    }
+}
+
+extension WishlistViewController: ASAuthorizationControllerDelegate {
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            guard let nonce = Settings.shared.nonce else {
+                fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                print("Unable to fetch identity token")
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                return
+            }
+            // Initialize a Firebase credential, including the user's full name.
+            let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
+                                                           rawNonce: nonce,
+                                                           fullName: appleIDCredential.fullName)
+            
+            // Sign in with Firebase
+            Task {
+                do {
+                    let result = try await Auth.auth().signIn(with: credential)
+                    result.credential
+                } catch {
+                    print("Error signing with in Apple: \(error)")
+                }
+            }
+        }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
+        print("Sign in with Apple errored: \(error)")
+    }
+}
+
+extension WishlistViewController: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
     }
 }

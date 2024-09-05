@@ -7,8 +7,11 @@
 
 import UIKit
 import GoogleSignIn
+import AuthenticationServices
+import CryptoKit
 
 protocol LoginViewDelegate: AnyObject {
+    func loginView(_ sender: LoginView, didTapAppleLoginButton: Bool)
     func loginView(_ sender: LoginView, didTapGoogleLoginButton: Bool)
 }
 
@@ -47,16 +50,31 @@ class LoginView: UIView {
         return stackView
     }()
     
-    weak var delegate: LoginViewDelegate?
+    let loginProviderStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
     
+    weak var delegate: LoginViewDelegate?
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        let appleLoginButton = ASAuthorizationAppleIDButton(type: .signIn, style: traitCollection.userInterfaceStyle == .light ? .black : .white)
+        appleLoginButton.addAction(didTapAppleSignIn(), for: .touchUpInside)
+
         googleLoginButton.addAction(didTapGoogleSignIn(), for: .touchUpInside)
 
+        loginProviderStackView.addArrangedSubview(appleLoginButton)
+        loginProviderStackView.addArrangedSubview(googleLoginButton)
+        
         container.addArrangedSubview(titleLabel)
         container.addArrangedSubview(descriptionLabel)
-        container.addArrangedSubview(googleLoginButton)
+        container.addArrangedSubview(loginProviderStackView)
+        
+        container.setCustomSpacing(16, after: descriptionLabel)
         
         addSubview(container)
         
@@ -66,6 +84,12 @@ class LoginView: UIView {
             container.leadingAnchor.constraint(equalTo: leadingAnchor),
             container.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
+        
+        NSLayoutConstraint.activate([
+            appleLoginButton.heightAnchor.constraint(equalToConstant: googleLoginButton.frame.height - 10)
+        ])
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -77,4 +101,12 @@ class LoginView: UIView {
             delegate?.loginView(self, didTapGoogleLoginButton: true)
         }
     }
+    
+    func didTapAppleSignIn() -> UIAction {
+        return UIAction { [self] _ in
+            delegate?.loginView(self, didTapAppleLoginButton: true)
+        }
+    }
 }
+
+

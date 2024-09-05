@@ -46,6 +46,7 @@
 		324D93582C752F1600FC919F /* DetailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D93572C752F1600FC919F /* DetailListViewController.swift */; };
 		324D935A2C768F2F00FC919F /* ShopsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D93592C768F2F00FC919F /* ShopsViewController.swift */; };
 		324D935C2C76B19B00FC919F /* GameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D935B2C76B19B00FC919F /* GameCollectionViewCell.swift */; };
+		326F93A32C89476B00B28F04 /* EmptyWishlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326F93A22C89476B00B28F04 /* EmptyWishlistView.swift */; };
 		32961DFB2C24DE9E00B2BB9C /* DealsAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320206022C24CDD600725DC5 /* DealsAPIRequest.swift */; };
 		32961E072C2A1E5A00B2BB9C /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */; };
 		32961E092C2A1E8B00B2BB9C /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32961E082C2A1E8B00B2BB9C /* LineView.swift */; };
@@ -165,6 +166,7 @@
 		324D93572C752F1600FC919F /* DetailListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailListViewController.swift; sourceTree = "<group>"; };
 		324D93592C768F2F00FC919F /* ShopsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopsViewController.swift; sourceTree = "<group>"; };
 		324D935B2C76B19B00FC919F /* GameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCollectionViewCell.swift; sourceTree = "<group>"; };
+		326F93A22C89476B00B28F04 /* EmptyWishlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWishlistView.swift; sourceTree = "<group>"; };
 		32961E062C2A1E5A00B2BB9C /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		32961E082C2A1E8B00B2BB9C /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		32961E0A2C2A2ED200B2BB9C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				32ADB9522C8108B800351C27 /* HistoryView.swift */,
 				320FAB1F2C86549E00A07E5F /* CoverView.swift */,
 				320FAB212C87A8D800A07E5F /* LoginView.swift */,
+				326F93A22C89476B00B28F04 /* EmptyWishlistView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -569,6 +572,7 @@
 				3248352B2C3C874E00130324 /* PriceOverviewAPIRequest.swift in Sources */,
 				32ADB9582C838B3D00351C27 /* PrivacyViewController.swift in Sources */,
 				320205D32C23ACFB00725DC5 /* GiveawayViewController.swift in Sources */,
+				326F93A32C89476B00B28F04 /* EmptyWishlistView.swift in Sources */,
 				32D3D4C82C47486B0036E964 /* PriceTableViewCell.swift in Sources */,
 				32A66CCE2C373F5200919F2F /* GameDetailViewController.swift in Sources */,
 				321C5D242C5D891C006919C0 /* HCSStarRatingView.m in Sources */,
