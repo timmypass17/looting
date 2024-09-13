@@ -36,7 +36,7 @@ An iOS video game deals tracker that notfies you when your games go on sale. (Ap
 
 ## Technologies used
 - Swift
-- UIKit
+- UIKit (no storyboard)
 - SwiftUI
   - Swift Charts
 - XCTest
