@@ -21,7 +21,7 @@ An iOS video game deals tracker that notfies you when your games go on sale. (Ap
 
 ## Installation
 
-### Required
+### Prerequisites
 - iOS 16.0+
 - Xcode 15.4+
 
